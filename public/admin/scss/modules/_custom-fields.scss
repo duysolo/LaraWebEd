@@ -1,0 +1,151 @@
+/*Meta boxes*/
+.meta-box {
+  &:not(:last-child) {
+    margin-bottom: 30px;
+  }
+}
+/*Repeater fields*/
+.sortable-wrapper {
+  padding: 0;
+}
+.sortable-wrapper li {
+  list-style: none;
+  border: 1px solid #aaa;
+  padding: 0 0 0 50px;
+  position: relative;
+  background-color: #fff;
+  margin-top: -1px;
+}
+.sortable-wrapper > li:first-child {
+  margin-top: 0;
+}
+.sortable-wrapper > li:before {
+
+}
+.sortable-wrapper > li {
+  &:before {
+    border: 1px solid #666;
+    border-radius: 50%;
+    content: attr(data-position);
+    height: 30px;
+    left: 10px;
+    line-height: 28px;
+    margin-top: -15px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 30px;
+    cursor: move;
+    z-index: 2;
+    color: #666;
+  }
+  &:after {
+    background-color: #eee;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 50px;
+    z-index: 1;
+    cursor: move;
+    border-right: 1px solid #aaa;
+  }
+  &:nth-child(2n+1) {
+    &:after {
+      background-color: #ccc;
+    }
+  }
+  &.ui-sortable-helper {
+    &:after {
+      background-color: #95A5A6;
+    }
+  }
+}
+.sortable-wrapper .sortable-wrapper > li {
+  padding-left: 0;
+}
+.sortable-wrapper .sortable-wrapper > li:before,
+.sortable-wrapper .sortable-wrapper > li:after {
+  display: none;
+}
+.nestable-group .add-new-field .sortable-wrapper .sortable-wrapper > li {
+  padding-left: 50px;
+}
+.nestable-group .add-new-field .sortable-wrapper .sortable-wrapper > li:before,
+.nestable-group .add-new-field .sortable-wrapper .sortable-wrapper > li:after {
+  display: block;
+}
+
+.sortable-wrapper li.clearfix:before,
+.sortable-wrapper li.clearfix:after {
+  display: none;
+}
+.sortable-wrapper li.clearfix {
+  background-color: #fff;
+  border: 0 none;
+  list-style: outside none none;
+  margin-top: -1px;
+  padding: 0 0 0 0;
+  position: static;
+}
+.sortable-wrapper li [class*="col-xs"] {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.sortable-wrapper li .col-xs-3:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 1px;
+  background-color: #aaa;
+}
+.sortable-wrapper li .col-xs-9:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -1px;
+  height: 100%;
+  width: 1px;
+  background-color: #aaa;
+}
+.scf-repeater-wrap {
+  overflow: auto;
+}
+.scf-repeater-wrap > .sortable-wrapper {
+  min-width: 690px;
+}
+.sortable-wrapper > li {
+  position: relative;
+  overflow: hidden;
+}
+.sortable-wrapper > li > a.remove-field-line {
+  border: 1px solid #666;
+  border-radius: 50% !important;
+  color: #666;
+  display: inline-block;
+  height: 30px;
+  left: 10px;
+  line-height: 30px;
+  position: absolute;
+  text-align: center;
+  top: -40px;
+  width: 30px;
+  z-index: 10;
+  transition: all 0.15s ease-in-out 0s;
+  -webkit-transition: all 0.15s ease-in-out 0s;
+  -moz-transition: all 0.15s ease-in-out 0s;
+}
+.sortable-wrapper > li > a.remove-field-line:hover {
+  box-shadow: 0 0 3px 0 #e26a6a;
+  border: 1px solid #e26a6a;
+  color: #e26a6a;
+}
+.sortable-wrapper > li:hover > a.remove-field-line {
+  top: 10px;
+}
+/*Repeater fields*/
+/*Meta boxes*/

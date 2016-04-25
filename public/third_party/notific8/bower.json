@@ -1,0 +1,28 @@
+{
+  "name": "notific8",
+  "version": "2.3.1",
+  "authors": [
+    "Will Steinmetz <willsteinmetz@users.noreply.github.com>"
+  ],
+  "description": "Flexible and themeable notification plug-in initially inspired by the notifications introduced in Windows 8. The plug-in now contains multiple theme families for a variety of styles.",
+  "main": [
+    "dist/jquery.notific8.min.js",
+    "dist/jquery.notific8.min.css"
+  ],
+  "keywords": [
+    "javascript",
+    "jquery",
+    "css",
+    "sass",
+    "jquery-plugin"
+  ],
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/ralivue/notific8",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

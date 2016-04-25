@@ -1,0 +1,123 @@
+/*Custom fields*/
+.custom-fields-rules select.form-control {
+  margin-left: 5px;
+}
+.custom-fields-rules select.form-control:first-child {
+  margin-left: 0;
+}
+.custom-fields-rules .rule-type {
+  width: 18%;
+}
+.custom-fields-rules .rule-a,
+.custom-fields-rules .rule-b {
+  width: 220px;
+}
+div.line {
+  margin-bottom: 10px;
+}
+li.clearfix	{
+  display: block;
+  min-height: 1px;
+  list-style: none;
+}
+.custom-fields-rules .location-add-rule-and {
+  margin-left: 10px;
+}
+.rule-line {
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.rules-b-group {
+  width: 220px;
+  margin-left: 5px;
+}
+.custom-fields-rules .rules-b-group .form-control {
+  margin-left: 0;
+}
+.rule-line a.remove-rule-line {
+  border-radius: 50% !important;
+  box-shadow: 1px 1px 1px 1px #ccc;
+  display: block;
+  font-size: 30px;
+  height: 20px;
+  line-height: 16px;
+  position: absolute;
+  right: 5px;
+  text-align: center;
+  top: -25px;
+  width: 20px;
+  transition: all 0.15s ease-in-out 0s;
+  -webkit-transition: all 0.15s ease-in-out 0s;
+  -ms-transition: all 0.15s ease-in-out 0s;
+  -moz-transition: all 0.15s ease-in-out 0s;
+}
+.rule-line:hover a.remove-rule-line {
+  top: 5px;
+}
+.line-group-container > .line-group:first-child > .rule-line:first-child .remove-rule-line {
+  display: none !important;
+}
+.line-group:before {
+  content: attr(data-text);
+  display: block;
+  font-weight: 700;
+  line-height: 30px;
+  width: 100%;
+  text-transform: capitalize;
+}
+/*Sortable list*/
+.field-table-header .list-group-item {
+  border: 1px solid #aaa;
+}
+.item-details {
+  display: none;
+}
+li.active > .item-details {
+  display: block;
+}
+li.active > .field-column {
+  border-bottom: 1px solid #aaa;
+}
+li.active > .item-details > .line {
+  margin-bottom: 0;
+  border-bottom: 1px solid #aaa;
+}
+li.active > .item-details > .options > .line {
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 0;
+}
+.sortable-wrapper > li > .field-column > .show-item-details {
+  background-color: #ccc;
+  border-left: 1px solid #aaa;
+  color: #000;
+  height: 39px;
+  line-height: 39px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 39px;
+}
+.sortable-wrapper > li > .field-column > .col-xs-4 {
+  text-indent: -3px;
+}
+.sortable-wrapper > li > .field-column > .col-xs-4:before {
+  content: '\00a0';
+}
+.field-table-header {
+  padding-left: 51px;
+  margin: 0;
+}
+/*Sortable list*/
+
+/*Content editor*/
+.meta-box {
+  margin-top: 30px;
+  overflow: auto;
+}
+.meta-box:first-child {
+  margin-top: 0;
+}
+/*Content editor*/
+/*Custom fields*/

@@ -1,0 +1,30 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.interest-marketing.net:interestmarketing/vn-recruit-site.git"
+  },
+  "author": "nghia.tran@interest-marketing.net",
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^5.0.9",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^2.3.0",
+    "gulp-compass": "^2.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify": "0.0.5",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.2.0",
+    "node-path": "^0.0.3"
+  }
+}

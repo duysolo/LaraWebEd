@@ -1,0 +1,29 @@
+$num: 50;
+/*Margin & padding*/
+@while($num >= 0) {
+  .pad-top-#{$num} {
+    padding-top: #{$num}px !important;
+  }
+  .pad-rig-#{$num} {
+    padding-right: #{$num}px !important;
+  }
+  .pad-bot-#{$num} {
+    padding-bottom: #{$num}px !important;
+  }
+  .pad-left-#{$num} {
+    padding-left: #{$num}px !important;
+  }
+  .mar-top-#{$num} {
+    margin-top: #{$num}px !important;
+  }
+  .mar-rig-#{$num} {
+    margin-right: #{$num}px !important;
+  }
+  .mar-bot-#{$num} {
+    margin-bottom: #{$num}px !important;
+  }
+  .mar-left-#{$num} {
+    margin-left: #{$num}px !important;
+  }
+  $num: $num - 5;
+}

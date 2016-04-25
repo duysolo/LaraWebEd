@@ -1,0 +1,28 @@
+{
+  "name": "Learning Angularjs",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    ""
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "3.3.5",
+    "modernizr": "~2.8.3",
+    "jquery-placeholder": "mathiasbynens/jquery-placeholder#~2.3.0",
+    "font-awesome-sass": "FortAwesome/font-awesome-sass#~4.4.0",
+    "jquery": "1.11.3",
+    "notific8": "~2.3.1",
+    "jquery-validation": "~1.14.0",
+    "bootstrap-confirmation2": "~2.2.0"
+  }
+}

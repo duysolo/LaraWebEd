@@ -1,0 +1,32 @@
+{
+    "name": "barryvdh/elfinder-flysystem-driver",
+    "description": "A Flysystem Driver for elFinder",
+    "license": "MIT",
+    "keywords": ["elfinder", "flysystem", "filesystem"],
+    "authors": [
+        {
+            "name": "Barry vd. Heuvel",
+            "email": "barryvdh@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "studio-42/elfinder": "2.1.x",
+        "league/flysystem": "~1.0",
+        "intervention/image": "~2.0"
+    },
+    "suggest": {
+        "league/glide": "1.x to display images through Glide"
+    },
+    "autoload": {
+         "classmap": ["elFinderVolumeFlysystem.php"],
+         "psr-4": {
+            "Barryvdh\\elFinderFlysystemDriver\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    }
+}

@@ -1,0 +1,8 @@
+npm-debug.log
+design/
+node_modules/
+bower_components/
+.settings
+.project
+.idea
+uploads/
