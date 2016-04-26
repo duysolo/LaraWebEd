@@ -4,22 +4,22 @@
     <meta charset="utf-8">
     <title>CMS File Browser</title>
 
-    <!-- jQuery and jQuery UI (REQUIRED) -->
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/admin/core/third_party/jquery-ui/jquery-ui.min.css"/>
 
     <!-- elFinder CSS (REQUIRED) -->
-    <link rel="stylesheet" type="text/css" href="{{ asset($dir.'/css/elfinder.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset($dir.'/css/theme.css') }}">
+    <link rel="stylesheet" type="text/css" href="/admin/core/barryvdh/elfinder/css/elfinder.min.css">
+    <link rel="stylesheet" type="text/css" href="/admin/core/barryvdh/elfinder/css/theme.css">
+</head>
+<body>
+    <!-- Element where elFinder will be created (REQUIRED) -->
+    <div id="elfinder"></div>
+
+    <!-- jQuery and jQuery UI (REQUIRED) -->
+    <script src="/admin/core/third_party/jquery.min.js"></script>
+    <script src="/admin/core/third_party/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- elFinder JS (REQUIRED) -->
-    <script src="{{ asset($dir.'/js/elfinder.min.js') }}"></script>
-
-    @if($locale)
-            <!-- elFinder translation (OPTIONAL) -->
-    <script src="{{ asset($dir."/js/i18n/elfinder.$locale.js") }}"></script>
-    @endif
+    <script src="/admin/core/barryvdh/elfinder/js/elfinder.min.js"></script>
 
     <script type="text/javascript" charset="utf-8">
         var baseUrl = '{{ asset('') }}';
@@ -28,13 +28,13 @@
         var funcNum = '{{ Request::get('CKEditorFuncNum') }}';
 
         function getUrlParam(paramName) {
-            var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
-            var match = window.location.search.match(reParam) ;
+            var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i');
+            var match = window.location.search.match(reParam);
 
-            return (match && match.length > 1) ? match[1] : '' ;
+            return (match && match.length > 1) ? match[1] : '';
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#elfinder').elfinder({
                 // set your elFinder options here
                 @if($locale)
@@ -43,27 +43,23 @@
                 customData: {
                     _token: '{{ csrf_token() }}'
                 },
-                url : '{{ $url }}',
+                url: '{{ $url }}',
                 @if(Request::get('type', 'image') != 'file')
                 onlyMimes: ["image"],
                 @endif
                 getFileCallback: function (file) {
                     var URL = file.url.replace(baseUrl, '/');
-                    if(selectMethod == "ckeditor")
-                    {
+                    if (selectMethod == "ckeditor") {
                         window.opener.CKEDITOR.tools.callFunction(funcNum, URL);
                         window.close();
                     }
-                    if(selectMethod == 'standalone')
-                    {
+                    if (selectMethod == 'standalone') {
                         $modal = window.parent.document.mediaModal;
                         $target = window.parent.document.currentMediaBox;
-                        if(fileType == 'file')
-                        {
+                        if (fileType == 'file') {
                             $target.find('a .title').html(URL);
                         }
-                        else
-                        {
+                        else {
                             $target.find('.img-responsive').attr('src', URL);
                         }
 
@@ -75,11 +71,5 @@
             });
         });
     </script>
-</head>
-<body>
-
-<!-- Element where elFinder will be created (REQUIRED) -->
-<div id="elfinder"></div>
-
 </body>
 </html>

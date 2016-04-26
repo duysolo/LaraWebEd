@@ -15,28 +15,23 @@ class FileController extends BaseAdminController
         $this->package = 'elfinder';
     }
 
-    public function getFileManager(Request $request, $user_id = null)
+    public function getFileManager(Request $request, $userId = null)
     {
-        return $this->_viewAdmin('files.file-manager', $this->_getViewVars($user_id));
+        return $this->_viewAdmin('files.file-manager', $this->_getViewVars($userId));
     }
 
-    protected function _getViewVars($user_id = null)
+    protected function _getViewVars($userId = null)
     {
-        $dir = 'packages/barryvdh/'.$this->package;
-        $locale = $this->app->config->get('app.locale');
-        if (!file_exists($this->app['path.public'] . "/$dir/js/i18n/elfinder.$locale.js")) {
-            $locale = false;
-        }
         $csrf = true;
 
         $url = $this->app->config->get('app.adminCpAccess').'/files/connector';
-        if($user_id) $url .= '/'.$user_id;
+        if($userId) $url .= '/'.$userId;
         $url = asset($url);
 
-        return compact('dir', 'locale', 'csrf', 'url');
+        return compact('csrf', 'url');
     }
 
-    public function anyConnector($user_id = null)
+    public function anyConnector($userId = null)
     {
         $roots = $this->app->config->get('elfinder.roots', []);
 
@@ -47,20 +42,20 @@ class FileController extends BaseAdminController
                 mkdir($dirs[0], 0777, true);
             }
 
-            if($user_id != null && $user_id > 0)
+            if($userId != null && $userId > 0)
             {
-                if(!is_dir($dirs[0].DIRECTORY_SEPARATOR.md5($user_id))){
-                    mkdir($dirs[0].DIRECTORY_SEPARATOR.md5($user_id), 0777, true);
+                if(!is_dir($dirs[0].DIRECTORY_SEPARATOR.md5($userId))){
+                    mkdir($dirs[0].DIRECTORY_SEPARATOR.md5($userId), 0777, true);
                 }
             }
 
             foreach ($dirs as $dir) {
                 $path = $dir;
                 $url = $dir;
-                if($user_id != null && $user_id > 0)
+                if($userId != null && $userId > 0)
                 {
-                    $path = $dir.DIRECTORY_SEPARATOR.md5($user_id);
-                    $url = $dir.'/'.md5($user_id);
+                    $path = $dir.DIRECTORY_SEPARATOR.md5($userId);
+                    $url = $dir.'/'.md5($userId);
                 }
                 $roots[] = [
                     'driver' => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
