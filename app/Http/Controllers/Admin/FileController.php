@@ -12,7 +12,6 @@ class FileController extends BaseAdminController
         parent::__construct();
 
         $this->app = app();
-        $this->package = 'elfinder';
     }
 
     public function getFileManager(Request $request, $userId = null)
@@ -24,7 +23,7 @@ class FileController extends BaseAdminController
     {
         $csrf = true;
 
-        $url = $this->app->config->get('app.adminCpAccess').'/files/connector';
+        $url = $this->adminCpAccess.'/files/connector';
         if($userId) $url .= '/'.$userId;
         $url = asset($url);
 
