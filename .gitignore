@@ -4,8 +4,3 @@
 Homestead.yaml
 Homestead.json
 .env
-/.idea
-/public/admin/css
-/public/admin/dist
-/public/css
-/public/dist

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--[if IE 8]>
 <html lang="{{ $currentLanguageCode or 'en' }}" class="ie8 no-js {{ ($showHeaderAdminBar) ? 'show-admin-bar' : '' }}"> <![endif]-->

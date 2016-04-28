@@ -1,0 +1,3 @@
+html.show-admin-bar{margin-top:40px;position:relative}html.show-admin-bar #headerAdminBar{display:block !important;min-height:40px;height:40px;border-radius:0;border:0 none;z-index:10000;top:0}html.show-admin-bar #headerAdminBar .navbar-brand{padding:13px 15px;height:40px}html.show-admin-bar #headerAdminBar .navbar-nav>li>a{padding:10px 15px}#headerAdminBar{display:none !important}
+
+/*# sourceMappingURL=map/admin-bar.css.map */

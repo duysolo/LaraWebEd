@@ -20,41 +20,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.js-ckeditor').ckeditor({
-                extraPlugins: 'codeTag,insertpre',
-                toolbar: [
-                    {
-                        name: 'document',
-                        items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']
-                    },
-                    {
-                        name: 'clipboard',
-                        items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
-                    },
-                    {name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt']},
-                    {
-                        name: 'forms',
-                        items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']
-                    },
-                    '/',
-                    {
-                        name: 'basicstyles',
-                        items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
-                    },
-                    {
-                        name: 'paragraph',
-                        items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']
-                    },
-                    {name: 'links', items: ['Link', 'Unlink', 'Anchor']},
-                    {
-                        name: 'insert',
-                        items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'InsertPre', 'Code']
-                    },
-                    '/',
-                    {name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize']},
-                    {name: 'colors', items: ['TextColor', 'BGColor']},
-                    {name: 'tools', items: ['Maximize', 'ShowBlocks']},
-                    {name: 'about', items: ['About']}
-                ]
+
             });
 
             $('.js-tags-editor').tagsinput({
@@ -219,9 +185,7 @@
                                                     </div>
                                                     @if(isset($categoriesHtml) && trim($categoriesHtml) != '')
                                                         <div class="form-group">
-                                                            <label class="col-md-2 control-label">Categories:
-                                                                <span class="required"> * </span>
-                                                            </label>
+                                                            <label class="col-md-2 control-label">Categories:</label>
                                                             <div class="col-md-10">
                                                                 <div class="form-control height-auto">
                                                                     <div class="scroller" style="max-height: 300px;"
@@ -248,7 +212,7 @@
                                                             <div class="input-group input-medium">
                                                                 <input type="text" class="form-control" name="price"
                                                                        placeholder=""
-                                                                       value="{{ $object->price or '' }}">
+                                                                       value="{{ $object->price or 0 }}">
                                                                 <span class="input-group-addon">{{ $currentEditLanguage->currency }}</span>
                                                             </div>
                                                         </div>
@@ -265,9 +229,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="col-md-2 control-label">Status:
-                                                            <span class="required"> * </span>
-                                                        </label>
+                                                        <label class="col-md-2 control-label">Status:</label>
                                                         <div class="col-md-10">
                                                             <select name="status" class="form-control input-medium">
                                                                 <option value="1" {{ (isset($object) && $object->status == 1) ? 'selected' : '' }}>

@@ -28,6 +28,7 @@ function _getField($fields, $key) {
 
 function _getRepeaterField($rawField)
 {
+    if(!$rawField) $rawField = '[]';
     $meta = (array)json_decode($rawField);
     return $meta;
 }

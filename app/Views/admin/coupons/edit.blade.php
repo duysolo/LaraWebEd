@@ -96,14 +96,14 @@
                 <div class="form-horizontal form-bordered">
                     <div class="form-body">
                         <div class="form-group">
-                            <label class="control-label col-md-3">Coupon title</label>
+                            <label class="control-label col-md-3">Coupon title <span class="text-danger">(*)</span></label>
                             <div class="col-md-7">
                                 <input type="text" class="form-control bold" autocomplete="off" value="{{ $object->title or '' }}" name="title"/>
                                 <span class="help-block">Title of this coupon</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Coupon code</label>
+                            <label class="control-label col-md-3">Coupon code <span class="text-danger">(*)</span></label>
                             <div class="col-md-7">
                                 <input type="text" class="form-control bold font-red" autocomplete="off" readonly value="{{ $object->coupon_code or '' }}"/>
                             </div>
@@ -179,14 +179,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Coupon value</label>
+                            <label class="control-label col-md-3">Coupon value <span class="text-danger">(*)</span></label>
                             <div class="col-md-7">
                                 <input type="number" class="form-control" autocomplete="off" value="{{ $object->value or 0 }}" name="value"/>
                                 <span class="help-block">Value of this coupon</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Total quantity</label>
+                            <label class="control-label col-md-3">Total quantity <span class="text-danger">(*)</span></label>
                             <div class="col-md-7">
                                 <input type="number" class="form-control" autocomplete="off" value="{{ $object->total_quantity or 0 }}" name="total_quantity"/>
                                 <span class="help-block">Quantity of this coupon</span>

@@ -37,9 +37,6 @@
         $(document).ready(function () {
             $('#elfinder').elfinder({
                 // set your elFinder options here
-                @if($locale)
-                lang: '{{ $locale }}',
-                @endif
                 customData: {
                     _token: '{{ csrf_token() }}'
                 },

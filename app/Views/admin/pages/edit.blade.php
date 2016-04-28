@@ -19,41 +19,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $('.js-ckeditor').ckeditor({
-                extraPlugins: 'codeTag,insertpre',
-                toolbar: [
-                    {
-                        name: 'document',
-                        items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']
-                    },
-                    {
-                        name: 'clipboard',
-                        items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
-                    },
-                    {name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt']},
-                    {
-                        name: 'forms',
-                        items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']
-                    },
-                    '/',
-                    {
-                        name: 'basicstyles',
-                        items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
-                    },
-                    {
-                        name: 'paragraph',
-                        items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']
-                    },
-                    {name: 'links', items: ['Link', 'Unlink', 'Anchor']},
-                    {
-                        name: 'insert',
-                        items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'InsertPre', 'Code']
-                    },
-                    '/',
-                    {name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize']},
-                    {name: 'colors', items: ['TextColor', 'BGColor']},
-                    {name: 'tools', items: ['Maximize', 'ShowBlocks']},
-                    {name: 'about', items: ['About']}
-                ]
+
             });
 
             $('.js-tags-editor').tagsinput({
@@ -140,7 +106,7 @@
                                     <input type="text" name="tags" class="form-control js-tags-editor" value="{{ $object->tags or '' }}" autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <label><b>Page template <span class="text-danger">(*)</span></b></label>
+                                    <label><b>Page template</b></label>
                                     <select name="page_template" class="form-control">
                                         <option value=""></option>
                                         @foreach (_getPageTemplate('Page') as $key => $row)

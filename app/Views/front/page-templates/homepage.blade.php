@@ -19,7 +19,7 @@
             {!! $object->content !!}
         </div>
         <?php
-        $sections = (isset($currentObjectCustomFields['8_sections'])) ? $currentObjectCustomFields['8_sections'] : '[]';
+        $sections = (_getField($currentObjectCustomFields, '8_sections')) ? $currentObjectCustomFields['8_sections'] : '';
         $sections = _getRepeaterField($sections);
         ?>
         @foreach($sections as $key => $row)
