@@ -29,7 +29,7 @@ class ProductCategoryContent extends AbstractModel
         'slug' => 'required|max:255|unique:product_category_contents',
         'language_id' => 'min:1|integer|required',
         'description' => 'max:1000',
-        'content' => 'max:5000|string',
+        'content' => 'max:500000|string',
         'status' => 'integer|required',
         'thumbnail' => 'string|max:255',
         'tags' => 'string|max:255',
