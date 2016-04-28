@@ -154,15 +154,18 @@ class Product extends AbstractModel
         if (!isset($data['status'])) $data['status'] = 1;
         if (!isset($data['language_id'])) $data['language_id'] = $language;
 
-        $resultCreatePost = $this->updateProduct(0, $dataPost);
+        $resultCreateProduct = $this->updateProduct(0, $dataPost);
 
         /*No error*/
-        if (!$resultCreatePost['error']) {
-            $product_id = $resultCreatePost['object']->id;
-            $resultUpdatePostContent = $this->updateProductContent($product_id, $language, $data);
-            return $resultUpdatePostContent;
+        if (!$resultCreateProduct['error']) {
+            $product_id = $resultCreateProduct['object']->id;
+            $resultUpdateProductContent = $this->updateProductContent($product_id, $language, $data);
+            if($resultUpdateProductContent['error']) {
+                $this->deleteProduct($resultCreateProduct['object']->id);
+            }
+            return $resultUpdateProductContent;
         }
-        return $resultCreatePost;
+        return $resultCreateProduct;
     }
 
     public static function getProductById($id, $languageId = 0, $options = [])

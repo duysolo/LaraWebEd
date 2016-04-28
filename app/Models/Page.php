@@ -140,6 +140,9 @@ class Page extends AbstractModel
         if (!$resultCreatePage['error']) {
             $page_id = $resultCreatePage['object']->id;
             $resultUpdatePageContent = $this->updatePageContent($page_id, $language, $data);
+            if($resultUpdatePageContent['error']) {
+                $this->deletePage($resultCreatePage['object']->id);
+            }
             return $resultUpdatePageContent;
         }
         return $resultCreatePage;

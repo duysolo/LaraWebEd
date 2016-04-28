@@ -161,6 +161,9 @@ class Post extends AbstractModel
         if (!$resultCreatePost['error']) {
             $post_id = $resultCreatePost['object']->id;
             $resultUpdatePostContent = $this->updatePostContent($post_id, $language, $data);
+            if($resultUpdatePostContent['error']) {
+                $this->deletePost($resultCreatePost['object']->id);
+            }
             return $resultUpdatePostContent;
         }
         return $resultCreatePost;

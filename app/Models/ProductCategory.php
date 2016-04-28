@@ -166,6 +166,9 @@ class ProductCategory extends AbstractModel
         if (!$resultCreateCategory['error']) {
             $category_id = $resultCreateCategory['object']->id;
             $resultUpdateCategoryContent = $this->updateCategoryContent($category_id, $language, $data);
+            if($resultUpdateCategoryContent['error']) {
+                $this->deleteCategory($resultCreateCategory['object']->id);
+            }
             return $resultUpdateCategoryContent;
         }
         return $resultCreateCategory;
