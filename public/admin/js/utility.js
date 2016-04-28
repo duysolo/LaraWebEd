@@ -39,6 +39,15 @@ var Utility = function () {
         $window.trigger('scroll');
     };
 
+    var stringToSlug = function (text) {
+        return text.toString().toLowerCase()
+            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+            .replace(/^-+/, '')             // Trim - from start of text
+            .replace(/-+$/, '');            // Trim - from end of text
+    };
+
     /*Show notifications*/
     /*Notific8 plugin*/
     function showNotification8($message, $type) {
@@ -97,10 +106,10 @@ var Utility = function () {
         detectIE: function (callback) {
             detectIE(callback);
         },
-        showLoading: function(){
+        showLoading: function () {
             $body.addClass('on-loading');
         },
-        hideLoading: function(){
+        hideLoading: function () {
             $body.removeClass('on-loading');
         },
         handleScroll: function () {
@@ -111,6 +120,16 @@ var Utility = function () {
         },
         showNotification: function ($message, $type) {
             showNotification8($message, $type);
+        },
+        stringToSlug: function (text) {
+            return stringToSlug(text);
+        },
+        convertTitleToSlug: function ($titleSelector, $slugSelector) {
+            $body.on('blur', $titleSelector, function (event) {
+                if (!$($slugSelector).val()) {
+                    $($slugSelector).val(stringToSlug($($titleSelector).val()));
+                }
+            });
         },
         changeContentLanguage: function () {
             $body.on('change', '.js-change-content-language', function (event) {

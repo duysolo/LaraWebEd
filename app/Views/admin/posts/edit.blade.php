@@ -28,6 +28,8 @@
                 'tagClass': 'label label-default'
             });
 
+            Utility.convertTitleToSlug('.the-object-title', '.the-object-slug');
+
             $('.js-validate-form').validate({
                 errorElement: 'span', //default input error message container
                 errorClass: 'help-block help-block-error', // default input error message class
@@ -89,12 +91,12 @@
                             <div class="portlet-body">
                                 <div class="form-group">
                                     <label><b>Title <span class="text-danger">(*)</span></b></label>
-                                    <input required type="text" name="title" class="form-control"
+                                    <input required type="text" name="title" class="form-control the-object-title"
                                            value="{{ $object->title or '' }}" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label><b>Friendly slug <span class="text-danger">(*)</span></b></label>
-                                    <input type="text" name="slug" class="form-control"
+                                    <input type="text" name="slug" class="form-control the-object-slug"
                                            value="{{ $object->slug or '' }}" autocomplete="off">
                                 </div>
                                 @if(isset($object) && $object->slug)
