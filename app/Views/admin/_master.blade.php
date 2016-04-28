@@ -8,7 +8,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
-    <title>{{ $pageTitle or 'Tedozi CMS' }} | Admin dashboard</title>
+    <title>{{ $pageTitle or 'LaraWebEd' }} | Admin dashboard</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -50,7 +50,10 @@
         var baseUrl = '{{ asset('') }}',
             fileManagerUrl = '{{ asset($adminCpAccess.'/files/file-manager') }}';
     </script>
-    <script src="/admin/core/third_party/jquery.min.js"></script>
+
+    <!-- BEGIN CORE PLUGINS -->
+    <script src="/admin/dist/core.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
 </head>
 
 <body class="page-header-fixed page-container-bg-solid page-content-white on-loading {{ $bodyClass or '' }}">
@@ -112,10 +115,6 @@
 <script src="/admin/core/third_party/respond.min.js"></script>
 <script src="/admin/core/third_party/excanvas.min.js"></script>
 <![endif]-->
-
-<!-- BEGIN CORE PLUGINS -->
-<script src="/admin/dist/core.min.js" type="text/javascript"></script>
-<!-- END CORE PLUGINS -->
 
 <!-- OTHER PLUGINS -->
 @yield('js')

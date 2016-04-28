@@ -49,6 +49,10 @@
     <script type="text/javascript">
         var baseUrl = '{{ asset('') }}';
     </script>
+
+    <!-- BEGIN CORE PLUGINS -->
+    <script src="/admin/dist/core.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
 </head>
 
 <body class="page-header-fixed page-content-white login page-auth">
@@ -80,10 +84,6 @@
 <script src="/admin/core/third_party/respond.min.js"></script>
 <script src="/admin/core/third_party/excanvas.min.js"></script>
 <![endif]-->
-
-<!-- BEGIN CORE PLUGINS -->
-<script src="/admin/dist/core.min.js" type="text/javascript"></script>
-<!-- END CORE PLUGINS -->
 
 <!-- OTHER PLUGINS -->
 @yield('js')

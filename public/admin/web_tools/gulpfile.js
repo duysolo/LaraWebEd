@@ -19,7 +19,7 @@ var plumber = require('gulp-plumber');
 var notify  = require('gulp-notify');
 
 /*Min sass*/
-gulp.task("sassAdmin", function(){
+gulp.task("sass", function(){
     gulp.src(path.baseAdmin + 'scss/**/*.scss')
         .pipe(sourcemaps.init())
         .pipe(plumber({
@@ -41,9 +41,9 @@ gulp.task("sassAdmin", function(){
 });
 
 /*Min script*/
-gulp.task('coreMinJsAdmin', function() {
+gulp.task('coreMinJs', function() {
     gulp.src([
-            //path.coreAdminThirdParty + 'jquery.min.js',
+            path.coreAdminThirdParty + 'jquery.min.js',
             path.bower + 'bootstrap-sass/assets/javascripts/bootstrap.min.js',
             path.coreAdminThirdParty + 'jquery-ui/jquery-ui.min.js',
             path.coreAdminThirdParty + 'js.cookie.min.js',
@@ -68,7 +68,7 @@ gulp.task('coreMinJsAdmin', function() {
         }))
         .pipe(gulp.dest(path.distPathAdmin));
 });
-gulp.task('scriptsAdmin', function() {
+gulp.task('scripts', function() {
     gulp.src([
             path.themeAdminAssets + 'layouts/layout/scripts/layout.js',
             path.baseAdmin + 'js/utility.js',
@@ -97,15 +97,15 @@ gulp.task('copyPagesJs', function() {
 });
 
 /*Admin task*/
-gulp.task("admin", [
-    'sassAdmin',
-    'coreMinJsAdmin',
-    'scriptsAdmin',
+gulp.task("build", [
+    'sass',
+    'coreMinJs',
+    'scripts',
     'copyFonts',
     'copyPagesJs'
 ]);
 
-gulp.task("watchAdmin", function(){
+gulp.task("watch", function(){
     gulp.watch(path.baseAdmin + 'scss/**/*.scss', ['sassAdmin']);
     gulp.watch(path.baseAdmin + 'js/**/*.js', ['scriptsAdmin', 'copyPagesJs']);
 });
