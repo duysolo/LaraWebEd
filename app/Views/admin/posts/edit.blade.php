@@ -120,6 +120,15 @@
                                            value="{{ $object->tags or '' }}" autocomplete="off">
                                 </div>
                                 <div class="form-group">
+                                    <label><b>Page template</b></label>
+                                    <select name="page_template" class="form-control">
+                                        <option value=""></option>
+                                        @foreach (_getPageTemplate('Post') as $key => $row)
+                                            <option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label><b>Content</b></label>
                                     <textarea name="content"
                                               class="form-control js-ckeditor">{{ $object->content or '' }}</textarea>

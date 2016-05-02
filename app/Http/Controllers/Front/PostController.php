@@ -36,6 +36,26 @@ class PostController extends BaseFrontController
 
     private function _showItem(Post $item)
     {
+        $page_template = $item->page_template;
+        if (trim($page_template) != '') {
+            $function = '_post_' . str_replace(' ', '', trim($page_template));
+            if(method_exists($this, $function))
+            {
+                return $this->{$function}($item);
+            }
+        }
+        return $this->_defaultItem($item);
+    }
+
+    private function _defaultItem(Post $object)
+    {
+        $this->_setBodyClass($this->bodyClass.' post-default');
+        return $this->_viewFront('post-templates.default', $this->dis);
+    }
+
+    /*Template Name: Test Post*/
+    private function _post_TestPost(Post $object)
+    {
         $this->_setBodyClass($this->bodyClass.' post-default');
         return $this->_viewFront('post-templates.default', $this->dis);
     }

@@ -5,7 +5,7 @@
 @endsection
 
 @section('js')
-
+    
 @endsection
 
 @section('js-init')

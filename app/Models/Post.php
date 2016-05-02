@@ -33,6 +33,7 @@ class Post extends AbstractModel
         'global_title',
         'status',
         'order',
+        'page_template',
         'created_by'
     ];
 
@@ -85,6 +86,12 @@ class Post extends AbstractModel
         /*Save categories*/
         if (isset($data['category_ids'])) {
             $post->category()->sync($data['category_ids']);
+        }
+
+        /*Update page template*/
+        if (isset($data['page_template'])) {
+            $post->page_template = $data['page_template'];
+            $post->save();
         }
 
         /*Update post content*/
@@ -219,7 +226,7 @@ class Post extends AbstractModel
                 if ($args['status'] != null) $q->where('post_contents.status', '=', $args['status']);
             })
             ->where('post_contents.language_id', '=', $languageId)
-            ->select('posts.global_title', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select('posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
             ->first();
     }
 
@@ -240,7 +247,7 @@ class Post extends AbstractModel
                 if ($args['status'] != null) $q->where('post_contents.status', '=', $args['status']);
             })
             ->where('post_contents.language_id', '=', $languageId)
-            ->select('posts.global_title', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select('posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
             ->first();
     }
 
