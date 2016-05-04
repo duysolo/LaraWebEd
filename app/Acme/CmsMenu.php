@@ -157,10 +157,13 @@ class CmsMenu
                     if ($this->checkItemHasChildren($row)) {
                         $menu_icon .= $arrow;
                     }
+                } else {
+                    if($row->icon_font) {
+                        $menu_icon = '<i class="' . $row->icon_font . '"></i>' . $menu_icon;
+                    }
                 }
 
                 $output .= '<' . $item_args['childTag'] . ' class="' . $parent_class . ' ' . $activeClass . '">'; #<li>
-                //$output .= '<a href="'.$menu_link.'" title="'.$menu_title.'">'.$menu_icon.$arrow.'</a>';
                 $output .= '<a class="' . $linkClass . '" href="' . $menu_link . '" title="' . $menu_title . '">' . $menu_icon . '</a>';
                 $output .= $this->getMenuItems($child_args);
                 $output .= '</' . $item_args['childTag'] . '>'; #</li>
