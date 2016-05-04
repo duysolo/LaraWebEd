@@ -185,6 +185,17 @@
                                                                       rows="5">{{ $object->description or '' }}</textarea>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label">Page template:</label>
+                                                        <div class="col-md-10">
+                                                            <select name="page_template" class="form-control">
+                                                                <option value=""></option>
+                                                                @foreach (_getPageTemplate('Page') as $key => $row)
+                                                                    <option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     @if(isset($categoriesHtml) && trim($categoriesHtml) != '')
                                                         <div class="form-group">
                                                             <label class="col-md-2 control-label">Categories:</label>
@@ -251,8 +262,7 @@
                                                         <div class="col-md-10">
                                                             <div class="select-media-box">
                                                                 <button type="button"
-                                                                        class="btn blue show-add-media-popup">Choose
-                                                                    image
+                                                                        class="btn blue show-add-media-popup">Choose image
                                                                 </button>
                                                                 <div class="clearfix"></div>
                                                                 <a title="" class="show-add-media-popup">

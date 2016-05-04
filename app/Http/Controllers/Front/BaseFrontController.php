@@ -33,6 +33,7 @@ abstract class BaseFrontController extends BaseController
         $menu->localeObj = $this->currentLanguage;
         $menu->languageCode = $this->currentLanguage->language_code;
         $menu->args = array(
+            'languageId' => $this->currentLanguageId,
             'menuName' => 'main-menu',
             'menuClass' => 'nav navbar-nav',
             'container' => '',

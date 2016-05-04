@@ -35,9 +35,9 @@ class Menu extends AbstractModel
         'slug' => 'required|unique:menus',
     );
 
-    public function menuNode()
+    public function menuContent()
     {
-        return $this->hasMany('App\Models\MenuNode', 'menu_id');
+        return $this->hasMany('App\Models\MenuContent', 'menu_id');
     }
 
     public static function deleteMenu($id)
@@ -45,7 +45,7 @@ class Menu extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => ['Some error occurred!']
         ];
         $item = static::find($id);
 
@@ -55,7 +55,7 @@ class Menu extends AbstractModel
             return $result;
         }
 
-        $temp = $menuNodes = MenuNode::where('menu_id', '=', $id);
+        $temp = MenuContent::where('menu_id', '=', $id);
         $related = $temp->get();
         if (!count($related)) {
             $related = null;
@@ -63,21 +63,32 @@ class Menu extends AbstractModel
 
         /*Remove all related content*/
         if ($related != null) {
+            $menuContents = [];
+            foreach ($related as $key => $row) {
+                $menuContents[] = $row->id;
+            }
+            $tempMenuNode = MenuNode::whereIn('menu_content_id', $menuContents);
+            if($tempMenuNode->delete()) {
+                $result['message'][] = 'Delete menu node completed!';
+            } else {
+                $result['message'][] = 'Some error occurred when delete related menu nodes!';
+            }
+
             if ($temp->delete()) {
-                $result['error'] = false;
-                $result['response_code'] = 200;
-                $result['message'] = ['Delete related content completed!'];
+                $result['message'][] = 'Delete related content completed!';
+            } else {
+                $result['message'][] = 'Some error occurred when delete related menu content!';
             }
             if ($item->delete()) {
                 $result['error'] = false;
                 $result['response_code'] = 200;
-                $result['message'] = ['Delete page completed!'];
+                $result['message'][] = 'Delete menu completed!';
             }
         } else {
             if ($item->delete()) {
                 $result['error'] = false;
                 $result['response_code'] = 200;
-                $result['message'] = ['Delete page completed!'];
+                $result['message'][] = 'Delete menu completed!';
             }
         }
 

@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Validator;
 class MenuNode extends AbstractModel
 {
     protected $editableFields = [
+        'title',
+        'url',
+        'css_class',
+        'position',
+        'icon_font',
+        'type',
+        'menu_content_id',
         'parent_id',
         'related_id',
-        'url',
-        'icon_font',
-        'position',
-        'title',
-        'css_class',
-        'parent_id'
+        
     ];
 
     public function __construct()
@@ -33,12 +35,10 @@ class MenuNode extends AbstractModel
 
     protected $primaryKey = 'id';
 
-    /**
-     * Validation
-     */
-    public $rules = array(
-        'slug' => 'required|unique:menus',
-    );
+    public function menuContent()
+    {
+        return $this->belongsTo('App\Models\MenuContent', 'menu_content_id');
+    }
 
     public function menuNode()
     {

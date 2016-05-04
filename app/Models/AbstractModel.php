@@ -129,7 +129,14 @@ abstract class AbstractModel extends Model
     public static function findByFieldsOrCreate($options)
     {
         $obj = static::where($options)->first();
-        return $obj ?: new static;
+        if(!$obj) {
+            $obj = new static;
+            foreach ($options as $key => $row) {
+                $obj->$key = $row;
+            }
+            $obj->save();
+        }
+        return $obj;
     }
 
     public static function getAll($order = null, $perPage = 0)

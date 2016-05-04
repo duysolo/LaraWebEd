@@ -31,6 +31,7 @@ class Product extends AbstractModel
     protected $editableFields = [
         'global_title',
         'status',
+        'page_template',
         'order',
         'created_by'
     ];
@@ -84,6 +85,12 @@ class Product extends AbstractModel
         /*Save categories*/
         if (isset($data['category_ids'])) {
             $post->category()->sync($data['category_ids']);
+        }
+
+        /*Update page template*/
+        if (isset($data['page_template'])) {
+            $post->page_template = $data['page_template'];
+            $post->save();
         }
 
         /*Update post content*/
@@ -185,7 +192,7 @@ class Product extends AbstractModel
                 if ($args['status'] != null) $q->where('product_contents.status', '=', $args['status']);
             })
             ->where('product_contents.language_id', '=', $languageId)
-            ->select('products.global_title', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select('products.global_title', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
             ->first();
     }
 
@@ -206,7 +213,7 @@ class Product extends AbstractModel
                 if ($args['status'] != null) $q->where('product_contents.status', '=', $args['status']);
             })
             ->where('product_contents.language_id', '=', $languageId)
-            ->select('products.global_title', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select('products.global_title', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
             ->first();
     }
 

@@ -16,6 +16,41 @@
 
 @section('js-init')
     <script type="text/javascript">
+        $(document).ready(function () {
+            Utility.convertTitleToSlug('.the-object-title', '.the-object-slug');
+
+            $('.js-validate-form').validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                messages: {
+
+                },
+                rules: {
+                    title: {
+                        minlength: 3,
+                        required: true
+                    },
+                    slug: {
+                        required: true,
+                        minlength: 3
+                    }
+                },
+
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) {
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                }
+            });
+        });
         $(window).load(function() {
             MenuNestable.init();
             MenuNestable.handleNestableMenu();
@@ -24,7 +59,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ asset($adminCpAccess.'/menus/edit/'.$object->id) }}" accept-charset="utf-8" method="POST" class="form-save-menu clearfix">
+    <form action="" accept-charset="utf-8" method="POST" class="js-validate-form form-save-menu clearfix">
         {{ csrf_field() }}
         <input type="hidden" name="deleted_nodes" value="">
         <textarea name="menu_nodes" id="nestable-output" class="form-control hidden" style="display: none !important;"></textarea>
@@ -57,11 +92,19 @@
                     <div class="portlet-body">
                         <div class="form-group">
                             <label>Menu title</label>
-                            <input type="text" name="title" class="form-control" value="{{ $object->title }}" autocomplete="off">
+                            <input type="text" name="title" class="form-control the-object-title" value="{{ $object->title }}" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label>Menu name</label>
-                            <input type="text" name="slug" class="form-control" value="{{ $object->slug }}" autocomplete="off">
+                            <input type="text" name="slug" class="form-control the-object-slug" value="{{ $object->slug }}" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label><b>Language</b></label>
+                            <select name="language_id" data-href="{{ $rawUrlChangeLanguage }}" class="form-control js-change-content-language">
+                                @foreach($activatedLanguages as $key => $row)
+                                    <option value="{{ $row->id }}" {{ ($currentEditLanguage->id == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

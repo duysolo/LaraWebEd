@@ -30,6 +30,7 @@ abstract class BaseAdminController extends BaseController
         $menu->localeObj = $this->defaultLanguage;
         $menu->languageCode = $this->defaultLanguage->language_code;
         $menu->args = array(
+            'languageId' => 1,
             'menuName' => 'admin-menu',
             'menuClass' => 'page-sidebar-menu page-header-fixed',
             'container' => 'div',

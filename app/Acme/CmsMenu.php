@@ -35,6 +35,7 @@ class CmsMenu
     public function getNavMenu()
     {
         $defaultArgs = array(
+            'languageId' => 0,
             'menuName' => '',
             'menuClass' => 'my-menu',
             'container' => 'nav',
@@ -54,13 +55,18 @@ class CmsMenu
         $defaultArgs = array_merge($defaultArgs, $this->args);
 
         $output = '';
-        $menu = Models\Menu::getBy(['slug' => ltrim($defaultArgs['menuName'])]);
+        $menu = Models\Menu::join('menu_contents', 'menus.id', '=', 'menu_contents.menu_id')
+            ->join('languages', 'languages.id', '=', 'menu_contents.language_id')
+            ->where('menus.slug', '=', ltrim($defaultArgs['menuName']))
+            ->where('menu_contents.language_id', '=', $defaultArgs['languageId'])
+            ->select('menus.*', 'menu_contents.id as menu_content_id')
+            ->first();
         // Menu exists
         if (!is_null($menu)) {
             if ($defaultArgs['container'] != '') $output .= '<' . $defaultArgs['container'] . ' class="' . $defaultArgs['containerClass'] . '" id="' . $defaultArgs['containerId'] . '">'; //<nav>
             $output .= '<' . $defaultArgs['containerTag'] . ' class="' . $defaultArgs['menuClass'] . '"' . (($defaultArgs['isAdminMenu']) ? ' data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200"' : '') . '>'; //<ul>
             $child_args = array(
-                'menuId' => $menu->id,
+                'menuContentId' => $menu->menu_content_id,
                 'parentId' => 0,
                 'isAdminMenu' => false,
                 'containerTag' => $defaultArgs['containerTag'],
@@ -91,7 +97,7 @@ class CmsMenu
     {
         $output = '';
         $menuItems = Models\MenuNode::getBy([
-            'menu_id' => $item_args['menuId'],
+            'menu_content_id' => $item_args['menuContentId'],
             'parent_id' => $item_args['parentId'],
         ], ['position' => 'ASC'], true);
 
@@ -130,7 +136,7 @@ class CmsMenu
                 }
 
                 $child_args = array(
-                    'menuId' => $item_args['menuId'],
+                    'menuContentId' => $item_args['menuContentId'],
                     'parentId' => $row->id,
                     'isAdminMenu' => $item_args['isAdminMenu'],
                     'containerTag' => $item_args['containerTag'],

@@ -249,7 +249,7 @@ class ProductController extends BaseAdminController
         $this->_showFlashMessages();
 
         /*Save completed*/
-        $customFields = json_decode($request->get('custom_fields'));
+        $customFields = json_decode($request->get('custom_fields', '[]'));
         $this->_saveContentMeta($result['object']->id, $customFields, $objectMeta);
 
         if ($id == 0) {
@@ -273,7 +273,7 @@ class ProductController extends BaseAdminController
             'global_title' => 'ASC'
         ], true);
         if ($nodes->count() > 0) {
-            $result .= '<ul class="list-unstyled mar-bot-0">';
+            $result .= '<ul class="list-unstyled">';
             foreach ($nodes as $key => $row) {
                 $categoryTitle = $row->global_title;
 
