@@ -489,7 +489,7 @@ var Index = function () {
 		  "export": {
 		    "enabled": true,
 		    "libs": {
-		      "path": "http://www.amcharts.com/lib/3/plugins/export/libs/"
+		      "path": "http://www.amcharts.com/libraries/3/plugins/export/libs/"
 		    }
 		  }
 		} );

@@ -5,14 +5,13 @@
  */
 
 // Core variables and mixins
-//@import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/variables";
-@import "custom-variables";
+@import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/variables";
 @import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
 
 // Reset and dependencies
 @import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/normalize";
 @import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/print";
-@import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons";
+//@import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons";
 
 // Core CSS
 @import "../web_tools/bower_components/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";

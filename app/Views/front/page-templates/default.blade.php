@@ -13,7 +13,6 @@
 @endsection
 
 @section('content')
-    @include('front/_shared/_sidebar-left')
     <div class="main-content">
         {!! $object->content !!}
     </div>

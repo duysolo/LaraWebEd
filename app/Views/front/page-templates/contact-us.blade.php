@@ -13,8 +13,8 @@
 @endsection
 
 @section('content')
-    <h1>{{ $object->title }}</h1>
-    <h1>Contact us template</h1>
-
+    <div class="main-content">
+        {!! $object->content !!}
+    </div>
     @include('front._modules._contact-us')
 @endsection

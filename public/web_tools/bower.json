@@ -1,11 +1,11 @@
 {
-  "name": "Learning Angularjs",
+  "name": "LaraWebEd",
   "description": "",
   "main": "gulpfile.js",
   "authors": [
     ""
   ],
-  "license": "ISC",
+  "license": "MIT",
   "moduleType": [],
   "homepage": "",
   "ignore": [

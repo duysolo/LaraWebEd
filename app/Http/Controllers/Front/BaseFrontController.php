@@ -7,7 +7,7 @@ use App\Models;
 
 abstract class BaseFrontController extends BaseController
 {
-    protected $dis = [], $bodyClass = '', $showSidebar = false;
+    protected $dis = [], $bodyClass = '';
 
     public function __construct()
     {
@@ -16,15 +16,6 @@ abstract class BaseFrontController extends BaseController
             abort(503);
         }
         $this->_setMetaSEO();
-
-        $this->_showSidebar($this->showSidebar);
-    }
-
-    protected function _showSidebar($bool) {
-        view()->share('showSidebar', $bool);
-        if($bool) {
-            $this->_getSideBarLeft();
-        }
     }
 
     protected function _loadFrontMenu($menuActive = '', $type = 'custom-link')

@@ -52,11 +52,4 @@ class PostController extends BaseFrontController
         $this->_setBodyClass($this->bodyClass.' post-default');
         return $this->_viewFront('post-templates.default', $this->dis);
     }
-
-    /*Template Name: Test Post*/
-    private function _post_TestPost(Post $object)
-    {
-        $this->_setBodyClass($this->bodyClass.' post-default');
-        return $this->_viewFront('post-templates.default', $this->dis);
-    }
 }

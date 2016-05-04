@@ -13,6 +13,7 @@
 @endsection
 
 @section('content')
-    <h1>{{ $object->title }}</h1>
-    <h1>Default product category template</h1>
+    <div class="main-content">
+        {!! $object->content !!}
+    </div>
 @endsection

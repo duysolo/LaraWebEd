@@ -34,7 +34,20 @@ class ProductController extends BaseFrontController
 
     private function _showItem(Product $item)
     {
-        $this->_setBodyClass($this->bodyClass.' post-default');
+        $page_template = $item->page_template;
+        if (trim($page_template) != '') {
+            $function = '_product_' . str_replace(' ', '', trim($page_template));
+            if(method_exists($this, $function))
+            {
+                return $this->{$function}($item);
+            }
+        }
+        return $this->_defaultItem($item);
+    }
+
+    private function _defaultItem(Product $object)
+    {
+        $this->_setBodyClass($this->bodyClass.' product-default');
         return $this->_viewFront('product-templates.default', $this->dis);
     }
 }

@@ -32,7 +32,7 @@ class CouponContent extends AbstractModel
         'value' => 'numeric|required',
         'total_quantity' => 'integer|min:0|required',
         'total_used' => 'integer|min:0|required',
-        'content' => 'max:5000|string',
+        'content' => 'string',
         'apply_for_min_price' => 'numeric|required',
         'thumbnail' => 'string|max:255',
         'status' => 'integer|required',

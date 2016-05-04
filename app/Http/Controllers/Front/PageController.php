@@ -76,11 +76,4 @@ class PageController extends BaseFrontController
         $this->_setBodyClass($this->bodyClass.' page-contact');
         return $this->_viewFront('page-templates.contact-us', $this->dis);
     }
-
-    /* Template Name: Documentation*/
-    private function _page_Documentation(Page $object)
-    {
-        $redirect = _getField($this->dis['currentObjectCustomFields'], '12_redirect_to');
-        return redirect()->to($redirect);
-    }
 }
