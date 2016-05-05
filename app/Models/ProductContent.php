@@ -26,7 +26,7 @@ class ProductContent extends AbstractModel
 
     protected $rules = [
         'title' => 'required|max:255',
-        'slug' => 'required|max:255|unique:product_contents',
+        'slug' => 'required|max:255|unique_multiple:product_contents,slug,language_id',
         'language_id' => 'min:1|integer|required',
         'description' => 'max:1000',
         'content' => 'string',

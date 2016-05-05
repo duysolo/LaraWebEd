@@ -26,7 +26,7 @@ class CategoryContent extends AbstractModel
 
     protected $rules = [
         'title' => 'required|max:255',
-        'slug' => 'required|max:255|unique:category_contents',
+        'slug' => 'required|max:255|unique_multiple:category_contents,slug,language_id',
         'language_id' => 'min:1|integer|required',
         'description' => 'max:1000',
         'content' => 'string',
