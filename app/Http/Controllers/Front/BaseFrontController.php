@@ -88,26 +88,4 @@ abstract class BaseFrontController extends BaseController
             'metaSEO' => $data
         ]);
     }
-
-    protected function _getSideBarLeft() {
-        $categories = Models\Category::getWithContent([
-            'parent_id' => [
-                'compare' => '=',
-                'value' => 6
-            ]
-        ], [
-            'order' => 'ASC'
-        ], true, 0);
-        foreach ($categories as $key => $row) {
-            $posts = Models\Post::getPostsByCategory($row->category_id, $this->currentLanguageId, [], [
-                'posts.order' => 'ASC'
-            ], 0, [
-                'posts.global_title', 'post_contents.*'
-            ]);
-            $row->relatedPosts = $posts;
-        }
-        view()->share([
-            'sidebarCategories' => $categories
-        ]);
-    }
 }

@@ -32,7 +32,7 @@
     {!! $CMSSettings['google_analytics'] or '' !!}
 </head>
 
-<body class="on-loading {{ (!$showSidebar) ? 'no-sidebar' : '' }} {{ $bodyClass or '' }}">
+<body class="on-loading {{ $bodyClass or '' }}">
 
 @if($showHeaderAdminBar)
     @include('admin/_shared/_admin-bar')

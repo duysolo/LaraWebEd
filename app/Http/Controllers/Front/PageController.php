@@ -65,8 +65,6 @@ class PageController extends BaseFrontController
     {
         $this->_setBodyClass($this->bodyClass.' page-homepage');
 
-       $this->_showSidebar(false);
-
         return $this->_viewFront('page-templates.homepage', $this->dis);
     }
 
