@@ -86,7 +86,7 @@ class MenuController extends BaseAdminController
 
         foreach ($items as $key => $row) {
             /*Edit link*/
-            $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id . '/' . $this->currentLanguageId);
+            $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id . '/' . $this->defaultLanguageId);
             $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
 
             $records["data"][] = array(

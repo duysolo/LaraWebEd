@@ -38,6 +38,10 @@ abstract class BaseController extends Controller
         if ($this->currentLanguage) {
             $this->currentLanguageId = $this->currentLanguage->id;
             $this->currentLanguageCode = $this->currentLanguage->language_code;
+        } else {
+            $this->currentLanguage = $this->defaultLanguage;
+            $this->currentLanguageId = $this->currentLanguage->id;
+            $this->currentLanguageCode = $this->currentLanguage->language_code;
         }
         view()->share([
             'defaultLanguage' => $this->defaultLanguage,
