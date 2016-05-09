@@ -161,12 +161,7 @@
                                                     @if(isset($object) && $object->slug)
                                                         <div class="form-group">
                                                             <div class="col-md-10 col-md-push-2">
-                                                                <a target="_blank"
-                                                                   href="{{ asset($currentEditLanguage->language_code.'/'.trans('url.product')) }}/{{ $object->slug or '' }}"
-                                                                   class="btn btn-default" type="button">
-                                                                    {{ asset($currentEditLanguage->language_code.'/'.trans('url.product')) }}
-                                                                    /{{ $object->slug or '' }}
-                                                                </a>
+                                                                <a target="_blank" href="{{ _getProductLink($object, $currentEditLanguage->language_code) }}" class="btn btn-default" type="button">{{ asset(_getProductLink($object, $currentEditLanguage->language_code)) }}</a>
                                                             </div>
                                                         </div>
                                                     @endif

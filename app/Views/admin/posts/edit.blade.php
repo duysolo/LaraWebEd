@@ -101,12 +101,7 @@
                                 </div>
                                 @if(isset($object) && $object->slug)
                                     <div class="form-group">
-                                        <a target="_blank"
-                                           href="{{ asset($currentEditLanguage->language_code.'/'.trans('url.post')) }}/{{ $object->slug or '' }}"
-                                           class="btn btn-default" type="button">
-                                            {{ asset($currentEditLanguage->language_code.'/'.trans('url.post')) }}
-                                            /{{ $object->slug or '' }}
-                                        </a>
+                                        <a target="_blank" href="{{ _getPostLink($object, $currentEditLanguage->language_code) }}" class="btn btn-default" type="button">{{ asset(_getPostLink($object, $currentEditLanguage->language_code)) }}</a>
                                     </div>
                                 @endif
                                 <div class="form-group">

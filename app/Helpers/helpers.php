@@ -65,12 +65,23 @@ function _sendEmail($view, $data, $to = [], $cc = [], $bcc = [])
     });
 }
 
-function _getPostLink($currentLanguageCode, $post)
+function _getPageLink($page, $currentLanguageCode = null)
 {
-    return '/'.$currentLanguageCode.'/'.trans('url.post').'/'.$post->slug;
+    if(!is_string($page)) $page = $page->slug;
+    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.$page;
+    return '/'.$page;
 }
 
-function _getProductLink($currentLanguageCode, $product)
+function _getPostLink($post, $currentLanguageCode = null)
 {
-    return '/'.$currentLanguageCode.'/'.trans('url.product').'/'.$product->slug;
+    if(!is_string($post)) $post = $post->slug;
+    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.post').'/'.$post;
+    return '/'.trans('url.post').'/'.$post;
+}
+
+function _getProductLink($product, $currentLanguageCode = null)
+{
+    if(!is_string($product)) $product = $product->slug;
+    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.product').'/'.$product;
+    return '/'.trans('url.product').'/'.$product;
 }

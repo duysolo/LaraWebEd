@@ -96,9 +96,11 @@
                                     <label><b>Friendly slug <span class="text-danger">(*)</span></b></label>
                                     <input type="text" name="slug" class="form-control the-object-slug" value="{{ $object->slug or '' }}" autocomplete="off">
                                 </div>
-                                <div class="form-group">
-                                    <a target="_blank" href="{{ asset($currentEditLanguage->language_code) }}/{{ $object->slug or '' }}" class="btn btn-default" type="button">{{ asset($currentEditLanguage->language_code) }}/{{ $object->slug or '' }}</a>
-                                </div>
+                                @if(isset($object) && $object->slug)
+                                    <div class="form-group">
+                                        <a target="_blank" href="{{ _getPageLink($object, $currentEditLanguage->language_code) }}" class="btn btn-default" type="button">{{ asset(_getPageLink($object, $currentEditLanguage->language_code)) }}</a>
+                                    </div>
+                                @endif
                                 <div class="form-group">
                                     <label><b>Description</b></label>
                                     <textarea name="description" class="form-control" rows="5">{{ $object->description or '' }}</textarea>

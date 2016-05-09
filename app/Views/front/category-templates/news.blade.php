@@ -18,7 +18,7 @@
     @foreach($relatedPosts as $key => $row)
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><a href="{{ _getPostLink($currentLanguageCode, $row->slug) }}" title="{{ $row->title or '' }}">{{ $row->title or '' }}</a></h3>
+                <h3 class="panel-title"><a href="{{ _getPostLink($row, $currentLanguageCode) }}" title="{{ $row->title or '' }}">{{ $row->title or '' }}</a></h3>
             </div>
             <div class="panel-body">
                 <div class="text-justify">{!! $row->content or '' !!}</div>
