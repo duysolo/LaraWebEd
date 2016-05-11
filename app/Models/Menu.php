@@ -45,7 +45,7 @@ class Menu extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => ['Some error occurred!']
+            'message' => []
         ];
         $item = static::find($id);
 
