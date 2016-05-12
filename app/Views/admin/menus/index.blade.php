@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm" href="{{ asset($adminCpAccess.'/menus/edit') }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm" href="{{ asset($adminCpAccess.'/menus/edit/0/'.$currentLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>
