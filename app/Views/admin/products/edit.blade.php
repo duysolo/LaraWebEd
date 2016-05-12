@@ -306,13 +306,6 @@
                         </div>
                     </div>
                 </div>
-                <form class="js-validate-form" method="POST" accept-charset="utf-8" action="" novalidate>
-                    {{ csrf_field() }}
-
-                </form>
-                <div class="col-md-12">
-
-                </div>
             </div>
         </div>
     </div>
