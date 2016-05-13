@@ -181,7 +181,7 @@ class PostController extends BaseAdminController
             }
             $checkedNodes = $item->category()->getRelatedIds()->toArray();
 
-            $item = $object->getPostById($id, $language, [
+            $item = $object->getById($id, $language, [
                 'status' => null,
                 'global_status' => null
             ]);
@@ -192,7 +192,7 @@ class PostController extends BaseAdminController
                 $item->created_by = $this->loggedInAdminUser->id;
                 $item->post_id = $id;
                 $item->save();
-                $item = $object->getPostById($id, $language, [
+                $item = $object->getById($id, $language, [
                     'status' => null,
                     'global_status' => null
                 ]);
@@ -225,9 +225,9 @@ class PostController extends BaseAdminController
 
         if ($id == 0) {
             $data['created_by'] = $this->loggedInAdminUser->id;
-            $result = $object->createPost($language, $data);
+            $result = $object->createItem($language, $data);
         } else {
-            $result = $object->updatePostContent($id, $language, $data);
+            $result = $object->updateItemContent($id, $language, $data);
         }
 
         if ($result['error']) {
@@ -252,7 +252,7 @@ class PostController extends BaseAdminController
 
     public function deleteDelete(Request $request, Post $object, $id)
     {
-        $result = $object->deletePost($id);
+        $result = $object->deleteItem($id);
         return response()->json($result, $result['response_code']);
     }
 

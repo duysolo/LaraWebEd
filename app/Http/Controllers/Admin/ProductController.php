@@ -183,7 +183,7 @@ class ProductController extends BaseAdminController
             }
             $checkedNodes = $item->category()->getRelatedIds()->toArray();
 
-            $item = $object->getProductById($id, $language, [
+            $item = $object->getById($id, $language, [
                 'status' => null,
                 'global_status' => null
             ]);
@@ -194,7 +194,7 @@ class ProductController extends BaseAdminController
                 $item->created_by = $this->loggedInAdminUser->id;
                 $item->product_id = $id;
                 $item->save();
-                $item = $object->getProductById($id, $language, [
+                $item = $object->getById($id, $language, [
                     'status' => null,
                     'global_status' => null
                 ]);
@@ -232,9 +232,9 @@ class ProductController extends BaseAdminController
 
         if ($id == 0) {
             $data['created_by'] = $this->loggedInAdminUser->id;
-            $result = $object->createProduct($language, $data);
+            $result = $object->createItem($language, $data);
         } else {
-            $result = $object->updateProductContent($id, $language, $data);
+            $result = $object->updateItemContent($id, $language, $data);
         }
 
         if($result['error'])
@@ -260,7 +260,7 @@ class ProductController extends BaseAdminController
 
     public function deleteDelete(Request $request, Product $object, $id)
     {
-        $result = $object->deleteProduct($id);
+        $result = $object->deleteItem($id);
         return response()->json($result, $result['response_code']);
     }
 

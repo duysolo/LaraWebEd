@@ -16,7 +16,7 @@ class ProductController extends BaseFrontController
 
     public function _handle(Request $request, Product $object, ProductMeta $objectMeta, $slug)
     {
-        $item = $object->getProductBySlug($slug, $this->currentLanguageId);
+        $item = $object->getBySlug($slug, $this->currentLanguageId);
 
         if (!$item) return $this->_showErrorPage(404, 'Page not found');
 

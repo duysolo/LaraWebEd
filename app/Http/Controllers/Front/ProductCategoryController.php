@@ -22,7 +22,7 @@ class ProductCategoryController extends BaseFrontController
         $segments = $request->segments();
         $slug = end($segments);
 
-        $item = $object->getCategoryBySlug($slug, $this->currentLanguageId);
+        $item = $object->getBySlug($slug, $this->currentLanguageId);
 
         if (!$item) return $this->_showErrorPage(404, 'Page not found');
 
@@ -63,7 +63,7 @@ class ProductCategoryController extends BaseFrontController
         $this->_setBodyClass($this->bodyClass.' product-category-fashion');
 
         /*Get related products*/
-        $this->dis['relatedProducts'] = Product::getProductsByCategory($object->category_id, $this->currentLanguageId, [
+        $this->dis['relatedProducts'] = Product::getByCategory($object->category_id, $this->currentLanguageId, [
             'products.status' => [
                 'compare' => '=',
                 'value' => 1

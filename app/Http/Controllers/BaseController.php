@@ -172,7 +172,7 @@ abstract class BaseController extends Controller
 
     protected function _getHomepageLink()
     {
-        $page = Models\Page::getPageById($this->_getSetting('default_homepage'), $this->currentLanguageId);
+        $page = Models\Page::getById($this->_getSetting('default_homepage'), $this->currentLanguageId);
         if($page) return asset($this->currentLanguageCode.'/'.$page->slug);
         return asset($this->currentLanguageCode);
     }

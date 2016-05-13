@@ -192,7 +192,7 @@ class PageController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $item = $object->getPageById($id, $language, [
+            $item = $object->getById($id, $language, [
                 'status' => null,
                 'global_status' => null
             ]);
@@ -204,7 +204,7 @@ class PageController extends BaseAdminController
                 $item->created_by = $this->loggedInAdminUser->id;
                 $item->page_id = $id;
                 $item->save();
-                $item = $object->getPageById($id, $language, [
+                $item = $object->getById($id, $language, [
                     'status' => null,
                     'global_status' => null
                 ]);
@@ -238,11 +238,11 @@ class PageController extends BaseAdminController
         if($id == 0)
         {
             $data['created_by'] = $this->loggedInAdminUser->id;
-            $result = $object->createPage($language, $data);
+            $result = $object->createItem($language, $data);
         }
         else
         {
-            $result = $object->updatePageContent($id, $language, $data);
+            $result = $object->updateItemContent($id, $language, $data);
         }
 
         if($result['error'])
@@ -269,7 +269,7 @@ class PageController extends BaseAdminController
 
     public function deleteDelete(Request $request, Page $object, $id)
     {
-        $result = $object->deletePage($id);
+        $result = $object->deleteItem($id);
         return response()->json($result, $result['response_code']);
     }
 }

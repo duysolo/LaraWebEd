@@ -6,7 +6,9 @@ use App\Models;
 use App\Models\AbstractModel;
 use Illuminate\Support\Facades\Validator;
 
-class Coupon extends AbstractModel
+use App\Models\MyInterface;
+
+class Coupon extends AbstractModel implements MyInterface\MultiLanguageInterface
 {
     public function __construct()
     {
@@ -42,13 +44,13 @@ class Coupon extends AbstractModel
         return $this->hasMany('App\Models\CouponContent', 'coupon_id');
     }
 
-    public function updateCoupon($id, $data, $justUpdateSomeFields = false)
+    public function updateItem($id, $data, $justUpdateSomeFields = false)
     {
         $data['id'] = $id;
         return $this->fastEdit($data, true, $justUpdateSomeFields);
     }
 
-    public function updateCouponContent($id, $languageId, $data)
+    public function updateItemContent($id, $languageId, $data)
     {
         $result = [
             'error' => true,
@@ -64,7 +66,7 @@ class Coupon extends AbstractModel
         }
 
         /*Update page content*/
-        $couponContent = static::getCouponContentByCouponId($id, $languageId);
+        $couponContent = static::getContentById($id, $languageId);
         if (!$couponContent) {
             $couponContent = new CouponContent();
             $couponContent->language_id = $languageId;
@@ -77,7 +79,7 @@ class Coupon extends AbstractModel
         return $couponContent->fastEdit($data, false, true);
     }
 
-    public static function deleteCoupon($id)
+    public static function deleteItem($id)
     {
         $result = [
             'error' => true,
@@ -114,7 +116,7 @@ class Coupon extends AbstractModel
         return $result;
     }
 
-    public function createCoupon($language, $data)
+    public function createItem($language, $data)
     {
         $dataCoupon = ['status' => 1];
         if (isset($data['title'])) $dataCoupon['global_title'] = $data['title'];
@@ -122,20 +124,23 @@ class Coupon extends AbstractModel
         if (!isset($data['status'])) $data['status'] = 1;
         if (!isset($data['language_id'])) $data['language_id'] = $language;
 
-        $resultCreatePage = $this->updateCoupon(0, $dataCoupon);
+        $resultCreateItem = $this->updateItem(0, $dataCoupon);
 
         /*No error*/
-        if (!$resultCreatePage['error']) {
-            $coupon_id = $resultCreatePage['object']->id;
-            $resultUpdatePageContent = $this->updateCouponContent($coupon_id, $language, $data);
-            return $resultUpdatePageContent;
+        if (!$resultCreateItem['error']) {
+            $coupon_id = $resultCreateItem['object']->id;
+            $resultUpdateItemContent = $this->updateItemContent($coupon_id, $language, $data);
+            return $resultUpdateItemContent;
         }
-        return $resultCreatePage;
+        return $resultCreateItem;
     }
 
-    public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
+    public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
         $fields = (array)$fields;
+
+        $select = (array)$select;
+        if(!$select) $select = ['coupons.status as global_status', 'coupons.coupon_code', 'coupons.global_title', 'coupon_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         $obj = static::join('coupon_contents', 'coupons.id', '=', 'coupon_contents.coupon_id')
             ->join('languages', 'languages.id', '=', 'coupon_contents.language_id');
@@ -157,7 +162,7 @@ class Coupon extends AbstractModel
             }
         }
         $obj = $obj->groupBy('coupons.id')
-            ->select('coupons.status as global_status', 'coupons.coupon_code', 'coupons.global_title', 'coupon_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale');
+            ->select($select);
 
         if ($multiple) {
             if ($perPage > 0) return $obj->paginate($perPage);
@@ -166,7 +171,7 @@ class Coupon extends AbstractModel
         return $obj->first();
     }
 
-    public static function getCouponById($id, $languageId = 0, $options = [])
+    public static function getById($id, $languageId = 0, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -187,11 +192,11 @@ class Coupon extends AbstractModel
             ->first();
     }
 
-    public static function getCouponContentByCouponId($id, $languageId = 0)
+    public static function getContentById($id, $languageId, $select = [])
     {
         return CouponContent::getBy([
             'coupon_id' => $id,
             'language_id' => $languageId
-        ]);
+        ], null, false, 0, $select);
     }
 }

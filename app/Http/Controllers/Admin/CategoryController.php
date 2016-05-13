@@ -234,7 +234,7 @@ class CategoryController extends BaseAdminController
             $getByFields['status'] = ['compare' => '=', 'value' => $request->get('status')];
         }
 
-        $items = $postObject->getPostsNoContentByCategory($id, $getByFields, [$orderBy => $orderType], $limit, ['posts.*']);
+        $items = $postObject->getNoContentByCategory($id, $getByFields, [$orderBy => $orderType], $limit, ['posts.*']);
 
         $iTotalRecords = $items->count();
         $sEcho = intval($request->get('sEcho'));
@@ -297,7 +297,7 @@ class CategoryController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $item = $object->getCategoryById($id, $language, [
+            $item = $object->getById($id, $language, [
                 'status' => null,
                 'global_status' => null
             ]);
@@ -309,7 +309,7 @@ class CategoryController extends BaseAdminController
                 $item->created_by = $this->loggedInAdminUser->id;
                 $item->category_id = $id;
                 $item->save();
-                $item = $object->getCategoryById($id, $language, [
+                $item = $object->getById($id, $language, [
                     'status' => null,
                     'global_status' => null
                 ]);
@@ -350,11 +350,11 @@ class CategoryController extends BaseAdminController
 
         if($id == 0)
         {
-            $result = $object->createCategory($language, $data);
+            $result = $object->createItem($language, $data);
         }
         else
         {
-            $result = $object->updateCategoryContent($id, $language, $data);
+            $result = $object->updateItemContent($id, $language, $data);
         }
 
         if($result['error'])
@@ -381,7 +381,7 @@ class CategoryController extends BaseAdminController
 
     public function deleteDelete(Request $request, Category $object, $id)
     {
-        $result = $object->deleteCategory($id);
+        $result = $object->deleteItem($id);
         return response()->json($result, $result['response_code']);
     }
 }

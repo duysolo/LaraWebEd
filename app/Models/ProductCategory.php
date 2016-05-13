@@ -6,7 +6,9 @@ use App\Models;
 use App\Models\AbstractModel;
 use Illuminate\Support\Facades\Validator;
 
-class ProductCategory extends AbstractModel
+use App\Models\MyInterface;
+
+class ProductCategory extends AbstractModel implements MyInterface\MultiLanguageInterface
 {
     public function __construct()
     {
@@ -55,13 +57,13 @@ class ProductCategory extends AbstractModel
         return $this->belongsToMany('App\Models\Product', 'product_categories_products', 'category_id', 'product_id');
     }
 
-    public function updateCategory($id, $data, $justUpdateSomeFields = false)
+    public function updateItem($id, $data, $justUpdateSomeFields = false)
     {
         $data['id'] = $id;
         return $this->fastEdit($data, true, $justUpdateSomeFields);
     }
 
-    public function updateCategoryContent($id, $languageId, $data)
+    public function updateItemContent($id, $languageId, $data)
     {
         $result = [
             'error' => true,
@@ -89,7 +91,7 @@ class ProductCategory extends AbstractModel
         $category->save();
 
         /*Update category content*/
-        $categoryContent = static::getCategoryContentByCategoryId($id, $languageId);
+        $categoryContent = static::getContentById($id, $languageId);
         if (!$categoryContent) {
             $categoryContent = new ProductCategoryContent();
             $categoryContent->language_id = $languageId;
@@ -102,7 +104,7 @@ class ProductCategory extends AbstractModel
         return $categoryContent->fastEdit($data, false, true);
     }
 
-    public static function deleteCategory($id)
+    public static function deleteItem($id)
     {
         $result = [
             'error' => true,
@@ -152,7 +154,7 @@ class ProductCategory extends AbstractModel
         return $result;
     }
 
-    public function createCategory($language, $data)
+    public function createItem($language, $data)
     {
         $dataCategory = ['status' => 1];
         if (isset($data['title'])) $dataCategory['global_title'] = $data['title'];
@@ -160,18 +162,18 @@ class ProductCategory extends AbstractModel
         if (!isset($data['status'])) $data['status'] = 1;
         if (!isset($data['language_id'])) $data['language_id'] = $language;
 
-        $resultCreateCategory = $this->updateCategory(0, $dataCategory);
+        $resultCreateItem = $this->updateItem(0, $dataCategory);
 
         /*No error*/
-        if (!$resultCreateCategory['error']) {
-            $category_id = $resultCreateCategory['object']->id;
-            $resultUpdateCategoryContent = $this->updateCategoryContent($category_id, $language, $data);
-            if($resultUpdateCategoryContent['error']) {
-                $this->deleteCategory($resultCreateCategory['object']->id);
+        if (!$resultCreateItem['error']) {
+            $category_id = $resultCreateItem['object']->id;
+            $resultUpdateItemContent = $this->updateItemContent($category_id, $language, $data);
+            if($resultUpdateItemContent['error']) {
+                $this->deleteItem($resultCreateItem['object']->id);
             }
-            return $resultUpdateCategoryContent;
+            return $resultUpdateItemContent;
         }
-        return $resultCreateCategory;
+        return $resultCreateItem;
     }
 
     public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
@@ -207,7 +209,7 @@ class ProductCategory extends AbstractModel
         return $obj->first();
     }
 
-    public static function getCategoryById($id, $languageId = 0, $options = [])
+    public static function getById($id, $languageId = 0, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -228,7 +230,7 @@ class ProductCategory extends AbstractModel
             ->first();
     }
 
-    public static function getCategoryBySlug($slug, $languageId = 0, $options = [])
+    public static function getBySlug($slug, $languageId = 0, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -249,7 +251,7 @@ class ProductCategory extends AbstractModel
             ->first();
     }
 
-    public static function getCategoryContentByCategoryId($id, $languageId = 0)
+    public static function getContentById($id, $languageId = 0)
     {
         return Models\ProductCategoryContent::getBy([
             'category_id' => $id,

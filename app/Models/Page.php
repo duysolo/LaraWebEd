@@ -41,13 +41,13 @@ class Page extends AbstractModel
         return $this->hasMany('App\Models\PageContent', 'page_id');
     }
 
-    public function updatePage($id, $data, $justUpdateSomeFields = false)
+    public function updateItem($id, $data, $justUpdateSomeFields = false)
     {
         $data['id'] = $id;
         return $this->fastEdit($data, true, $justUpdateSomeFields);
     }
 
-    public function updatePageContent($id, $languageId, $data)
+    public function updateItemContent($id, $languageId, $data)
     {
         $result = [
             'error' => true,
@@ -71,7 +71,7 @@ class Page extends AbstractModel
         }
 
         /*Update page content*/
-        $pageContent = static::getPageContentByPageId($id, $languageId);
+        $pageContent = static::getContentById($id, $languageId);
         if (!$pageContent) {
             $pageContent = new PageContent();
             $pageContent->language_id = $languageId;
@@ -84,7 +84,7 @@ class Page extends AbstractModel
         return $pageContent->fastEdit($data, false, true);
     }
 
-    public static function deletePage($id)
+    public static function deleteItem($id)
     {
         $result = [
             'error' => true,
@@ -126,7 +126,7 @@ class Page extends AbstractModel
         return $result;
     }
 
-    public function createPage($language, $data)
+    public function createItem($language, $data)
     {
         $dataPage = ['status' => 1];
         if (isset($data['title'])) $dataPage['global_title'] = $data['title'];
@@ -134,18 +134,18 @@ class Page extends AbstractModel
         if (!isset($data['status'])) $data['status'] = 1;
         if (!isset($data['language_id'])) $data['language_id'] = $language;
 
-        $resultCreatePage = $this->updatePage(0, $dataPage);
+        $resultCreateItem = $this->updateItem(0, $dataPage);
 
         /*No error*/
-        if (!$resultCreatePage['error']) {
-            $page_id = $resultCreatePage['object']->id;
-            $resultUpdatePageContent = $this->updatePageContent($page_id, $language, $data);
-            if($resultUpdatePageContent['error']) {
-                $this->deletePage($resultCreatePage['object']->id);
+        if (!$resultCreateItem['error']) {
+            $page_id = $resultCreateItem['object']->id;
+            $resultUpdateItemContent = $this->updateItemContent($page_id, $language, $data);
+            if($resultUpdateItemContent['error']) {
+                $this->deleteItem($resultCreateItem['object']->id);
             }
-            return $resultUpdatePageContent;
+            return $resultUpdateItemContent;
         }
-        return $resultCreatePage;
+        return $resultCreateItem;
     }
 
     public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
@@ -181,7 +181,7 @@ class Page extends AbstractModel
         return $obj->first();
     }
 
-    public static function getPageById($id, $languageId = 0, $options = [])
+    public static function getById($id, $languageId = 0, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -202,7 +202,7 @@ class Page extends AbstractModel
             ->first();
     }
 
-    public static function getPageBySlug($slug, $languageId = 0, $options = [])
+    public static function getBySlug($slug, $languageId = 0, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -223,7 +223,7 @@ class Page extends AbstractModel
             ->first();
     }
 
-    public static function getPageContentByPageId($id, $languageId = 0)
+    public static function getContentById($id, $languageId)
     {
         return Models\PageContent::getBy([
             'page_id' => $id,

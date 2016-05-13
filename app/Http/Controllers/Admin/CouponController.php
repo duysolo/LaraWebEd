@@ -191,7 +191,7 @@ class CouponController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $item = $object->getCouponById($id, $language, [
+            $item = $object->getById($id, $language, [
                 'status' => null,
                 'global_status' => null
             ]);
@@ -205,7 +205,7 @@ class CouponController extends BaseAdminController
                 $item->created_by = $this->loggedInAdminUser->id;
                 $item->expired_at = date('Y-m-d H:i:s');
                 $item->save();
-                $item = $object->getCouponById($id, $language, [
+                $item = $object->getById($id, $language, [
                     'status' => null,
                     'global_status' => null
                 ]);
@@ -227,11 +227,11 @@ class CouponController extends BaseAdminController
         {
             $data['created_by'] = $this->loggedInAdminUser->id;
             $data['coupon_code'] = strtoupper(str_random(10));
-            $result = $object->createCoupon($language, $data);
+            $result = $object->createItem($language, $data);
         }
         else
         {
-            $result = $object->updateCouponContent($id, $language, $data);
+            $result = $object->updateItemContent($id, $language, $data);
         }
 
         if($result['error'])
@@ -254,7 +254,7 @@ class CouponController extends BaseAdminController
 
     public function deleteDelete(Request $request, Coupon $object, $id)
     {
-        $result = $object->deleteCoupon($id);
+        $result = $object->deleteItem($id);
         return response()->json($result, $result['response_code']);
     }
 }

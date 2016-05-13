@@ -20,7 +20,7 @@ class CategoryController extends BaseFrontController
         $segments = $request->segments();
         $slug = end($segments);
 
-        $item = $object->getCategoryBySlug($slug, $this->currentLanguageId);
+        $item = $object->getBySlug($slug, $this->currentLanguageId);
 
         if (!$item) return $this->_showErrorPage(404, 'Page not found');
 
@@ -61,7 +61,7 @@ class CategoryController extends BaseFrontController
         $this->_setBodyClass($this->bodyClass.' category-news');
 
         /*Get related posts*/
-        $this->dis['relatedPosts'] = Post::getPostsByCategory($object->category_id, $this->currentLanguageId, [
+        $this->dis['relatedPosts'] = Post::getByCategory($object->category_id, $this->currentLanguageId, [
             'posts.status' => [
                 'compare' => '=',
                 'value' => 1

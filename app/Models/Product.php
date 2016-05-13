@@ -6,7 +6,9 @@ use App\Models;
 use App\Models\AbstractModel;
 use Illuminate\Support\Facades\Validator;
 
-class Product extends AbstractModel
+use App\Models\MyInterface;
+
+class Product extends AbstractModel implements MyInterface\MultiLanguageInterface
 {
     public function __construct()
     {
@@ -51,7 +53,7 @@ class Product extends AbstractModel
         return $this->belongsToMany('App\Models\ProductCategory', 'product_categories_products', 'product_id', 'category_id');
     }
 
-    public function updateProduct($id, $data, $justUpdateSomeFields = false)
+    public function updateItem($id, $data, $justUpdateSomeFields = false)
     {
         $data['id'] = $id;
         $result = $this->fastEdit($data, true, $justUpdateSomeFields);
@@ -65,7 +67,7 @@ class Product extends AbstractModel
         return $result;
     }
 
-    public function updateProductContent($id, $languageId, $data)
+    public function updateItemContent($id, $languageId, $data)
     {
         $result = [
             'error' => true,
@@ -94,7 +96,7 @@ class Product extends AbstractModel
         }
 
         /*Update post content*/
-        $postContent = static::getProductContentByProductId($id, $languageId);
+        $postContent = static::getContentById($id, $languageId);
         if (!$postContent) {
             $postContent = new ProductContent();
             $postContent->language_id = $languageId;
@@ -107,7 +109,7 @@ class Product extends AbstractModel
         return $postContent->fastEdit($data, false, true);
     }
 
-    public static function deleteProduct($id)
+    public static function deleteItem($id)
     {
         $result = [
             'error' => true,
@@ -152,7 +154,7 @@ class Product extends AbstractModel
         return $result;
     }
 
-    public function createProduct($language, $data)
+    public function createItem($language, $data)
     {
         $dataPost = ['status' => 1];
         if (isset($data['title'])) $dataPost['global_title'] = $data['title'];
@@ -161,21 +163,21 @@ class Product extends AbstractModel
         if (!isset($data['status'])) $data['status'] = 1;
         if (!isset($data['language_id'])) $data['language_id'] = $language;
 
-        $resultCreateProduct = $this->updateProduct(0, $dataPost);
+        $resultCreateItem = $this->updateItem(0, $dataPost);
 
         /*No error*/
-        if (!$resultCreateProduct['error']) {
-            $product_id = $resultCreateProduct['object']->id;
-            $resultUpdateProductContent = $this->updateProductContent($product_id, $language, $data);
-            if($resultUpdateProductContent['error']) {
-                $this->deleteProduct($resultCreateProduct['object']->id);
+        if (!$resultCreateItem['error']) {
+            $product_id = $resultCreateItem['object']->id;
+            $resultUpdateItemContent = $this->updateItemContent($product_id, $language, $data);
+            if($resultUpdateItemContent['error']) {
+                $this->deleteItem($resultCreateItem['object']->id);
             }
-            return $resultUpdateProductContent;
+            return $resultUpdateItemContent;
         }
-        return $resultCreateProduct;
+        return $resultCreateItem;
     }
 
-    public static function getProductById($id, $languageId = 0, $options = [])
+    public static function getById($id, $languageId = 0, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -196,7 +198,7 @@ class Product extends AbstractModel
             ->first();
     }
 
-    public static function getProductBySlug($slug, $languageId = 0, $options = [])
+    public static function getBySlug($slug, $languageId = 0, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -217,7 +219,7 @@ class Product extends AbstractModel
             ->first();
     }
 
-    public static function getProductContentByProductId($id, $languageId = 0)
+    public static function getContentById($id, $languageId = 0)
     {
         return ProductContent::getBy([
             'product_id' => $id,
@@ -225,7 +227,7 @@ class Product extends AbstractModel
         ]);
     }
 
-    public static function getProductsByCategory($id, $languageId, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getByCategory($id, $languageId, $otherFields = [], $order = null, $perPage = 0, $select = null)
     {
         $items = Product::join('product_contents', 'products.id', '=', 'product_contents.product_id')
             ->join('languages', 'languages.id', '=', 'product_contents.language_id')
@@ -258,7 +260,7 @@ class Product extends AbstractModel
         return $items->get();
     }
 
-    public static function getProductsNoContentByCategory($id, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getNoContentByCategory($id, $otherFields = [], $order = null, $perPage = 0, $select = null)
     {
         $items = Product::join('product_categories_products', 'product_categories_products.product_id', '=', 'products.id')
             ->join('product_categories', 'product_categories.id', '=', 'product_categories_products.category_id')
@@ -286,5 +288,38 @@ class Product extends AbstractModel
         }
         if ($perPage > 0) return $items->paginate($perPage);
         return $items->get();
+    }
+
+    public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
+    {
+        $fields = (array)$fields;
+
+        $obj = static::join('product_contents', 'products.id', '=', 'product_contents.page_id')
+            ->join('languages', 'languages.id', '=', 'product_contents.language_id');
+        if ($fields && is_array($fields)) {
+            foreach ($fields as $key => $row) {
+                $obj = $obj->where(function ($q) use ($key, $row) {
+
+                    if ($row['compare'] == 'LIKE') {
+                        $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                    } else {
+                        $q->where($key, $row['compare'], $row['value']);
+                    }
+                });
+            }
+        }
+        if ($order && is_array($order)) {
+            foreach ($order as $key => $value) {
+                $obj = $obj->orderBy($key, $value);
+            }
+        }
+        $obj = $obj->groupBy('products.id')
+            ->select('products.status as global_status', 'products.page_template', 'products.global_title', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale');
+
+        if ($multiple) {
+            if ($perPage > 0) return $obj->paginate($perPage);
+            return $obj->get();
+        }
+        return $obj->first();
     }
 }

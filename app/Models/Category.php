@@ -6,7 +6,9 @@ use App\Models;
 use App\Models\AbstractModel;
 use Illuminate\Support\Facades\Validator;
 
-class Category extends AbstractModel
+use App\Models\MyInterface;
+
+class Category extends AbstractModel implements MyInterface\MultiLanguageInterface
 {
     public function __construct()
     {
@@ -56,13 +58,13 @@ class Category extends AbstractModel
         return $this->belongsToMany('App\Models\Post', 'categories_posts', 'category_id', 'post_id');
     }
 
-    public function updateCategory($id, $data, $justUpdateSomeFields = false)
+    public function updateItem($id, $data, $justUpdateSomeFields = false)
     {
         $data['id'] = $id;
         return $this->fastEdit($data, true, $justUpdateSomeFields);
     }
 
-    public function updateCategoryContent($id, $languageId, $data)
+    public function updateItemContent($id, $languageId, $data)
     {
         $result = [
             'error' => true,
@@ -90,7 +92,7 @@ class Category extends AbstractModel
         $category->save();
 
         /*Update category content*/
-        $categoryContent = static::getCategoryContentByCategoryId($id, $languageId);
+        $categoryContent = static::getContentById($id, $languageId);
         if (!$categoryContent) {
             $categoryContent = new CategoryContent();
             $categoryContent->language_id = $languageId;
@@ -103,7 +105,7 @@ class Category extends AbstractModel
         return $categoryContent->fastEdit($data, false, true);
     }
 
-    public static function deleteCategory($id)
+    public static function deleteItem($id)
     {
         $result = [
             'error' => true,
@@ -154,7 +156,7 @@ class Category extends AbstractModel
         return $result;
     }
 
-    public function createCategory($language, $data)
+    public function createItem($language, $data)
     {
         $dataCategory = ['status' => 1];
         if (isset($data['title'])) $dataCategory['global_title'] = $data['title'];
@@ -162,23 +164,25 @@ class Category extends AbstractModel
         if (!isset($data['status'])) $data['status'] = 1;
         if (!isset($data['language_id'])) $data['language_id'] = $language;
 
-        $resultCreateCategory = $this->updateCategory(0, $dataCategory);
+        $resultCreateItem = $this->updateItem(0, $dataCategory);
 
         /*No error*/
-        if (!$resultCreateCategory['error']) {
-            $category_id = $resultCreateCategory['object']->id;
-            $resultUpdateCategoryContent = $this->updateCategoryContent($category_id, $language, $data);
-            if($resultUpdateCategoryContent['error']) {
-                $this->deleteCategory($resultCreateCategory['object']->id);
+        if (!$resultCreateItem['error']) {
+            $category_id = $resultCreateItem['object']->id;
+            $resultUpdateItemContent = $this->updateItemContent($category_id, $language, $data);
+            if($resultUpdateItemContent['error']) {
+                $this->deleteItem($resultCreateItem['object']->id);
             }
-            return $resultUpdateCategoryContent;
+            return $resultUpdateItemContent;
         }
-        return $resultCreateCategory;
+        return $resultCreateItem;
     }
 
-    public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
+    public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
         $fields = (array)$fields;
+        $select = (array)$select;
+        if(!$select) $select = ['categories.status as global_status', 'categories.page_template', 'categories.global_title', 'categories.parent_id', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         $obj = static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'category_contents.language_id');
@@ -200,7 +204,7 @@ class Category extends AbstractModel
             }
         }
         $obj = $obj->groupBy('categories.id')
-            ->select('categories.status as global_status', 'categories.page_template', 'categories.global_title', 'categories.parent_id', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale');
+            ->select($select);
 
         if ($multiple) {
             if ($perPage > 0) return $obj->paginate($perPage);
@@ -209,7 +213,7 @@ class Category extends AbstractModel
         return $obj->first();
     }
 
-    public static function getCategoryById($id, $languageId = 0, $options = [])
+    public static function getById($id, $languageId = 0, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -217,6 +221,9 @@ class Category extends AbstractModel
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'category_contents.language_id')
@@ -226,11 +233,11 @@ class Category extends AbstractModel
                 if ($args['status'] != null) $q->where('category_contents.status', '=', $args['status']);
             })
             ->where('category_contents.language_id', '=', $languageId)
-            ->select('categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select($select)
             ->first();
     }
 
-    public static function getCategoryBySlug($slug, $languageId = 0, $options = [])
+    public static function getBySlug($slug, $languageId = 0, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -238,6 +245,9 @@ class Category extends AbstractModel
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'category_contents.language_id')
@@ -247,15 +257,15 @@ class Category extends AbstractModel
                 if ($args['status'] != null) $q->where('category_contents.status', '=', $args['status']);
             })
             ->where('category_contents.language_id', '=', $languageId)
-            ->select('categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select($select)
             ->first();
     }
 
-    public static function getCategoryContentByCategoryId($id, $languageId = 0)
+    public static function getContentById($id, $languageId, $select = [])
     {
         return Models\CategoryContent::getBy([
             'category_id' => $id,
             'language_id' => $languageId
-        ]);
+        ], null, false, 0, $select);
     }
 }

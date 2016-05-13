@@ -16,14 +16,14 @@ class PageController extends BaseFrontController
 
     public function index(Request $request, Page $object)
     {
-        $item = $object->getPageById($this->_getSetting('default_homepage'), $this->currentLanguageId);
+        $item = $object->getById($this->_getSetting('default_homepage'), $this->currentLanguageId);
         if (!$item) return $this->_showErrorPage(404, 'Page not found');
         return redirect()->to($this->currentLanguage->language_code.'/'.$item->slug);
     }
 
     public function _handle(Request $request, Page $object, PageMeta $objectMeta, $slug)
     {
-        $item = $object->getPageBySlug($slug, $this->currentLanguageId);
+        $item = $object->getBySlug($slug, $this->currentLanguageId);
 
         if (!$item) return $this->_showErrorPage(404, 'Page not found');
 

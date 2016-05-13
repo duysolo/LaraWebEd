@@ -7,7 +7,9 @@ use App\Models\Category;
 use App\Models\AbstractModel;
 use Illuminate\Support\Facades\Validator;
 
-class Post extends AbstractModel
+use App\Models\MyInterface;
+
+class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
 {
     public function __construct()
     {
@@ -52,7 +54,7 @@ class Post extends AbstractModel
         return $this->belongsToMany('App\Models\Category', 'categories_posts', 'post_id', 'category_id');
     }
 
-    public function updatePost($id, $data, $justUpdateSomeFields = false)
+    public function updateItem($id, $data, $justUpdateSomeFields = false)
     {
         $data['id'] = $id;
         $result = $this->fastEdit($data, true, $justUpdateSomeFields);
@@ -66,7 +68,7 @@ class Post extends AbstractModel
         return $result;
     }
 
-    public function updatePostContent($id, $languageId, $data)
+    public function updateItemContent($id, $languageId, $data)
     {
         $result = [
             'error' => true,
@@ -95,7 +97,7 @@ class Post extends AbstractModel
         }
 
         /*Update post content*/
-        $postContent = static::getPostContentByPostId($id, $languageId);
+        $postContent = static::getContentById($id, $languageId);
         if (!$postContent) {
             $postContent = new PostContent();
             $postContent->language_id = $languageId;
@@ -108,7 +110,7 @@ class Post extends AbstractModel
         return $postContent->fastEdit($data, false, true);
     }
 
-    public static function deletePost($id)
+    public static function deleteItem($id)
     {
         $result = [
             'error' => true,
@@ -153,7 +155,7 @@ class Post extends AbstractModel
         return $result;
     }
 
-    public function createPost($language, $data)
+    public function createItem($language, $data)
     {
         $dataPost = ['status' => 1];
         if (isset($data['title'])) $dataPost['global_title'] = $data['title'];
@@ -162,18 +164,18 @@ class Post extends AbstractModel
         if (!isset($data['status'])) $data['status'] = 1;
         if (!isset($data['language_id'])) $data['language_id'] = $language;
 
-        $resultCreatePost = $this->updatePost(0, $dataPost);
+        $resultCreateItem = $this->updateItem(0, $dataPost);
 
         /*No error*/
-        if (!$resultCreatePost['error']) {
-            $post_id = $resultCreatePost['object']->id;
-            $resultUpdatePostContent = $this->updatePostContent($post_id, $language, $data);
-            if($resultUpdatePostContent['error']) {
-                $this->deletePost($resultCreatePost['object']->id);
+        if (!$resultCreateItem['error']) {
+            $post_id = $resultCreateItem['object']->id;
+            $resultUpdateItemContent = $this->updateItemContent($post_id, $language, $data);
+            if($resultUpdateItemContent['error']) {
+                $this->deleteItem($resultCreateItem['object']->id);
             }
-            return $resultUpdatePostContent;
+            return $resultUpdateItemContent;
         }
-        return $resultCreatePost;
+        return $resultCreateItem;
     }
 
     public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
@@ -209,7 +211,7 @@ class Post extends AbstractModel
         return $obj->first();
     }
 
-    public static function getPostById($id, $languageId, $options = [])
+    public static function getById($id, $languageId, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -230,7 +232,7 @@ class Post extends AbstractModel
             ->first();
     }
 
-    public static function getPostBySlug($slug, $languageId, $options = [])
+    public static function getBySlug($slug, $languageId, $options = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -251,7 +253,7 @@ class Post extends AbstractModel
             ->first();
     }
 
-    public static function getPostContentByPostId($id, $languageId)
+    public static function getContentById($id, $languageId)
     {
         return PostContent::getBy([
             'post_id' => $id,
@@ -259,7 +261,7 @@ class Post extends AbstractModel
         ]);
     }
 
-    public static function getPostsByCategory($id, $languageId, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getByCategory($id, $languageId, $otherFields = [], $order = null, $perPage = 0, $select = null)
     {
         $items = Post::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id')
@@ -292,7 +294,7 @@ class Post extends AbstractModel
         return $items->get();
     }
 
-    public static function getPostsNoContentByCategory($id, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getNoContentByCategory($id, $otherFields = [], $order = null, $perPage = 0, $select = null)
     {
         $items = Post::join('categories_posts', 'categories_posts.post_id', '=', 'posts.id')
             ->join('categories', 'categories.id', '=', 'categories_posts.category_id')

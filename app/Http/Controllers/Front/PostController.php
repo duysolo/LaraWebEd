@@ -18,7 +18,7 @@ class PostController extends BaseFrontController
 
     public function _handle(Request $request, Post $object, PostMeta $objectMeta, $slug)
     {
-        $item = $object->getPostBySlug($slug, $this->currentLanguageId);
+        $item = $object->getBySlug($slug, $this->currentLanguageId);
 
         if (!$item) return $this->_showErrorPage(404, 'Page not found');
 
