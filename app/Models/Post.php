@@ -178,9 +178,12 @@ class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
         return $resultCreateItem;
     }
 
-    public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
+    public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
         $fields = (array)$fields;
+        $select = (array)$select;
+
+        if(!$select) $select = ['posts.status as global_status', 'posts.page_template', 'posts.global_title', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         $obj = static::join('post_contents', 'posts.id', '=', 'post_contents.page_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id');
@@ -202,7 +205,7 @@ class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
             }
         }
         $obj = $obj->groupBy('posts.id')
-            ->select('posts.status as global_status', 'posts.page_template', 'posts.global_title', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale');
+            ->select($select);
 
         if ($multiple) {
             if ($perPage > 0) return $obj->paginate($perPage);
@@ -211,7 +214,7 @@ class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
         return $obj->first();
     }
 
-    public static function getById($id, $languageId, $options = [])
+    public static function getById($id, $languageId, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -219,6 +222,9 @@ class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id')
@@ -228,11 +234,11 @@ class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
                 if ($args['status'] != null) $q->where('post_contents.status', '=', $args['status']);
             })
             ->where('post_contents.language_id', '=', $languageId)
-            ->select('posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select($select)
             ->first();
     }
 
-    public static function getBySlug($slug, $languageId, $options = [])
+    public static function getBySlug($slug, $languageId, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -240,6 +246,9 @@ class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id')
@@ -249,16 +258,16 @@ class Post extends AbstractModel implements MyInterface\MultiLanguageInterface
                 if ($args['status'] != null) $q->where('post_contents.status', '=', $args['status']);
             })
             ->where('post_contents.language_id', '=', $languageId)
-            ->select('posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select($select)
             ->first();
     }
 
-    public static function getContentById($id, $languageId)
+    public static function getContentById($id, $languageId, $select = [])
     {
         return PostContent::getBy([
             'post_id' => $id,
             'language_id' => $languageId
-        ]);
+        ], null, false, 0, $select);
     }
 
     public static function getByCategory($id, $languageId, $otherFields = [], $order = null, $perPage = 0, $select = null)

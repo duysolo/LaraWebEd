@@ -176,9 +176,12 @@ class ProductCategory extends AbstractModel implements MyInterface\MultiLanguage
         return $resultCreateItem;
     }
 
-    public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
+    public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
         $fields = (array)$fields;
+        $select = (array)$select;
+
+        if(!$select) $select = ['product_categories.status as global_status', 'product_categories.page_template', 'product_categories.global_title', 'product_categories.parent_id', 'product_category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         $obj = static::join('product_category_contents', 'product_categories.id', '=', 'product_category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'product_category_contents.language_id');
@@ -200,7 +203,7 @@ class ProductCategory extends AbstractModel implements MyInterface\MultiLanguage
             }
         }
         $obj = $obj->groupBy('product_categories.id')
-            ->select('product_categories.status as global_status', 'product_categories.page_template', 'product_categories.global_title', 'product_categories.parent_id', 'product_category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale');
+            ->select($select);
 
         if ($multiple) {
             if ($perPage > 0) return $obj->paginate($perPage);
@@ -209,7 +212,7 @@ class ProductCategory extends AbstractModel implements MyInterface\MultiLanguage
         return $obj->first();
     }
 
-    public static function getById($id, $languageId = 0, $options = [])
+    public static function getById($id, $languageId = 0, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -217,6 +220,9 @@ class ProductCategory extends AbstractModel implements MyInterface\MultiLanguage
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['product_categories.global_title', 'product_categories.status as global_status', 'product_categories.parent_id', 'product_categories.page_template', 'product_category_contents.*'];
 
         return static::join('product_category_contents', 'product_categories.id', '=', 'product_category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'product_category_contents.language_id')
@@ -226,11 +232,11 @@ class ProductCategory extends AbstractModel implements MyInterface\MultiLanguage
                 if ($args['status'] != null) $q->where('product_category_contents.status', '=', $args['status']);
             })
             ->where('product_category_contents.language_id', '=', $languageId)
-            ->select('product_categories.global_title', 'product_categories.status as global_status', 'product_categories.parent_id', 'product_categories.page_template', 'product_category_contents.*')
+            ->select($select)
             ->first();
     }
 
-    public static function getBySlug($slug, $languageId = 0, $options = [])
+    public static function getBySlug($slug, $languageId = 0, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -238,6 +244,9 @@ class ProductCategory extends AbstractModel implements MyInterface\MultiLanguage
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['product_categories.global_title', 'product_categories.status as global_status', 'product_categories.parent_id', 'product_categories.page_template', 'product_category_contents.*'];
 
         return static::join('product_category_contents', 'product_categories.id', '=', 'product_category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'product_category_contents.language_id')
@@ -247,15 +256,15 @@ class ProductCategory extends AbstractModel implements MyInterface\MultiLanguage
                 if ($args['status'] != null) $q->where('product_category_contents.status', '=', $args['status']);
             })
             ->where('product_category_contents.language_id', '=', $languageId)
-            ->select('product_categories.global_title', 'product_categories.status as global_status', 'product_categories.parent_id', 'product_categories.page_template', 'product_category_contents.*')
+            ->select($select)
             ->first();
     }
 
-    public static function getContentById($id, $languageId = 0)
+    public static function getContentById($id, $languageId = 0, $select = [])
     {
         return Models\ProductCategoryContent::getBy([
             'category_id' => $id,
             'language_id' => $languageId
-        ]);
+        ], null, false, 0, $select);
     }
 }

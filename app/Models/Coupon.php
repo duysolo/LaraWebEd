@@ -180,6 +180,9 @@ class Coupon extends AbstractModel implements MyInterface\MultiLanguageInterface
         ];
         $args = array_merge($defaultArgs, $options);
 
+        $select = (array)$select;
+        if(!$select) $select = ['coupons.global_title', 'coupons.status as global_status', 'coupons.coupon_code', 'coupon_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+
         return static::join('coupon_contents', 'coupons.id', '=', 'coupon_contents.coupon_id')
             ->join('languages', 'languages.id', '=', 'coupon_contents.language_id')
             ->where('coupons.id', '=', $id)
@@ -188,7 +191,7 @@ class Coupon extends AbstractModel implements MyInterface\MultiLanguageInterface
                 if ($args['status'] != null) $q->where('coupon_contents.status', '=', $args['status']);
             })
             ->where('coupon_contents.language_id', '=', $languageId)
-            ->select('coupons.global_title', 'coupons.status as global_status', 'coupons.coupon_code', 'coupon_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select($select)
             ->first();
     }
 

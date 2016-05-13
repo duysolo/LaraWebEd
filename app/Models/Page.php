@@ -148,9 +148,12 @@ class Page extends AbstractModel
         return $resultCreateItem;
     }
 
-    public static function getWithContent($fields = [], $order = null, $multiple = false, $perPage = 0)
+    public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
         $fields = (array)$fields;
+
+        $select = (array)$select;
+        if(!$select) $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         $obj = static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
             ->join('languages', 'languages.id', '=', 'page_contents.language_id');
@@ -172,7 +175,7 @@ class Page extends AbstractModel
             }
         }
         $obj = $obj->groupBy('pages.id')
-            ->select('pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale');
+            ->select($select);
 
         if ($multiple) {
             if ($perPage > 0) return $obj->paginate($perPage);
@@ -223,11 +226,11 @@ class Page extends AbstractModel
             ->first();
     }
 
-    public static function getContentById($id, $languageId)
+    public static function getContentById($id, $languageId, $select = [])
     {
         return Models\PageContent::getBy([
             'page_id' => $id,
             'language_id' => $languageId
-        ]);
+        ], null, false, 0, $select);
     }
 }
