@@ -167,6 +167,16 @@ class PageController extends BaseAdminController
     public function getEdit(Request $request, Page $object, $id, $language)
     {
         $dis = [];
+
+        $oldInputs = old();
+        if($oldInputs && $id == 0) {
+            $oldObject = new \stdClass();
+            foreach ($oldInputs as $key => $row) {
+                $oldObject->$key = $row;
+            }
+            $dis['object'] = $oldObject;
+        }
+
         $currentEditLanguage = Models\Language::getBy([
             'id' => $language,
             'status' => 1
@@ -249,6 +259,10 @@ class PageController extends BaseAdminController
         {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
+
+            if($id == 0) {
+                return redirect()->back()->withInput();
+            }
 
             return redirect()->back();
         }

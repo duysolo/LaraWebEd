@@ -43,11 +43,16 @@
                 rules: {
                     title: {
                         minlength: 3,
+                        maxlength: 255,
                         required: true
                     },
                     slug: {
                         required: true,
-                        minlength: 3
+                        minlength: 3,
+                        maxlength: 255
+                    },
+                    description: {
+                        maxlength: 255
                     },
                     price: {
                         number: true,
@@ -185,7 +190,7 @@
                                                         <div class="col-md-10">
                                                             <select name="page_template" class="form-control">
                                                                 <option value=""></option>
-                                                                @foreach (_getPageTemplate('Page') as $key => $row)
+                                                                @foreach (_getPageTemplate('Product') as $key => $row)
                                                                     <option {{ (isset($object) && $object->page_template == $row) ? 'selected="selected"' : '' }} value="{{ $row }}">{{ $row }}</option>
                                                                 @endforeach
                                                             </select>
@@ -231,7 +236,7 @@
                                                             <div class="input-group input-medium">
                                                                 <input type="text" class="form-control" name="old_price"
                                                                        placeholder=""
-                                                                       value="{{ $object->old_price or '' }}">
+                                                                       value="{{ $object->old_price or 0 }}">
                                                                 <span class="input-group-addon">{{ $currentEditLanguage->currency }}</span>
                                                             </div>
                                                         </div>

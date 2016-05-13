@@ -39,11 +39,16 @@
                 rules: {
                     title: {
                         minlength: 3,
+                        maxlength: 255,
                         required: true
                     },
                     slug: {
                         required: true,
-                        minlength: 3
+                        minlength: 3,
+                        maxlength: 255
+                    },
+                    description: {
+                        maxlength: 255
                     }
                 },
 

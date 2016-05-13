@@ -29,6 +29,7 @@
                 rules: {
                     title: {
                         minlength: 3,
+                        maxlength: 255,
                         required: true
                     },
                     value: {
@@ -45,6 +46,9 @@
                         required: true,
                         number: true,
                         min: 0
+                    },
+                    description: {
+                        maxlength: 255
                     }
                 },
 

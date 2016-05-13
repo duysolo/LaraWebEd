@@ -130,6 +130,16 @@ class MenuController extends BaseAdminController
     public function getEdit(Request $request, Menu $object, MenuContent $objectContent, MenuNode $objectNode, Models\Category $category, Models\ProductCategory $productCategory, $id, $language)
     {
         $dis = [];
+
+        $oldInputs = old();
+        if($oldInputs && $id == 0) {
+            $oldObject = new \stdClass();
+            foreach ($oldInputs as $key => $row) {
+                $oldObject->$key = $row;
+            }
+            $dis['object'] = $oldObject;
+        }
+
         $currentEditLanguage = Models\Language::getBy([
             'id' => $language,
             'status' => 1
@@ -187,6 +197,10 @@ class MenuController extends BaseAdminController
         if ($result['error']) {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
+
+            if($id == 0) {
+                return redirect()->back()->withInput();
+            }
 
             return redirect()->back();
         }
