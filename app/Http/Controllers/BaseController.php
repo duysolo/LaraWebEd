@@ -60,7 +60,7 @@ abstract class BaseController extends Controller
         view()->share('loggedInUser', $this->loggedInUser);
 
         /*Get logged in admin user*/
-        $this->loggedInAdminUser = $this->_getLoggedInAdminUser();
+        $this->loggedInAdminUser = $this->_getLoggedInAdminUser(new Models\AdminUser());
         view()->share(['loggedInAdminUser' => $this->loggedInAdminUser]);
         if ($this->loggedInAdminUser) {
             $this->loggedInAdminUserRole = $this->loggedInAdminUser->adminUserRole;
@@ -98,19 +98,14 @@ abstract class BaseController extends Controller
         return response()->view('errors.' . $errorCode, $dis, $errorCode);
     }
 
-    protected function _setLoggedInAdminUser($user)
+    protected function _unsetLoggedInAdminUser(Models\AdminUser $adminUser)
     {
-        session(['adminAuthUser' => $user]);
+        auth()->guard($adminUser->getGuard())->logout();
     }
 
-    protected function _unsetLoggedInAdminUser()
+    protected function _getLoggedInAdminUser(Models\AdminUser $adminUser)
     {
-        session(['adminAuthUser' => null]);
-    }
-
-    protected function _getLoggedInAdminUser()
-    {
-        return session('adminAuthUser', null);
+        return auth()->guard($adminUser->getGuard())->user();
     }
 
     protected function _getSetting($key, $default = null)
@@ -130,7 +125,7 @@ abstract class BaseController extends Controller
     {
         $showHeaderAdminBar = false;
         $setting = (int)$this->_getSetting('show_admin_bar');
-        if ($this->_getLoggedInAdminUser() && $setting == 1) {
+        if ($this->_getLoggedInAdminUser(new Models\AdminUser()) && $setting == 1) {
             $showHeaderAdminBar = true;
         }
         view()->share([

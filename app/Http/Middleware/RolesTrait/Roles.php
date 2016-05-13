@@ -1,6 +1,7 @@
 <?php namespace App\Http\Middleware\RolesTrait;
 
 use App\Http\Controllers\BaseTrait\FlashMessages;
+use App\Models\AdminUser;
 use Closure;
 
 trait Roles
@@ -17,8 +18,10 @@ trait Roles
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        $adminUser = new AdminUser();
+        $loggedInUser = auth($adminUser->getGuard())->user();
+
         $adminCpAccess = \Config::get('app.adminCpAccess');
-        $loggedInUser = session('adminAuthUser');
 
         if($loggedInUser->status != 1)
         {

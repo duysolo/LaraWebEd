@@ -20,21 +20,13 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         $adminCpAccess = \Config::get('app.adminCpAccess');
-        $user = session('adminAuthUser');
-        if(!$user)
-        {
-            return redirect()->guest($adminCpAccess.'/auth/login');
-        }
+        $adminUser = new AdminUser();
+        $user = auth($adminUser->getGuard())->user();
 
-        /*Refresh logged in user*/
-        $user = AdminUser::find($user->id);
         if(!$user)
         {
             return redirect()->guest($adminCpAccess.'/auth/login');
         }
-        session([
-            'adminAuthUser' => $user
-        ]);
 
         return $next($request);
     }

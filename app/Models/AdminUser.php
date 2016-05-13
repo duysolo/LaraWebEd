@@ -34,6 +34,12 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
 
     protected $primaryKey = 'id';
 
+    protected $guard = "admin";
+
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
     protected $editableFields = [
         'username',
         'status',
@@ -46,6 +52,11 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
         'status' => 'integer|required',
         'user_role_id' => 'integer|required',
     ];
+
+    public function getGuard()
+    {
+        return $this->guard;
+    }
 
     public function adminUserRole()
     {

@@ -80,9 +80,9 @@ class AuthController extends BaseController
         return redirect()->to($this->redirectTo);
     }
 
-    public function getLogin()
+    public function getLogin(AdminUser $adminUser)
     {
-        $this->_unsetLoggedInAdminUser();
+        $this->_unsetLoggedInAdminUser($adminUser);
         return view('admin.auth.login');
     }
 
@@ -103,18 +103,13 @@ class AuthController extends BaseController
 
         $credentials = $this->getCredentials($request);
 
-        $checkAdminUser = $this->_checkAdminUser($credentials, $adminUser);
+        $checkAdminUser = $this->_checkAdminUser($credentials, $request);
 
-        if($checkAdminUser != null)
+        if($checkAdminUser)
         {
-            $adminUser->updateLastLoginTimestamp($checkAdminUser);
-
-            if ($throttles)
-            {
-                $this->clearLoginAttempts($request);
-            }
-            $this->_setLoggedInAdminUser($checkAdminUser);
-            return $this->authenticated();
+            $adminUser = auth()->guard($adminUser->getGuard())->user();
+            $adminUser->updateLastLoginTimestamp($adminUser);
+            return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
@@ -131,18 +126,19 @@ class AuthController extends BaseController
             ]);
     }
 
-    public function getLogout()
+    public function getLogout(AdminUser $adminUser)
     {
-        $this->_unsetLoggedInAdminUser();
+        $this->_unsetLoggedInAdminUser($adminUser);
         $this->_setFlashMessage('You now logged out', 'info');
         $this->_showFlashMessages();
         return redirect()->to($this->redirectToLoginPage);
     }
 
-    public function _checkAdminUser($credentials, $adminUser)
+    public function _checkAdminUser($credentials, $request)
     {
-        $user = $adminUser->authenticate($credentials['username'], $credentials['password']);
-
-        return $user;
+        if (auth()->guard('admin')->attempt($credentials, $request->has('remember'))) {
+            return true;
+        }
+        return false;
     }
 }
