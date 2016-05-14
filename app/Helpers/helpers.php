@@ -85,3 +85,17 @@ function _getProductLink($product, $currentLanguageCode = null)
     if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.product').'/'.$product;
     return '/'.trans('url.product').'/'.$product;
 }
+
+function _getCategoryLink($category, $currentLanguageCode = null)
+{
+    if(!is_string($category)) $category = $category->slug;
+    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.category').'/'.$category;
+    return '/'.trans('url.category').'/'.$category;
+}
+
+function _getProductCategoryLink($category, $currentLanguageCode = null)
+{
+    if(!is_string($category)) $category = $category->slug;
+    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.productCategory').'/'.$category;
+    return '/'.trans('url.productCategory').'/'.$category;
+}

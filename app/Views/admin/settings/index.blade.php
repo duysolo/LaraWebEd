@@ -134,7 +134,18 @@
                                         <option {{ (isset($settings['default_language']) && $row->id == (int)$settings['default_language']) ? 'selected' : '' }} value="{{ $row->id }}">{{ $row->language_name }}</option>
                                     @endforeach
                                 </select>
-                                <span class="help-block">CMS default language.</span>
+                                <span class="help-block">CMS default language</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Dashboard language</label>
+                            <div class="col-md-7">
+                                <select name="dashboard_language" class="form-control">
+                                    @foreach($activatedLanguages as $key => $row)
+                                        <option {{ (isset($settings['dashboard_language']) && $row->id == (int)$settings['dashboard_language']) ? 'selected' : '' }} value="{{ $row->id }}">{{ $row->language_name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="help-block">CMS default language in dashboard</span>
                             </div>
                         </div>
                         <div class="form-group">

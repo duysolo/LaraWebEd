@@ -346,7 +346,7 @@ class CmsMenu
                     $slug = (trim($page->slug) != '') ? trim($page->slug) : '';
                 }
 
-                $result = asset($this->languageCode . '/' . $slug);
+                $result = _getPageLink($slug, $this->languageCode);
             }
                 break;
             case 'category': {
@@ -372,7 +372,7 @@ class CmsMenu
                 {
                     $data_slug = '';
                 }
-                $result = asset($this->languageCode.'/'.trans('url.category').'/'.$data_slug);
+                $result = _getCategoryLink($data_slug, $this->languageCode);
             }
                 break;
             case 'product-category': {
@@ -398,7 +398,7 @@ class CmsMenu
                 {
                     $data_slug = '';
                 }
-                $result = asset($this->languageCode.'/'.trans('url.productCategory').'/'.$data_slug);
+                $result = _getProductCategoryLink($data_slug, $this->languageCode);
             }
                 break;
             case 'custom-link': {

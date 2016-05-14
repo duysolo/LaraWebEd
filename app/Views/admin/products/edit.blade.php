@@ -6,11 +6,13 @@
 
 @section('css')
     <link rel="stylesheet" href="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="/admin/core/third_party/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/admin/core/third_party/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
 @endsection
 
 @section('js')
-    <script type="text/javascript"
-            src="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript" src="/admin/core/third_party/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/config.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/adapters/jquery.js"></script>
@@ -19,8 +21,40 @@
 @section('js-init')
     <script type="text/javascript">
         $(document).ready(function () {
+            $.validator.addMethod("greaterThanFromDate", function(value, element, param) {
+                var $to = new Date(value);
+                var $from = new Date($(param).val());
+                return $to > $from;
+            }, "Start day must be small than end day");
+
             $('.js-ckeditor').ckeditor({
 
+            });
+
+            $('body').on('change', 'input[name=sale_status]', function(event){
+                var $saleFormInput = $('input.form-date-time');
+                var $saleFormInputWrapper = $('.sale-group-from-to');
+                var $checkedValue = parseInt($('input[name=sale_status]:checked').val());
+                if($checkedValue == 0)
+                {
+                    $saleFormInput.attr('disabled', '');
+                    $saleFormInputWrapper.hide();
+                }
+                else
+                {
+                    $saleFormInput.removeAttr('disabled');
+                    $saleFormInputWrapper.show();
+                }
+            });
+            $('input[name=sale_status]').trigger('change');
+
+            $(".form-date-time").datetimepicker({
+                autoclose: true,
+                format: "yyyy-mm-dd hh:ii:ss",
+                pickerPosition: "bottom-right",
+                todayBtn: true,
+                todayHighlight: true,
+                minuteStep: 1
             });
 
             $('.js-tags-editor').tagsinput({
@@ -54,6 +88,13 @@
                     description: {
                         maxlength: 255
                     },
+                    sale_from: {
+                        date: true
+                    },
+                    sale_to: {
+                        date: true,
+                        greaterThanFromDate: '[name=sale_from]'
+                    },
                     price: {
                         number: true,
                         required: true,
@@ -67,7 +108,7 @@
                 },
 
                 highlight: function (element) {
-                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
+                    $(element).closest('.form-group').addClass('has-error').removeClass('has-success'); // set error class to the control group
                 },
 
                 unhighlight: function (element) {
@@ -242,6 +283,47 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+                                                        <label class="col-md-2 control-label">Sale status:</label>
+                                                        <div class="col-md-10">
+                                                            <?php
+                                                                $saleStatus = 1;
+                                                                if(!isset($object) || $object->sale_status != 1) $saleStatus = 0;
+                                                            ?>
+                                                            <div class="md-radio" style="margin: 5px 0;">
+                                                                <input type="radio" value="0" id="always_on_sale" name="sale_status" {{ ($saleStatus != 1) ? 'checked' : '' }} class="md-radiobtn">
+                                                                <label for="always_on_sale">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span> Always on sale
+                                                                </label>
+                                                            </div>
+                                                            <div class="md-radio">
+                                                                <input type="radio" value="1" id="sale_with_limited_time" name="sale_status" {{ ($saleStatus == 1) ? 'checked' : '' }} class="md-radiobtn">
+                                                                <label for="sale_with_limited_time">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span> Sale with limited time
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group sale-group-from-to">
+                                                        <label class="col-md-2 control-label">Sale this product:</label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-group input-daterange">
+                                                                <input type="text" class="form-control form-date-time" name="sale_from"
+                                                                       placeholder=""
+                                                                       value="{{ $object->sale_from or date('Y-m-d H:i:s', time()) }}"
+                                                                       data-date="{{ $object->sale_from or date('Y-m-d H:i:s', time()) }}">
+                                                                <span class="input-group-addon">to</span>
+                                                                <input type="text" class="form-control form-date-time" name="sale_to"
+                                                                       placeholder=""
+                                                                       value="{{ $object->sale_to or date('Y-m-d H:i:s', time()) }}"
+                                                                       data-date="{{ $object->sale_to or date('Y-m-d H:i:s', time()) }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label class="col-md-2 control-label">Status:</label>
                                                         <div class="col-md-10">
                                                             <select name="status" class="form-control input-medium">
@@ -250,9 +332,6 @@
                                                                 </option>
                                                                 <option value="0" {{ (isset($object) && $object->status == 0) ? 'selected' : '' }}>
                                                                     Disabled
-                                                                </option>
-                                                                <option value="2" {{ (isset($object) && $object->status == 2) ? 'selected' : '' }}>
-                                                                    Draft
                                                                 </option>
                                                             </select>
                                                         </div>

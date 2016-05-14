@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 05/13/2016 23:34:15 PM
+ Date: 05/15/2016 01:53:48 AM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'aUz7m68uo4AqmDEjBQDF47pfshxSKvULJs4WqBCnPp5ezEbNPdTRpS8v862c', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-12 00:27:45', '2014-10-14 00:10:13', '2016-01-19 12:08:46');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'aUz7m68uo4AqmDEjBQDF47pfshxSKvULJs4WqBCnPp5ezEbNPdTRpS8v862c', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-15 00:31:27', '2014-10-14 00:10:13', '2016-01-19 12:08:46');
 COMMIT;
 
 -- ----------------------------
@@ -540,6 +540,9 @@ CREATE TABLE `product_contents` (
   `tags` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `price` double NOT NULL DEFAULT '0',
   `old_price` double NOT NULL DEFAULT '0',
+  `sale_status` tinyint(1) DEFAULT '0',
+  `sale_from` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `sale_to` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -585,13 +588,13 @@ CREATE TABLE `settings` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 --  Records of `settings`
 -- ----------------------------
 BEGIN;
-INSERT INTO `settings` VALUES ('1', 'email_receives_feedback', 'duyphan.developer@gmail.com', '2015-11-24 16:31:17', '2015-11-24 16:31:20'), ('2', 'site_title', 'LaraWebEd', '2015-12-17 07:51:37', '2016-04-16 22:53:42'), ('3', 'site_logo', '', '2015-12-17 07:51:52', '2016-01-21 06:06:24'), ('4', 'site_keywords', 'Site vui, vui, haivl,Một người khỏe hai người vui', '2015-12-17 07:52:21', '2016-01-21 01:40:32'), ('5', 'default_language', '59', '2015-12-17 07:53:12', '2016-05-12 00:44:04'), ('6', 'google_analytics', '<script></script>', '2015-11-24 16:35:03', '2015-11-25 00:07:38'), ('7', 'construction_mode', '0', '2015-11-24 16:36:20', '2016-01-26 10:04:50'), ('8', 'site_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2016-01-21 01:40:32', '2016-01-21 01:52:35'), ('9', 'default_homepage', '1', '2016-01-21 14:11:32', '2016-01-21 14:11:34'), ('10', 'show_admin_bar', '1', '2016-01-26 10:00:54', '2016-01-26 10:05:42'), ('11', 'google_captcha_site_key', '6Lfy4hYTAAAAABIGAFmHHScJ_lUZR7UuzD7MoXDO', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('12', 'google_captcha_secret_key', '6Lfy4hYTAAAAAGTRaZggVzW_PAyVxmGguw8uSWyH', '2016-01-30 22:21:48', '2016-01-30 22:21:48');
+INSERT INTO `settings` VALUES ('1', 'email_receives_feedback', 'duyphan.developer@gmail.com', '2015-11-24 16:31:17', '2015-11-24 16:31:20'), ('2', 'site_title', 'LaraWebEd', '2015-12-17 07:51:37', '2016-04-16 22:53:42'), ('3', 'site_logo', '', '2015-12-17 07:51:52', '2016-01-21 06:06:24'), ('4', 'site_keywords', 'Site vui, vui, haivl,Một người khỏe hai người vui', '2015-12-17 07:52:21', '2016-01-21 01:40:32'), ('5', 'default_language', '59', '2015-12-17 07:53:12', '2016-05-12 00:44:04'), ('6', 'google_analytics', '<script></script>', '2015-11-24 16:35:03', '2015-11-25 00:07:38'), ('7', 'construction_mode', '0', '2015-11-24 16:36:20', '2016-01-26 10:04:50'), ('8', 'site_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2016-01-21 01:40:32', '2016-01-21 01:52:35'), ('9', 'default_homepage', '1', '2016-01-21 14:11:32', '2016-01-21 14:11:34'), ('10', 'show_admin_bar', '1', '2016-01-26 10:00:54', '2016-01-26 10:05:42'), ('11', 'google_captcha_site_key', '6Lfy4hYTAAAAABIGAFmHHScJ_lUZR7UuzD7MoXDO', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('12', 'google_captcha_secret_key', '6Lfy4hYTAAAAAGTRaZggVzW_PAyVxmGguw8uSWyH', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('13', 'dashboard_language', '1', '2016-05-14 18:53:01', '2016-05-14 18:53:01');
 COMMIT;
 
 -- ----------------------------
