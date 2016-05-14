@@ -126,12 +126,12 @@ abstract class AbstractModel extends Model
         return false;
     }
 
-    public static function findByFieldsOrCreate($options)
+    public static function findByFieldsOrCreate($fields)
     {
-        $obj = static::where($options)->first();
+        $obj = static::where($fields)->first();
         if(!$obj) {
             $obj = new static;
-            foreach ($options as $key => $row) {
+            foreach ($fields as $key => $row) {
                 $obj->$key = $row;
             }
             $obj->save();
@@ -139,7 +139,7 @@ abstract class AbstractModel extends Model
         return $obj;
     }
 
-    public static function getAll($order = null, $perPage = 0)
+    public static function getAll($select = null, $order = null, $perPage = 0)
     {
         $query = new static;
         if($order && is_array($order))
@@ -149,6 +149,7 @@ abstract class AbstractModel extends Model
                 $query = $query->orderBy($key, $value);
             }
         }
+        if($select) $query = $query->select($select);
         if($perPage < 1)
         {
             return $query->get();

@@ -184,7 +184,7 @@ class Page extends AbstractModel
         return $obj->first();
     }
 
-    public static function getById($id, $languageId = 0, $options = [])
+    public static function getById($id, $languageId, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -192,6 +192,9 @@ class Page extends AbstractModel
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
             ->join('languages', 'languages.id', '=', 'page_contents.language_id')
@@ -201,11 +204,11 @@ class Page extends AbstractModel
                 if ($args['status'] != null) $q->where('page_contents.status', '=', $args['status']);
             })
             ->where('page_contents.language_id', '=', $languageId)
-            ->select('pages.global_title', 'pages.status as global_status', 'pages.page_template', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select($select)
             ->first();
     }
 
-    public static function getBySlug($slug, $languageId = 0, $options = [])
+    public static function getBySlug($slug, $languageId, $options = [], $select = [])
     {
         $options = (array)$options;
         $defaultArgs = [
@@ -213,6 +216,9 @@ class Page extends AbstractModel
             'global_status' => 1
         ];
         $args = array_merge($defaultArgs, $options);
+
+        $select = (array)$select;
+        if(!$select) $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
             ->join('languages', 'languages.id', '=', 'page_contents.language_id')
@@ -222,7 +228,7 @@ class Page extends AbstractModel
                 if ($args['status'] != null) $q->where('page_contents.status', '=', $args['status']);
             })
             ->where('page_contents.language_id', '=', $languageId)
-            ->select('pages.global_title', 'pages.status as global_status', 'pages.page_template', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale')
+            ->select($select)
             ->first();
     }
 
