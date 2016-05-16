@@ -115,10 +115,9 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Language</label>
                             <div class="col-md-7">
-                                <select name="language_id" data-href="{{ $rawUrlChangeLanguage }}"
-                                        class="form-control js-change-content-language">
+                                <select name="language_id" class="form-control">
                                     @foreach($activatedLanguages as $key => $row)
-                                        <option value="{{ $row->id }}" {{ ($currentEditLanguage->id == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>
+                                        <option value="{{ $row->id }}" {{ (isset($object->language_id) && $object->language_id == $row->id) ? 'selected' : '' }}>{{ $row->language_name }}</option>
                                     @endforeach
                                 </select>
                                 <span class="help-block">Language of this coupon</span>
@@ -127,7 +126,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Currency</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control bold font-red" autocomplete="off" disabled value="{{ $currentEditLanguage->currency }}"/>
+                                <input type="text" class="form-control bold font-red" autocomplete="off" disabled value="{{ $object->language->currency or '' }}"/>
                             </div>
                         </div>
                         <div class="form-group">

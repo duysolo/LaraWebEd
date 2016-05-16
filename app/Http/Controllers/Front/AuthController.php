@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Front;
 
-use App\User;
-use Validator;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Front\BaseFrontController;
+use App\Models\User;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
-class AuthController extends Controller
+class AuthController extends BaseFrontController
 {
     /*
     |--------------------------------------------------------------------------
@@ -23,12 +22,7 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+    var $username, $loginPath, $redirectTo, $redirectPath, $redirectToLoginPage;
 
     /**
      * Create a new authentication controller instance.
@@ -37,7 +31,22 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        parent::__construct();
+
+        $this->username = 'email';
+        $this->loginPath = 'auth';
+
+        /**
+         * Where to redirect users after login / registration.
+         *
+         * @var string
+         */
+        $this->redirectTo = '/'.$this->currentLanguageCode;
+
+        $this->redirectPath = '/'.$this->currentLanguageCode;
+        $this->redirectToLoginPage = '/'.$this->currentLanguageCode.'/auth/login';
+
+        $this->middleware('guest', ['except' => ['getLogout', 'postLogin', 'getLogin']]);
     }
 
     /**
@@ -68,5 +77,27 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function getLogin(User $user)
+    {
+        auth()->logout();
+
+        $this->_loadFrontMenu();
+        
+        return $this->_viewFront('auth.login');
+    }
+
+    protected function authenticated()
+    {
+        return redirect()->to($this->redirectTo);
+    }
+
+    public function getLogout(User $user)
+    {
+        auth()->logout();
+        $this->_setFlashMessage('You now logged out', 'info');
+        $this->_showFlashMessages();
+        return redirect()->to($this->redirectToLoginPage);
     }
 }

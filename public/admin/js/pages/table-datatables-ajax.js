@@ -82,7 +82,7 @@ var TableDatatablesAjax = function () {
                 {
                     spanIndex = aData[val].toString().indexOf('</span>') + 7;
                 }
-                jqTds[val].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[val].toString().substr(spanIndex) + '">';
+                jqTds[val].innerHTML = '<input type="text" class="form-control" value="' + aData[val].toString().substr(spanIndex) + '">';
             });
             jqTds[options.actionPosition].innerHTML = '<a class="fast-edit" title="Fast edit">Save</a><br><a class="cancel">Cancel</a>';
         }

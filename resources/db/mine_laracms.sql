@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 05/15/2016 01:53:48 AM
+ Date: 05/16/2016 13:24:06 PM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'aUz7m68uo4AqmDEjBQDF47pfshxSKvULJs4WqBCnPp5ezEbNPdTRpS8v862c', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-15 00:31:27', '2014-10-14 00:10:13', '2016-01-19 12:08:46');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'AotA8h5pGVkVRl4PWjIVIP0EIYDldx8buvoJxbufv7UBqAU3iwfE5ukKE9RB', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-16 11:50:14', '2014-10-14 00:10:13', '2016-05-15 19:24:56');
 COMMIT;
 
 -- ----------------------------
@@ -198,13 +198,13 @@ INSERT INTO `countries` VALUES ('1', 'AFG', 'AF', 'Afghanistan', '34', '0'), ('2
 COMMIT;
 
 -- ----------------------------
---  Table structure for `coupon_contents`
+--  Table structure for `coupons`
 -- ----------------------------
-DROP TABLE IF EXISTS `coupon_contents`;
-CREATE TABLE `coupon_contents` (
+DROP TABLE IF EXISTS `coupons`;
+CREATE TABLE `coupons` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `coupon_id` int(11) NOT NULL DEFAULT '0',
   `language_id` int(11) NOT NULL,
+  `coupon_code` varchar(32) DEFAULT '0',
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `value` double NOT NULL DEFAULT '0',
@@ -218,23 +218,7 @@ CREATE TABLE `coupon_contents` (
   `expired_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=207 DEFAULT CHARSET=latin1;
-
--- ----------------------------
---  Table structure for `coupons`
--- ----------------------------
-DROP TABLE IF EXISTS `coupons`;
-CREATE TABLE `coupons` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `global_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `coupon_code` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `order` int(11) NOT NULL DEFAULT '0',
-  `created_by` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=180 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `field_groups`
@@ -547,7 +531,7 @@ CREATE TABLE `product_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=109 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `product_metas`
@@ -616,6 +600,8 @@ CREATE TABLE `users` (
   `phone_2` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
   `phone_3` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
   `status` tinyint(1) NOT NULL DEFAULT '0',
+  `social_type` varchar(255) DEFAULT NULL,
+  `social_id` varchar(100) DEFAULT NULL,
   `register_key` varchar(255) DEFAULT NULL,
   `remember_token` varchar(255) NOT NULL,
   `login_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -624,6 +610,13 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `users`
+-- ----------------------------
+BEGIN;
+INSERT INTO `users` VALUES ('28', 'test@test.com', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', 'Tedozi', 'Manson', '0', '', '0000-00-00 00:00:00', null, '', '', '', '', '0', null, null, null, 'I1BJRdhDSLIYdTp6fgt2vOBuqTrdUB1ZwonGwAfEZL8imFVtw7LpAvtd7zSK', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2016-05-15 19:39:23', '2016-05-15 20:19:47');
+COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

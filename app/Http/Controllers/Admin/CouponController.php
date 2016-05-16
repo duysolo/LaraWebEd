@@ -74,7 +74,7 @@ class CouponController extends BaseAdminController
                 break;
             case 2:
             {
-                $orderBy = 'global_title';
+                $orderBy = 'title';
             }
                 break;
             case 3:
@@ -89,7 +89,7 @@ class CouponController extends BaseAdminController
                 break;
             case 5:
             {
-                $orderBy = 'order';
+                $orderBy = 'language_id';
             }
                 break;
             default:
@@ -101,9 +101,9 @@ class CouponController extends BaseAdminController
         $orderType = $request->get('order')[0]['dir'];
 
         $getByFields = [];
-        if($request->get('global_title', null) != null)
+        if($request->get('title', null) != null)
         {
-            $getByFields['global_title'] = ['compare' => 'LIKE', 'value' => $request->get('global_title')];
+            $getByFields['title'] = ['compare' => 'LIKE', 'value' => $request->get('title')];
         }
         if($request->get('coupon_code', null) != null)
         {
@@ -127,16 +127,19 @@ class CouponController extends BaseAdminController
                 $status = '<span class="label label-danger label-sm">Disabled</span>';
             }
             /*Edit link*/
-            $link = asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$row->id.'/'.$this->defaultLanguageId);
+            $link = asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$row->id);
             $removeLink = asset($this->adminCpAccess.'/'.$this->routeLink.'/delete/'.$row->id);
+
+            //Language flag
+            $flag = ($row->language) ? '<img src="/admin/images/flags/'.$row->language->language_code.'.png" title="'.$row->language->language_name.'" alt="'.$row->language->language_name.'">' : '';
 
             $records["data"][] = array(
                 '<input type="checkbox" name="id[]" value="'.$row->id.'">',
                 $row->id,
-                $row->global_title,
+                $row->title,
                 $row->coupon_code,
                 $status,
-                $row->order,
+                $flag,
                 $row->created_at->toDateTimeString(),
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="'.$link.'" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>'.
@@ -155,7 +158,7 @@ class CouponController extends BaseAdminController
     {
         $data = [
             'id' => $request->get('args_0', null),
-            'global_title' => $request->get('args_1', null),
+            'title' => $request->get('args_1', null),
             'order' => $request->get('args_2', null),
         ];
 
@@ -163,7 +166,7 @@ class CouponController extends BaseAdminController
         return response()->json($result, $result['response_code']);
     }
 
-    public function getEdit(Request $request, Coupon $object, $id, $language)
+    public function getEdit(Request $request, Coupon $object, $id)
     {
         $dis = [];
 
@@ -176,20 +179,6 @@ class CouponController extends BaseAdminController
             $dis['object'] = $oldObject;
         }
 
-        $currentEditLanguage = Models\Language::getBy([
-            'id' => $language,
-            'status' => 1
-        ]);
-        if(!$currentEditLanguage)
-        {
-            $this->_setFlashMessage('This language it not supported', 'error');
-            $this->_showFlashMessages();
-            return redirect()->back();
-        }
-        $dis['currentEditLanguage'] = $currentEditLanguage;
-
-        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$id).'/';
-
         if(!$id == 0)
         {
             $item = $object->find($id);
@@ -201,48 +190,30 @@ class CouponController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $item = $object->getById($id, $language, [
-                'status' => null,
-                'global_status' => null
-            ]);
-
-            /*Create new if not exists*/
-            if(!$item)
-            {
-                $item = new CouponContent();
-                $item->language_id = $language;
-                $item->coupon_id = $id;
-                $item->created_by = $this->loggedInAdminUser->id;
-                $item->expired_at = date('Y-m-d H:i:s');
-                $item->save();
-                $item = $object->getById($id, $language, [
-                    'status' => null,
-                    'global_status' => null
-                ]);
-            }
-
             $dis['object'] = $item;
 
-            $this->_setPageTitle('Edit coupon', $item->global_title);
+            $this->_setPageTitle('Edit coupon', $item->title);
         }
 
         return $this->_viewAdmin('coupons.edit', $dis);
     }
 
-    public function postEdit(Request $request, Coupon $object, $id, $language)
+    public function postEdit(Request $request, Coupon $object, $id)
     {
         $data = $request->all();
-
-        if($id == 0)
+        $data['id'] = $id;
+        if($id <= 0)
         {
+            $justUpdateSomeFields = false;
             $data['created_by'] = $this->loggedInAdminUser->id;
             $data['coupon_code'] = strtoupper(str_random(10));
-            $result = $object->createItem($language, $data);
+            $result = $object->fastEdit($data, true, false);
         }
         else
         {
-            $result = $object->updateItemContent($id, $language, $data);
+            $result = $object->fastEdit($data, false, true);
         }
+
 
         if($result['error'])
         {
@@ -261,7 +232,7 @@ class CouponController extends BaseAdminController
 
         if($id == 0)
         {
-            return redirect()->to(asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$result['object']->coupon_id.'/'.$language));
+            return redirect()->to(asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$result['object']->coupon_id.'/'));
         }
         return redirect()->back();
     }

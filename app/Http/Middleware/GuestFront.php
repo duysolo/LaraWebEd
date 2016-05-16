@@ -34,7 +34,6 @@ class GuestFront
      */
     public function handle($request, Closure $next)
     {
-        /*API*/
         if ($this->auth->check())
         {
             return redirect('/');

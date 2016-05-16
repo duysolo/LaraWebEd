@@ -30,7 +30,7 @@
                 onDataLoad: function(grid){
 
                 },
-                editableFields: [2, 5],
+                editableFields: [2],
                 actionPosition: 7,
                 ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/coupons/fast-edit') }}'
             });
@@ -54,7 +54,7 @@
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/coupons/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/coupons/edit/0/') }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>
@@ -80,12 +80,12 @@
                                 <th width="5%">
                                     #
                                 </th>
-                                <th width="30%">Title</th>
-                                <th width="7%">Coupon code</th>
+                                <th width="25%">Title</th>
+                                <th width="10%">Coupon code</th>
                                 <th width="5%">Status</th>
-                                <th width="5%">Order</th>
+                                <th width="5%">Language</th>
                                 <th width="10%">Created at</th>
-                                <th width="10%">Fast edit</th>
+                                <th width="7%">Fast edit</th>
                                 <th width="10%">Actions</th>
                             </tr>
                             <tr role="row" class="filter">

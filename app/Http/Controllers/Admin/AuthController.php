@@ -42,7 +42,7 @@ class AuthController extends BaseController
         $this->redirectPath = '/'.$this->adminCpAccess.'/dashboard';
         $this->redirectToLoginPage = '/'.$this->adminCpAccess.'/auth/login';
 
-        $this->middleware('guest', ['except' => ['getLogout', 'postLogin', 'getLogin']]);
+        $this->middleware('guest_admin', ['except' => ['getLogout', 'postLogin', 'getLogin']]);
     }
 
     /**
@@ -83,7 +83,7 @@ class AuthController extends BaseController
     public function getLogin(AdminUser $adminUser)
     {
         $this->_unsetLoggedInAdminUser($adminUser);
-        return view('admin.auth.login');
+        return $this->_viewAdmin('auth.login');
     }
 
     public function postLogin(Request $request, AdminUser $adminUser)

@@ -107,6 +107,8 @@ $router->group(['middleware' => ['web']], function ($router) {
             /*Set locale*/
             app()->setLocale($currentLanguage->default_locale);
 
+            $router->controller('auth', 'AuthController');
+
             $router->controller('global-actions', 'GlobalActionsController');
 
             $router->get('/', 'PageController@index');

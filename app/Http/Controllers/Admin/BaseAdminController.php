@@ -10,10 +10,8 @@ abstract class BaseAdminController extends BaseController
     {
         parent::__construct();
 
-        $this->middleware('auth');
+        $this->middleware('auth_admin');
         $this->middleware('is_staff');
-
-        //$this->_loadAdminMenu();
     }
 
     protected function _setPageTitle($title, $subTitle = '')

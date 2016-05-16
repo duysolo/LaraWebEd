@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AdminUser;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
@@ -35,10 +36,12 @@ class Guest
     public function handle($request, Closure $next)
     {
         $adminCpAccess = \Config::get('app.adminCpAccess');
-        if(session('adminAuthUser') != null)
-        {
+        $adminUser = new AdminUser();
+        $user = auth($adminUser->getGuard())->user();
 
-            return redirect('/'.$adminCpAccess.'/dashboard');
+        if(!$user)
+        {
+            return redirect()->guest($adminCpAccess.'/auth/login');
         }
 
         return $next($request);
