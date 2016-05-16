@@ -37,6 +37,7 @@ class Coupon extends AbstractModel
         'thumbnail' => 'string|max:255',
         'status' => 'integer|required',
         'created_by' => 'integer|required',
+        'each_user_can_use' => 'integer|min:-1',
     ];
 
     protected $editableFields = [
@@ -52,6 +53,7 @@ class Coupon extends AbstractModel
         'status',
         'created_by',
         'expired_at',
+        'each_user_can_use'
     ];
     
     public function language()
@@ -98,33 +100,5 @@ class Coupon extends AbstractModel
         $resultCreateItem = $this->updateItem(0, $dataCoupon);
 
         return $resultCreateItem;
-    }
-
-    public static function getById($id, $options = [], $select = [])
-    {
-        $options = (array)$options;
-        $defaultArgs = [
-            'status' => 1
-        ];
-        $args = array_merge($defaultArgs, $options);
-
-        $select = (array)$select;
-        if(!$select) $select = ['coupons.global_title', 'coupons.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
-
-        return static::join('languages', 'languages.id', '=', 'coupon_contents.language_id')
-            ->where('coupons.id', '=', $id)
-            ->where(function ($q) use ($args) {
-                if ($args['status'] != null) $q->where('coupons.status', '=', $args['status']);
-            })
-            ->select($select)
-            ->first();
-    }
-
-    public static function getContentById($id, $languageId, $select = [])
-    {
-        return static::getBy([
-            'coupon_id' => $id,
-            'language_id' => $languageId
-        ], null, false, 0, $select);
     }
 }

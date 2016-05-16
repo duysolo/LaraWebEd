@@ -15,7 +15,7 @@ abstract class AbstractModel extends Model
 
     protected $errors = null, $editableFields = [], $rules = array();
 
-    protected function getEditableFields()
+    public function getEditableFields()
     {
         return $this->editableFields;
     }
@@ -244,9 +244,12 @@ abstract class AbstractModel extends Model
 
         foreach($data as $key => $row)
         {
-            if(in_array($key, $this->getEditableFields()))
+            if($key != $this->primaryKey)
             {
-                $item->$key = $row;
+                if(in_array('*', $this->getEditableFields()) || in_array($key, $this->getEditableFields()))
+                {
+                    $item->$key = $row;
+                }
             }
         }
 

@@ -102,7 +102,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Coupon title <span class="text-danger">(*)</span></label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control bold" autocomplete="off" value="{{ $object->title or '' }}" name="title"/>
+                                <input type="text" class="form-control" autocomplete="off" value="{{ $object->title or '' }}" name="title"/>
                                 <span class="help-block">Title of this coupon</span>
                             </div>
                         </div>
@@ -199,6 +199,13 @@
                             <label class="control-label col-md-3">Total used</label>
                             <div class="col-md-7">
                                 <span class="help-block">This coupon has been used <b class="font-red">{{ $object->total_used or 0 }}</b> time(s).</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Each user can use</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-small" autocomplete="off" value="{{ $object->each_user_can_use or 1 }}" name="each_user_can_use"/>
+                                <span class="help-block">How many times each user can use this coupon?</span>
                             </div>
                         </div>
                         <div class="form-group">

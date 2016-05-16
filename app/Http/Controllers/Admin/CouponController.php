@@ -18,7 +18,7 @@ class CouponController extends BaseAdminController
 
         $this->middleware('is_admin');
 
-        $this->_setPageTitle('Coupons', 'manage coupons/giftcards');
+        $this->_setPageTitle('Coupons', 'manage coupons');
         $this->_setBodyClass($this->bodyClass);
 
         $this->_loadAdminMenu($this->routeLink);
@@ -232,7 +232,7 @@ class CouponController extends BaseAdminController
 
         if($id == 0)
         {
-            return redirect()->to(asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$result['object']->coupon_id.'/'));
+            return redirect()->to(asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$result['object']->id.'/'));
         }
         return redirect()->back();
     }

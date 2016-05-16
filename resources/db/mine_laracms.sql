@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 05/16/2016 13:24:06 PM
+ Date: 05/16/2016 15:19:48 PM
 */
 
 SET NAMES utf8;
@@ -198,6 +198,19 @@ INSERT INTO `countries` VALUES ('1', 'AFG', 'AF', 'Afghanistan', '34', '0'), ('2
 COMMIT;
 
 -- ----------------------------
+--  Table structure for `coupon_user_use`
+-- ----------------------------
+DROP TABLE IF EXISTS `coupon_user_use`;
+CREATE TABLE `coupon_user_use` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `coupon_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 --  Table structure for `coupons`
 -- ----------------------------
 DROP TABLE IF EXISTS `coupons`;
@@ -208,6 +221,7 @@ CREATE TABLE `coupons` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `value` double NOT NULL DEFAULT '0',
+  `each_user_can_use` int(5) DEFAULT NULL,
   `total_quantity` int(10) NOT NULL DEFAULT '0',
   `total_used` int(10) NOT NULL DEFAULT '0',
   `apply_for_min_price` double NOT NULL DEFAULT '0',
