@@ -107,8 +107,6 @@ class AuthController extends BaseController
 
         if($checkAdminUser)
         {
-            $adminUser = auth()->guard($adminUser->getGuard())->user();
-            $adminUser->updateLastLoginTimestamp($adminUser);
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 

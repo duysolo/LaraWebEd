@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 05/16/2016 15:19:48 PM
+ Date: 05/17/2016 00:26:27 AM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'AotA8h5pGVkVRl4PWjIVIP0EIYDldx8buvoJxbufv7UBqAU3iwfE5ukKE9RB', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-16 11:50:14', '2014-10-14 00:10:13', '2016-05-15 19:24:56');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'AotA8h5pGVkVRl4PWjIVIP0EIYDldx8buvoJxbufv7UBqAU3iwfE5ukKE9RB', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-16 23:32:05', '2014-10-14 00:10:13', '2016-05-15 19:24:56');
 COMMIT;
 
 -- ----------------------------
@@ -211,6 +211,18 @@ CREATE TABLE `coupon_user_use` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+--  Table structure for `coupon_user_use_with_tracked_times`
+-- ----------------------------
+DROP TABLE IF EXISTS `coupon_user_use_with_tracked_times`;
+CREATE TABLE `coupon_user_use_with_tracked_times` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `coupon_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `total_used` int(5) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 --  Table structure for `coupons`
 -- ----------------------------
 DROP TABLE IF EXISTS `coupons`;
@@ -232,7 +244,14 @@ CREATE TABLE `coupons` (
   `expired_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `coupons`
+-- ----------------------------
+BEGIN;
+INSERT INTO `coupons` VALUES ('1', '1', 'SIQPOXHNR2', 'Happy new year 2016', '0', '0', '-1', '-1', '0', '0', '', '1', '1', '2016-05-16 23:51:50', '2016-05-16 23:51:29', '2016-05-16 23:51:50');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `field_groups`

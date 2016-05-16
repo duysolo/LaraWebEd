@@ -40,7 +40,12 @@
                     total_quantity: {
                         required: true,
                         number: true,
-                        min: 0
+                        min: -1
+                    },
+                    each_user_can_use: {
+                        required: true,
+                        number: true,
+                        min: -1
                     },
                     apply_for_min_price: {
                         required: true,

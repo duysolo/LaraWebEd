@@ -74,13 +74,6 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
         return $user;
     }
 
-    public function updateLastLoginTimestamp(AdminUser $user)
-    {
-        $user->last_login_at = date('Y-m-d H:i:s');
-        $user->timestamps = false;
-        return $user->save();
-    }
-
     public static function getUserById($id, $options = [])
     {
         $options = (array)$options;

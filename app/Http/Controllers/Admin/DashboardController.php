@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Event;
+use App\Events;
 use App\Models;
 use Illuminate\Http\Request;
 
