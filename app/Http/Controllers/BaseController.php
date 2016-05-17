@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\BaseTrait\FlashMessages;
+use App\Http\Controllers\BaseFoundation\FlashMessages;
 
 use App\Models;
 

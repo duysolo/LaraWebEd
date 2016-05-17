@@ -6,9 +6,9 @@ use App\Models;
 use App\Models\AbstractModel;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\MyInterface;
+use App\Models\Contracts;
 
-class Category extends AbstractModel implements MyInterface\MultiLanguageInterface
+class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 {
     public function __construct()
     {

@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Admin\AdminTrait;
+<?php namespace App\Http\Controllers\Admin\AdminFoundation;
 
 trait CustomFields
 {

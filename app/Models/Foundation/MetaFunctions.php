@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\MyTrait;
+namespace App\Models\Foundation;
 
 use App\Models;
 
@@ -28,7 +28,7 @@ trait MetaFunctions {
 
     public static function checkContentMetaExists($content_id, $key)
     {
-        $meta = static::where(['content_id' => $content_id, 'meta_key' => $key])->first();
+        $meta = static::getBy(['content_id' => $content_id, 'meta_key' => $key]);
         if(!$meta) return false;
         return true;
     }
@@ -63,6 +63,15 @@ trait MetaFunctions {
         $post_meta = static::getBy([
             'content_id' => $content_id,
             'meta_key' => $key
+        ]);
+        if(!$post_meta) return true;
+        return $post_meta->delete();
+    }
+
+    public static function deleteAllContentMeta($content_id)
+    {
+        $post_meta = static::getBy([
+            'content_id' => $content_id
         ]);
         if(!$post_meta) return true;
         return $post_meta->delete();

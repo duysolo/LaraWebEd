@@ -1,6 +1,6 @@
 <?php namespace App\Http\Middleware\RolesTrait;
 
-use App\Http\Controllers\BaseTrait\FlashMessages;
+use App\Http\Controllers\BaseFoundation\FlashMessages;
 use App\Models\AdminUser;
 use Closure;
 

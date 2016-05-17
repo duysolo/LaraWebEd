@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: TedoziManson
- * Date: 5/13/16
- * Time: 14:46
- */
-
-namespace App\Models\MyInterface;
+namespace App\Models\Contracts;
 
 
 interface MultiLanguageInterface

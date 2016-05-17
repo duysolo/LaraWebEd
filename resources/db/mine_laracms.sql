@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 05/17/2016 00:26:27 AM
+ Date: 05/17/2016 11:13:32 AM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'AotA8h5pGVkVRl4PWjIVIP0EIYDldx8buvoJxbufv7UBqAU3iwfE5ukKE9RB', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-16 23:32:05', '2014-10-14 00:10:13', '2016-05-15 19:24:56');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'AotA8h5pGVkVRl4PWjIVIP0EIYDldx8buvoJxbufv7UBqAU3iwfE5ukKE9RB', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-17 09:04:14', '2014-10-14 00:10:13', '2016-05-17 09:04:14');
 COMMIT;
 
 -- ----------------------------
@@ -400,7 +400,14 @@ CREATE TABLE `page_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `page_contents`
+-- ----------------------------
+BEGIN;
+INSERT INTO `page_contents` VALUES ('8', '1', '1', 'Homepage', 'homepage', '', '', '1', '', '', '0', '2016-05-17 10:57:38', '2016-05-17 10:57:38');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `page_metas`
@@ -428,7 +435,14 @@ CREATE TABLE `pages` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+--  Records of `pages`
+-- ----------------------------
+BEGIN;
+INSERT INTO `pages` VALUES ('1', 'Homepage', 'Homepage', '1', '0', '0', '2016-05-17 10:57:38', '2016-05-17 10:57:38');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `post_contents`
@@ -649,7 +663,7 @@ CREATE TABLE `users` (
 --  Records of `users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` VALUES ('28', 'test@test.com', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', 'Tedozi', 'Manson', '0', '', '0000-00-00 00:00:00', null, '', '', '', '', '0', null, null, null, 'I1BJRdhDSLIYdTp6fgt2vOBuqTrdUB1ZwonGwAfEZL8imFVtw7LpAvtd7zSK', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2016-05-15 19:39:23', '2016-05-15 20:19:47');
+INSERT INTO `users` VALUES ('28', 'test@test.com', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', 'Tedozi', 'Manson', '0', '', '0000-00-00 00:00:00', null, '', '', '', '', '0', null, null, null, 'o8DpCCXwTNrE23VwWfLFTwL9Ev6gCEoJ1TOla4ddcgs2pApXdTC40dlv9SIL', '', '0000-00-00 00:00:00', '2016-05-17 00:43:35', '2016-05-15 19:39:23', '2016-05-17 00:43:35');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

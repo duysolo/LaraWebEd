@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\BaseTrait;
+<?php namespace App\Http\Controllers\BaseFoundation;
 
 trait FlashMessages
 {

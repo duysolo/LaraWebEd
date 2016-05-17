@@ -1,12 +1,14 @@
 <?php
 namespace App\Models;
 
-use App\Models\MyTrait\MetaFunctions;
+use App\Models\Contracts\HasCustomFieldsInterface;
 
-class ProductCategoryMeta extends AbstractModel
+use App\Models\Foundation\MetaFunctions;
+
+class ProductCategoryMeta extends AbstractModel implements HasCustomFieldsInterface
 {
-
     use MetaFunctions;
+    
     /**
      * The database table used by the model.
      *

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Acme;
-use App\Http\Controllers\Admin\AdminTrait\CustomFields;
+use App\Http\Controllers\Admin\AdminFoundation\CustomFields;
 use App\Models;
 use App\Models\Page;
 use App\Models\PageContent;
