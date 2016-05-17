@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 05/17/2016 11:13:32 AM
+ Date: 05/17/2016 18:30:25 PM
 */
 
 SET NAMES utf8;
@@ -382,6 +382,22 @@ INSERT INTO `menus` VALUES ('2', 'Admin menu', 'admin-menu', '1', '2014-10-25 01
 COMMIT;
 
 -- ----------------------------
+--  Table structure for `migrations`
+-- ----------------------------
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE `migrations` (
+  `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+--  Records of `migrations`
+-- ----------------------------
+BEGIN;
+INSERT INTO `migrations` VALUES ('2016_05_17_113249_create_password_resets_table', '1');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for `page_contents`
 -- ----------------------------
 DROP TABLE IF EXISTS `page_contents`;
@@ -400,13 +416,13 @@ CREATE TABLE `page_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Records of `page_contents`
 -- ----------------------------
 BEGIN;
-INSERT INTO `page_contents` VALUES ('8', '1', '1', 'Homepage', 'homepage', '', '', '1', '', '', '0', '2016-05-17 10:57:38', '2016-05-17 10:57:38');
+INSERT INTO `page_contents` VALUES ('8', '1', '1', 'Homepage', 'homepage', '', '', '1', '', '', '0', '2016-05-17 10:57:38', '2016-05-17 10:57:38'), ('9', '1', '59', 'Trang chủ', 'homepage', '', '', '1', '', '', '1', '2016-05-17 12:56:03', '2016-05-17 12:56:15');
 COMMIT;
 
 -- ----------------------------
@@ -442,6 +458,25 @@ CREATE TABLE `pages` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `pages` VALUES ('1', 'Homepage', 'Homepage', '1', '0', '0', '2016-05-17 10:57:38', '2016-05-17 10:57:38');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `password_resets`
+-- ----------------------------
+DROP TABLE IF EXISTS `password_resets`;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL,
+  KEY `password_resets_email_index` (`email`),
+  KEY `password_resets_token_index` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+--  Records of `password_resets`
+-- ----------------------------
+BEGIN;
+INSERT INTO `password_resets` VALUES ('duyphan.developer@gmail.com', '9c93b46d12c9dd8fc24b3b02b7a47afe83f4fd5d9de80b301d89273975376980', '2016-05-17 18:03:02');
 COMMIT;
 
 -- ----------------------------
@@ -625,7 +660,7 @@ CREATE TABLE `settings` (
 --  Records of `settings`
 -- ----------------------------
 BEGIN;
-INSERT INTO `settings` VALUES ('1', 'email_receives_feedback', 'duyphan.developer@gmail.com', '2015-11-24 16:31:17', '2015-11-24 16:31:20'), ('2', 'site_title', 'LaraWebEd', '2015-12-17 07:51:37', '2016-04-16 22:53:42'), ('3', 'site_logo', '', '2015-12-17 07:51:52', '2016-01-21 06:06:24'), ('4', 'site_keywords', 'Site vui, vui, haivl,Một người khỏe hai người vui', '2015-12-17 07:52:21', '2016-01-21 01:40:32'), ('5', 'default_language', '59', '2015-12-17 07:53:12', '2016-05-12 00:44:04'), ('6', 'google_analytics', '<script></script>', '2015-11-24 16:35:03', '2015-11-25 00:07:38'), ('7', 'construction_mode', '0', '2015-11-24 16:36:20', '2016-01-26 10:04:50'), ('8', 'site_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2016-01-21 01:40:32', '2016-01-21 01:52:35'), ('9', 'default_homepage', '1', '2016-01-21 14:11:32', '2016-01-21 14:11:34'), ('10', 'show_admin_bar', '1', '2016-01-26 10:00:54', '2016-01-26 10:05:42'), ('11', 'google_captcha_site_key', '6Lfy4hYTAAAAABIGAFmHHScJ_lUZR7UuzD7MoXDO', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('12', 'google_captcha_secret_key', '6Lfy4hYTAAAAAGTRaZggVzW_PAyVxmGguw8uSWyH', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('13', 'dashboard_language', '1', '2016-05-14 18:53:01', '2016-05-14 18:53:01');
+INSERT INTO `settings` VALUES ('1', 'email_receives_feedback', 'duyphan.developer@gmail.com', '2015-11-24 16:31:17', '2015-11-24 16:31:20'), ('2', 'site_title', 'LaraWebEd', '2015-12-17 07:51:37', '2016-04-16 22:53:42'), ('3', 'site_logo', '', '2015-12-17 07:51:52', '2016-01-21 06:06:24'), ('4', 'site_keywords', 'Site vui, vui, haivl,Một người khỏe hai người vui', '2015-12-17 07:52:21', '2016-01-21 01:40:32'), ('5', 'default_language', '1', '2015-12-17 07:53:12', '2016-05-17 12:47:07'), ('6', 'google_analytics', '<script></script>', '2015-11-24 16:35:03', '2015-11-25 00:07:38'), ('7', 'construction_mode', '0', '2015-11-24 16:36:20', '2016-01-26 10:04:50'), ('8', 'site_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2016-01-21 01:40:32', '2016-01-21 01:52:35'), ('9', 'default_homepage', '1', '2016-01-21 14:11:32', '2016-01-21 14:11:34'), ('10', 'show_admin_bar', '1', '2016-01-26 10:00:54', '2016-01-26 10:05:42'), ('11', 'google_captcha_site_key', '6Lfy4hYTAAAAABIGAFmHHScJ_lUZR7UuzD7MoXDO', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('12', 'google_captcha_secret_key', '6Lfy4hYTAAAAAGTRaZggVzW_PAyVxmGguw8uSWyH', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('13', 'dashboard_language', '1', '2016-05-14 18:53:01', '2016-05-14 18:53:01');
 COMMIT;
 
 -- ----------------------------
@@ -663,7 +698,7 @@ CREATE TABLE `users` (
 --  Records of `users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` VALUES ('28', 'test@test.com', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', 'Tedozi', 'Manson', '0', '', '0000-00-00 00:00:00', null, '', '', '', '', '0', null, null, null, 'o8DpCCXwTNrE23VwWfLFTwL9Ev6gCEoJ1TOla4ddcgs2pApXdTC40dlv9SIL', '', '0000-00-00 00:00:00', '2016-05-17 00:43:35', '2016-05-15 19:39:23', '2016-05-17 00:43:35');
+INSERT INTO `users` VALUES ('28', 'duyphan.developer@gmail.com', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', 'Tedozi', 'Manson', '0', '', '0000-00-00 00:00:00', null, '', '', '', '', '0', null, null, null, 'o8DpCCXwTNrE23VwWfLFTwL9Ev6gCEoJ1TOla4ddcgs2pApXdTC40dlv9SIL', '', '0000-00-00 00:00:00', '2016-05-17 00:43:35', '2016-05-15 19:39:23', '2016-05-17 00:43:35');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
