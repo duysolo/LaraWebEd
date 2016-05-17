@@ -39,9 +39,6 @@ class GlobalActionsController extends BaseFrontController
             $this->_showFlashMessages();
         }
 
-        /*Send email*/
-        //$this->_sendEmail('front.emails.contact-us', $data);
-
         return redirect()->back();
     }
 }
