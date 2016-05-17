@@ -155,9 +155,9 @@ abstract class BaseController extends Controller
         return $data;
     }
 
-    protected function _sendEmail($view, $data, $cc = [], $bcc = [])
+    protected function _sendFeedbackEmail($view, $subject, $data, $cc = [], $bcc = [])
     {
-        return _sendEmail($view, $data, [
+        return _sendEmail($view, $subject, $data, [
             [
                 'name' => $this->_getSetting('site_title'),
                 'email' => $this->_getSetting('email_receives_feedback'),

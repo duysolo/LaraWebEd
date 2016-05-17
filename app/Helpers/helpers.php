@@ -50,17 +50,17 @@ function _validateGoogleCaptcha($secret, $response = null)
     return $result->success;
 }
 
-function _sendEmail($view, $data, $to = [], $cc = [], $bcc = [])
+function _sendEmail($view, $subject, $data, $to = [], $cc = [], $bcc = [])
 {
-    return \Mail::send($view, $data, function ($message) use ($to, $cc, $bcc) {
+    return \Mail::send($view, $data, function ($message) use ($subject, $to, $cc, $bcc) {
         foreach ($to as $key => $row) {
-            $message->to($row['email'], $row['name']);
+            $message->to($row['email'], $row['name'])->subject($subject);
         }
         foreach ($cc as $key => $row) {
-            $message->cc($row['email'], $row['name']);
+            $message->cc($row['email'], $row['name'])->subject($subject);
         }
         foreach ($bcc as $key => $row) {
-            $message->bcc($row['email'], $row['name']);
+            $message->bcc($row['email'], $row['name'])->subject($subject);
         }
     });
 }

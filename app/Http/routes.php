@@ -108,6 +108,7 @@ $router->group(['middleware' => ['web']], function ($router) {
             app()->setLocale($currentLanguage->default_locale);
 
             $router->controller('auth', 'AuthController');
+            $router->controller('password', 'PasswordController');
 
             $router->controller('global-actions', 'GlobalActionsController');
 

@@ -104,13 +104,7 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'email' => 'auth.emails.password',
-            'table' => 'password_resets',
-            'expire' => 60,
-        ],
-        'admin-users' => [
-            'provider' => 'admin-users',
-            'email' => 'auth.emails.password',
+            'email' => 'front.auth.emails.password',
             'table' => 'password_resets',
             'expire' => 60,
         ],
