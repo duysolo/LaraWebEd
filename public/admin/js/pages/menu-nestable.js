@@ -205,9 +205,14 @@ var MenuNestable = function () {
 
             // Submit
             $body.on('submit', '.form-save-menu', function(event){
-                var nestable_obj_returned = create_serialize_obj($('#nestable'));
-                var the_obj = update_position_for_serialized_obj(nestable_obj_returned);
-                $('#nestable-output').val(JSON.stringify(the_obj));
+                var $nestableMenu = $('#nestable');
+                if($nestableMenu.length < 1) {
+                    $('#nestable-output').val('[]');
+                } else {
+                    var nestable_obj_returned = create_serialize_obj($nestableMenu);
+                    var the_obj = update_position_for_serialized_obj(nestable_obj_returned);
+                    $('#nestable-output').val(JSON.stringify(the_obj));
+                }
             });
         }
     };

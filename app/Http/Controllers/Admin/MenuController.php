@@ -157,11 +157,12 @@ class MenuController extends BaseAdminController
         if(!$menu) {
             $menu = new Menu();
             $menuContent = null;
+        } else {
+            $menuContent = $objectContent->findByFieldsOrCreate([
+                'menu_id' => $menu->id,
+                'language_id' => $language
+            ]);
         }
-        $menuContent = $objectContent->findByFieldsOrCreate([
-            'menu_id' => $menu->id,
-            'language_id' => $language
-        ]);
 
         $this->_setPageTitle('Menu', $menu->title);
 
@@ -242,6 +243,8 @@ class MenuController extends BaseAdminController
 
     private function _getMenuNodes($menu_content_id, $parent_id)
     {
+        if (!$menu_content_id) return [];
+
         $menu_nodes = MenuNode::getBy([
             'menu_content_id' => $menu_content_id,
             'parent_id' => $parent_id
@@ -251,6 +254,7 @@ class MenuController extends BaseAdminController
 
     private function _getNestableMenuSrc($menu, $parent_id)
     {
+        if(!$menu) return '';
         $menu_nodes = $this->_getMenuNodes($menu->id, $parent_id);
         $html_src = '';
         $html_src .= '<ol class="dd-list">';
@@ -367,7 +371,7 @@ class MenuController extends BaseAdminController
 
     private function _recursiveSaveMenu($json_arr, $menu_content_id, $parent_id)
     {
-        foreach ($json_arr as $key => $row) {
+        foreach ((array)$json_arr as $key => $row) {
             $parent = $this->_saveMenuNode($row, $menu_content_id, $parent_id);
             if ($parent != null) {
                 if (!empty($row->children)) {

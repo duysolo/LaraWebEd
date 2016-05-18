@@ -111,6 +111,7 @@
             </div>
         </div>
     </form>
+    @if(isset($object) && $object->id)
     <div class="row">
         <div class="col-md-4">
             <div class="portlet light bordered">
@@ -239,10 +240,11 @@
                 </div>
                 <div class="portlet-body">
                     <div class="dd nestable-menu" id="nestable" data-depth="0">
-                        {!! $nestableMenuSrc !!}
+                        {!! $nestableMenuSrc or '' !!}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @endif
 @endsection
