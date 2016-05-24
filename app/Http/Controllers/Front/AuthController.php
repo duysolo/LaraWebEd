@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
+use Illuminate\Http\Request;
+
 class AuthController extends BaseFrontController
 {
     /*
@@ -22,7 +24,7 @@ class AuthController extends BaseFrontController
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    var $username, $loginPath, $redirectTo, $redirectPath, $redirectToLoginPage;
+    var $username, $loginPath, $redirectPath, $redirectToLoginPage;
 
     /**
      * Create a new authentication controller instance.
@@ -34,34 +36,17 @@ class AuthController extends BaseFrontController
         parent::__construct();
 
         $this->username = 'email';
-        $this->loginPath = 'auth';
 
         /**
          * Where to redirect users after login / registration.
          *
          * @var string
          */
-        $this->redirectTo = '/'.$this->currentLanguageCode;
+        $this->redirectPath = $this->_getHomepageLink();
 
-        $this->redirectPath = '/'.$this->currentLanguageCode;
         $this->redirectToLoginPage = '/'.$this->currentLanguageCode.'/auth/login';
 
-        $this->middleware('guest', ['except' => ['getLogout', 'postLogin', 'getLogin']]);
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        $this->middleware('guest', ['except' => ['getLogout']]);
     }
 
     /**
@@ -72,16 +57,75 @@ class AuthController extends BaseFrontController
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = new User();
+        $result = $user->fastEdit([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+        ], true, false);
+        return $result;
+    }
+
+    public function postRegister(Request $request, User $object)
+    {
+        $data = [
+            'first_name' => $request->get('first_name', null),
+            'last_name' => $request->get('last_name', null),
+            'email' => $request->get('email', null),
+            'sex' => $request->get('sex', 0),
+            'password' => $request->get('password', null),
+            'password_confirmation' => $request->get('password_confirmation', null),
+            'status' => 1
+        ];
+
+        $validate = $this->_validateRegister($data);
+
+        if(!$validate)
+        {
+            return redirect()->back()->withInput();
+        }
+
+        $data['password'] = bcrypt($data['password']);
+        $result = $object->fastEdit($data, true, false);
+
+        if($result['error'])
+        {
+            $this->_setFlashMessage($result['message'], 'error');
+            $this->_showFlashMessages();
+
+            return redirect()->back()->withInput();
+        }
+
+        auth($this->getGuard())->login($result['object']);
+
+        $this->_setFlashMessage('You now logged in', 'success');
+
+        $this->_showFlashMessages();
+
+        return redirect($this->redirectPath());
+    }
+
+    private function _validateRegister($data)
+    {
+        $validateUser = new User();
+        $validateUser->extendRules([
+            'password' => 'string|required|between:5,32|confirmed'
         ]);
+        if(!$validateUser->validateData($data))
+        {
+            $errors = $validateUser->getErrors();
+            $this->_setFlashMessage($errors, 'error');
+            $this->_showFlashMessages();
+            return false;
+        }
+        return true;
     }
 
     public function getLogin(User $user)
     {
         auth()->logout();
+
+        $this->_setPageTitle('Login');
 
         $this->_loadFrontMenu();
         
@@ -90,7 +134,7 @@ class AuthController extends BaseFrontController
 
     protected function authenticated()
     {
-        return redirect()->to($this->redirectTo);
+        return redirect($this->redirectPath());
     }
 
     public function getLogout(User $user)
@@ -99,5 +143,12 @@ class AuthController extends BaseFrontController
         $this->_setFlashMessage('You now logged out', 'info');
         $this->_showFlashMessages();
         return redirect()->to($this->redirectToLoginPage);
+    }
+
+    public function getRegister()
+    {
+        $this->_setPageTitle('Register');
+        $this->_loadFrontMenu();
+        return $this->_viewFront('auth.register');
     }
 }

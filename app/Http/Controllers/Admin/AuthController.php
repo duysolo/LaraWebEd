@@ -139,4 +139,15 @@ class AuthController extends BaseController
         }
         return false;
     }
+
+    /*Disable register*/
+    public function getRegister()
+    {
+        return redirect()->back();
+    }
+
+    public function postRegister()
+    {
+        return redirect()->back();
+    }
 }

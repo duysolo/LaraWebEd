@@ -39,14 +39,14 @@ class User extends AbstractModel implements AuthenticatableContract, Authorizabl
     protected $rules = [
         'email' => 'required|email|unique:users',
         'status' => 'integer',
-        'password' => 'string',
-        'first_name' => 'string|required',
-        'last_name' => 'string',
-        'sex' => 'integer|required',
+        'password' => 'string|required',
+        'first_name' => 'string|required|max:255',
+        'last_name' => 'string|max:255',
+        'sex' => 'integer|required|between:0,2',
         'description' => 'string|between:0,5000',
         'address' => 'string',
         'avatar' => 'string',
-        'phone' => 'numeric|required',
+        'phone' => 'numeric',
         'phone_2' => 'numeric',
         'phone_3' => 'numeric',
     ];
@@ -71,5 +71,10 @@ class User extends AbstractModel implements AuthenticatableContract, Authorizabl
     {
         $user = static::getBy(['email' => $email]);
         return $user;
+    }
+
+    public function getUserName()
+    {
+        return $this->first_name.' '.$this->last_name;
     }
 }

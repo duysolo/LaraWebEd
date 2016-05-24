@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 05/17/2016 18:30:25 PM
+ Date: 05/25/2016 00:42:18 AM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'AotA8h5pGVkVRl4PWjIVIP0EIYDldx8buvoJxbufv7UBqAU3iwfE5ukKE9RB', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-17 09:04:14', '2014-10-14 00:10:13', '2016-05-17 09:04:14');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'y058f5sx1JyoztWMReNfEMoUz7HzizQZtRCtMG77ai5idtXE0jUejb9QRtXX', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-24 22:57:56', '2014-10-14 00:10:13', '2016-05-24 22:57:56');
 COMMIT;
 
 -- ----------------------------
@@ -267,7 +267,7 @@ CREATE TABLE `field_groups` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `field_items`
@@ -284,7 +284,7 @@ CREATE TABLE `field_items` (
   `instructions` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `options` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Table structure for `languages`
@@ -473,13 +473,6 @@ CREATE TABLE `password_resets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
---  Records of `password_resets`
--- ----------------------------
-BEGIN;
-INSERT INTO `password_resets` VALUES ('duyphan.developer@gmail.com', '9c93b46d12c9dd8fc24b3b02b7a47afe83f4fd5d9de80b301d89273975376980', '2016-05-17 18:03:02');
-COMMIT;
-
--- ----------------------------
 --  Table structure for `post_contents`
 -- ----------------------------
 DROP TABLE IF EXISTS `post_contents`;
@@ -498,7 +491,14 @@ CREATE TABLE `post_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=220 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=221 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `post_contents`
+-- ----------------------------
+BEGIN;
+INSERT INTO `post_contents` VALUES ('220', '7', '1', 'Test', 'test', '', '', '1', '', '', '0', '2016-05-24 00:01:47', '2016-05-24 00:01:47');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `post_metas`
@@ -526,7 +526,14 @@ CREATE TABLE `posts` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+--  Records of `posts`
+-- ----------------------------
+BEGIN;
+INSERT INTO `posts` VALUES ('7', 'Test', '', '1', '0', '1', '2016-05-24 00:01:47', '2016-05-24 00:01:47');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `product_categories`
@@ -692,13 +699,6 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
-
--- ----------------------------
---  Records of `users`
--- ----------------------------
-BEGIN;
-INSERT INTO `users` VALUES ('28', 'duyphan.developer@gmail.com', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', 'Tedozi', 'Manson', '0', '', '0000-00-00 00:00:00', null, '', '', '', '', '0', null, null, null, 'o8DpCCXwTNrE23VwWfLFTwL9Ev6gCEoJ1TOla4ddcgs2pApXdTC40dlv9SIL', '', '0000-00-00 00:00:00', '2016-05-17 00:43:35', '2016-05-15 19:39:23', '2016-05-17 00:43:35');
-COMMIT;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 SET FOREIGN_KEY_CHECKS = 1;

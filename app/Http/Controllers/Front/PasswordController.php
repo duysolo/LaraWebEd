@@ -28,6 +28,8 @@ class PasswordController extends BaseFrontController
 
     protected $subject = 'Your password reset link';
 
+    protected $redirectPath;
+
     /**
      * Create a new password controller instance.
      *
@@ -38,6 +40,8 @@ class PasswordController extends BaseFrontController
         $this->middleware('guest');
 
         parent::__construct();
+
+        $this->redirectPath = $this->_getHomepageLink();
     }
 
     public function getEmail()
@@ -49,4 +53,41 @@ class PasswordController extends BaseFrontController
     //postEmail
     //getReset
     //postReset
+
+    protected function getResetValidationRules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|between:5,32',
+        ];
+    }
+
+    /**
+     * Get the response for after a successful password reset.
+     *
+     * @param  string  $response
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function getResetSuccessResponse($response)
+    {
+        $this->_setFlashMessage(trans($response), 'success');
+        $this->_showFlashMessages();
+        return redirect($this->redirectPath());
+    }
+
+    /**
+     * Get the response for after a failing password reset.
+     *
+     * @param  Request  $request
+     * @param  string  $response
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function getResetFailureResponse(Request $request, $response)
+    {
+        $this->_setFlashMessage(trans($response), 'success');
+        $this->_showFlashMessages();
+        return redirect()->back()
+            ->withInput($request->only('email'));
+    }
 }

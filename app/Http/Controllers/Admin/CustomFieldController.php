@@ -264,6 +264,8 @@ class CustomFieldController extends BaseAdminController
         $options = [
             'pages' => $this->_getAllPages(),
             'page_templates' => _getPageTemplate('Page'),
+            'post_templates' => _getPageTemplate('Post'),
+            'product_templates' => _getPageTemplate('Product'),
             'category_templates' => _getPageTemplate('Category'),
             'product_category_templates' => _getPageTemplate('ProductCategory'),
             'users' => $this->_getAllUsers(),
@@ -307,6 +309,7 @@ class CustomFieldController extends BaseAdminController
 
                 // Post group
                 $html_src .= '<optgroup label="Post">';
+                $html_src .= '<option value="post_template" ' . (($value_options->rel_name == 'post_template') ? 'selected="selected"' : '') . '>Post Template</option>';
                 // Category
                 $html_src .= '<option value="category_id" ' . (($value_options->rel_name == 'category_id') ? 'selected="selected"' : '') . '>Category</option>';
                 // Category template
@@ -317,6 +320,7 @@ class CustomFieldController extends BaseAdminController
 
                 // Product group
                 $html_src .= '<optgroup label="Product">';
+                $html_src .= '<option value="product_template" ' . (($value_options->rel_name == 'product_template') ? 'selected="selected"' : '') . '>Product Template</option>';
                 // Product Category
                 $html_src .= '<option value="product_category_id" ' . (($value_options->rel_name == 'product_category_id') ? 'selected="selected"' : '') . '>Product Category</option>';
                 // Product Category template
@@ -388,6 +392,20 @@ class CustomFieldController extends BaseAdminController
                 }
                 $html_src .= '</select>';
 
+                /*Rule: post template*/
+                $html_src .= '<select name="" class="form-control rule-b hidden" id="" data-rel="post_template">';
+                foreach ($options['post_templates'] as $row) {
+                    $html_src .= '<option value="' . $row . '" ' . (($value_options->rel_name == 'post_template' && $value_options->rel_value == $row) ? 'selected="selected"' : '') . '>' . $row . '</option>';
+                }
+                $html_src .= '</select>';
+
+                /*Rule: product template*/
+                $html_src .= '<select name="" class="form-control rule-b hidden" id="" data-rel="product_template">';
+                foreach ($options['product_templates'] as $row) {
+                    $html_src .= '<option value="' . $row . '" ' . (($value_options->rel_name == 'product_template' && $value_options->rel_value == $row) ? 'selected="selected"' : '') . '>' . $row . '</option>';
+                }
+                $html_src .= '</select>';
+
                 /*Rule: specific user*/
                 $html_src .= '<select name="" class="form-control rule-b hidden" id="" data-rel="scf_user">';
                 foreach ($options['users'] as $row) {
@@ -440,13 +458,14 @@ class CustomFieldController extends BaseAdminController
             $html_src .= '<option value="page_template">Page Template</option>';
             $html_src .= '</optgroup>';
             $html_src .= '<optgroup label="Post">';
+            $html_src .= '<option value="post_template">Post Template</option>';
             $html_src .= '<option value="category_id">Category</option>';
             $html_src .= '<option value="category_template">Category Template</option>';
             $html_src .= '<option value="post_with_related_category_id">Post with related category</option>';
             $html_src .= '</optgroup>';
             $html_src .= '<optgroup label="Product">';
+            $html_src .= '<option value="product_template">Product Template</option>';
             $html_src .= '<option value="product_category_id">Product Category</option>';
-            $html_src .= '<option value="product_category_template">Product Category Template</option>';
             $html_src .= '<option value="product_category_template">Product Category Template</option>';
             $html_src .= '<option value="product_with_related_product_category_id">Product with related category</option>';
             $html_src .= '</optgroup>';
@@ -508,6 +527,20 @@ class CustomFieldController extends BaseAdminController
             /*Rule: page template*/
             $html_src .= '<select name="" class="form-control rule-b hidden" id="" data-rel="page_template">';
             foreach ($options['page_templates'] as $key => $row) {
+                $html_src .= '<option value="' . $row . '">' . $row . '</option>';
+            }
+            $html_src .= '</select>';
+
+            /*Rule: post template*/
+            $html_src .= '<select name="" class="form-control rule-b hidden" id="" data-rel="post_template">';
+            foreach ($options['post_templates'] as $key => $row) {
+                $html_src .= '<option value="' . $row . '">' . $row . '</option>';
+            }
+            $html_src .= '</select>';
+
+            /*Rule: product template*/
+            $html_src .= '<select name="" class="form-control rule-b hidden" id="" data-rel="product_template">';
+            foreach ($options['product_templates'] as $key => $row) {
                 $html_src .= '<option value="' . $row . '">' . $row . '</option>';
             }
             $html_src .= '</select>';

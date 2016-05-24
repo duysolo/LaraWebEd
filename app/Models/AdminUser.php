@@ -49,6 +49,7 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
 
     protected $rules = [
         'username' => 'required|between:5,50|string|unique:admin_users',
+        'password' => 'string|required',
         'status' => 'integer|required',
         'user_role_id' => 'integer|required',
     ];
@@ -61,17 +62,6 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
     public function adminUserRole()
     {
         return $this->belongsTo('App\Models\AdminUserRole', 'user_role_id');
-    }
-
-    public static function authenticate($username, $password)
-    {
-        $user = static::getBy([
-            'username' => $username,
-            'status' => 1
-        ]);
-        if (!$user) return null;
-        if (!Hash::check($password, $user->password)) return null;
-        return $user;
     }
 
     public static function getUserById($id, $options = [])
@@ -140,6 +130,7 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
         }
 
         $data['password'] = bcrypt($data['password']);
+        $data['username'] = str_slug($data['username'], '_');
         $data['status'] = 1;
         $data['user_role_id'] = 3;
 

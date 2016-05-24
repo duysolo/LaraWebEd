@@ -13,11 +13,21 @@ abstract class AbstractModel extends Model
         parent::__construct();
     }
 
-    protected $errors = null, $editableFields = [], $rules = array();
+    protected $errors = null, $editableFields = [], $rules = [];
 
     public function getEditableFields()
     {
         return $this->editableFields;
+    }
+
+    public function setRules(array $rules)
+    {
+        $this->rules = $rules;
+    }
+
+    public function extendRules(array $rules)
+    {
+        $this->rules = array_merge($this->rules, $rules);
     }
 
     /**

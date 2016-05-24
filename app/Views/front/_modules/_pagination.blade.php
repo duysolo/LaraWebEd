@@ -8,10 +8,10 @@ $paginator->appends($queryStringArray);
 @if ($paginator->lastPage() > 1)
 <div class="clearfix pager-wrapper">
     <ul class="pagination">
-        <li class="{{ ($paginator->currentPage() == 1) ? ' disabled' : '' }}">
+        <li class="{{ ($paginator->currentPage() == 1) ? ' disabled' : '' }} go-first">
             <a href="{{ $paginator->url(1) }}" class="arrow">&laquo;</a>
         </li>
-        <li class="{{ (!$paginator->previousPageUrl()) ? ' disabled' : '' }}">
+        <li class="{{ (!$paginator->previousPageUrl()) ? ' disabled' : '' }} previous">
             <a href="{{ $paginator->previousPageUrl() }}" class="arrow">&lsaquo;</a>
         </li>
         @for ($i = 1; $i <= $paginator->lastPage(); $i++)
@@ -32,10 +32,10 @@ $paginator->appends($queryStringArray);
             </li>
         @endif
         @endfor
-        <li class="{{ (!$paginator->nextPageUrl()) ? ' disabled' : '' }}">
+        <li class="{{ (!$paginator->nextPageUrl()) ? ' disabled' : '' }} next">
             <a href="{{ $paginator->nextPageUrl() }}" class="arrow">&rsaquo;</a>
         </li>
-        <li class="{{ ($paginator->currentPage() == $paginator->lastPage()) ? ' disabled' : '' }}">
+        <li class="{{ ($paginator->currentPage() == $paginator->lastPage()) ? ' disabled' : '' }} go-last">
             <a href="{{ $paginator->url($paginator->lastPage()) }}" class="arrow">&raquo;</a>
         </li>
     </ul>

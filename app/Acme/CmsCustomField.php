@@ -27,6 +27,13 @@ class CmsCustomField
     // Get options
     public function getOptionHtml($type, $options, $current_id = 0)
     {
+        if(!property_exists($options, 'defaultvalue')) $options->defaultvalue = '';
+        if(!property_exists($options, 'placeholdertext')) $options->placeholdertext = '';
+        if(!property_exists($options, 'defaultvaluetextarea')) $options->defaultvaluetextarea = '';
+        if(!property_exists($options, 'wyswygtoolbar')) $options->wyswygtoolbar = 'basic';
+        if(!property_exists($options, 'selectchoices')) $options->selectchoices = '';
+        if(!property_exists($options, 'buttonlabel')) $options->buttonlabel = '';
+        
         $html_src = '';
         $defaultvalue = '<div class="line" data-option="defaultvalue"><div class="col-xs-3"><h5>Default Value</h5><p>Appears when creating a new post</p></div><div class="col-xs-9"><input type="text" class="form-control" placeholder="" value="' . $options->defaultvalue . '"></div><div class="clearfix"></div></div>';
         $placeholdertext = '<div class="line" data-option="placeholdertext"><div class="col-xs-3"><h5>Placeholder Text</h5><p>Appears within the input</p></div><div class="col-xs-9"><input type="text" class="form-control" placeholder="" value="' . $options->placeholdertext . '"></div><div class="clearfix"></div></div>';

@@ -9,6 +9,7 @@ class CmsMenu
      * Construct
      */
     var $localeObj, $languageCode;
+
     public function __construct()
     {
 
@@ -118,8 +119,7 @@ class CmsMenu
                 );
                 $activeClass = $this->getActiveItems($active_args);
                 if ($this->checkChildItemIsActive(array('parent' => $row, 'menuActive' => $item_args['menuActive'], 'defaultActiveClass' => $item_args['defaultActiveClass'], 'isAdminMenu' => $item_args['isAdminMenu'])) == true) {
-                    if(trim($activeClass) == '')
-                    {
+                    if (trim($activeClass) == '') {
                         $activeClass = ' current-parent-item';
                         if ($item_args['isAdminMenu'] == true) {
                             $activeClass .= ' active';
@@ -158,9 +158,10 @@ class CmsMenu
                         $menu_icon .= $arrow;
                     }
                 } else {
-                    if($row->icon_font) {
+                    if ($row->icon_font) {
                         $menu_icon = '<i class="' . $row->icon_font . '"></i>' . $menu_icon;
                     }
+                    $menu_icon = '<span>' . $menu_icon . '</span>';
                 }
 
                 $output .= '<' . $item_args['childTag'] . ' class="' . $parent_class . ' ' . $activeClass . '">'; #<li>
@@ -179,38 +180,61 @@ class CmsMenu
         $temp = $args['menuActive'];
         $result = '';
         if ($args['item']->type == $args['menuActive']['type']) {
-            switch ($args['menuActive']['type']) {
-                case 'category': {
-                    if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                        $result = $args['defaultActiveClass'];
-                    }
-                }
-                    break;
-                case 'product-category': {
-                    if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                        $result = $args['defaultActiveClass'];
-                    }
-                }
-                    break;
-                case 'custom-link': {
-                    $currentUrl = \Request::url();
-                    if ($args['isAdminMenu']) {
-                        if ($args['menuActive']['related_id'] == $args['item']->url) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    } else {
-                        if (asset($args['item']->url) == asset($currentUrl) || asset($args['item']->url) == asset($currentUrl . '/')) {
+            if (is_array($args['menuActive']['related_id'])) {
+                switch ($args['menuActive']['type']) {
+                    case 'category': {
+                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
                             $result = $args['defaultActiveClass'];
                         }
                     }
-                }
-                    break;
-                default: {
-                    if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                        $result = $args['defaultActiveClass'];
+                        break;
+                    case 'product-category': {
+                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
+                            $result = $args['defaultActiveClass'];
+                        }
                     }
+                        break;
+                    default: {
+                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
+                            $result = $args['defaultActiveClass'];
+                        }
+                    }
+                        break;
                 }
-                    break;
+            } else {
+                switch ($args['menuActive']['type']) {
+                    case 'category': {
+                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
+                            $result = $args['defaultActiveClass'];
+                        }
+                    }
+                        break;
+                    case 'product-category': {
+                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
+                            $result = $args['defaultActiveClass'];
+                        }
+                    }
+                        break;
+                    case 'custom-link': {
+                        $currentUrl = \Request::url();
+                        if ($args['isAdminMenu']) {
+                            if ($args['menuActive']['related_id'] == $args['item']->url) {
+                                $result = $args['defaultActiveClass'];
+                            }
+                        } else {
+                            if (asset($args['item']->url) == asset($currentUrl) || asset($args['item']->url) == asset($currentUrl . '/')) {
+                                $result = $args['defaultActiveClass'];
+                            }
+                        }
+                    }
+                        break;
+                    default: {
+                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
+                            $result = $args['defaultActiveClass'];
+                        }
+                    }
+                        break;
+                }
             }
         }
         return $result;
@@ -360,16 +384,12 @@ class CmsMenu
                         'value' => $this->localeObj->id
                     ]
                 ]);
-                if($cat)
-                {
+                if ($cat) {
                     $data_slug = ($cat && $cat->slug) ? $cat->slug : $cat->global_slug;
-                    if($cat->parent_id != 0)
-                    {
+                    if ($cat->parent_id != 0) {
                         $data_slug = $this->getParentCategorySlugs($cat->parent_id, $data_slug);
                     }
-                }
-                else
-                {
+                } else {
                     $data_slug = '';
                 }
                 $result = _getCategoryLink($data_slug, $this->languageCode);
@@ -386,16 +406,12 @@ class CmsMenu
                         'value' => $this->localeObj->id
                     ]
                 ]);
-                if($cat)
-                {
+                if ($cat) {
                     $data_slug = ($cat && $cat->slug) ? $cat->slug : $cat->global_slug;
-                    if($cat->parent_id != 0)
-                    {
+                    if ($cat->parent_id != 0) {
                         $data_slug = $this->getParentProductCategorySlugs($cat->parent_id, $data_slug);
                     }
-                }
-                else
-                {
+                } else {
                     $data_slug = '';
                 }
                 $result = _getProductCategoryLink($data_slug, $this->languageCode);

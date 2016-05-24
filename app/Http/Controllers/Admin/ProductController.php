@@ -215,6 +215,7 @@ class ProductController extends BaseAdminController
             $args = array(
                 'user_type' => $this->loggedInAdminUser->adminUserRole->id,
                 'user' => $this->loggedInAdminUser->id,
+                'post_template' => $item->page_template,
                 'model_name' => 'Product',
                 'product_with_related_product_category_id' => $checkedNodes
             );

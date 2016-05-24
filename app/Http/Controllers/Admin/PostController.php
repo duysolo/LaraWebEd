@@ -213,6 +213,7 @@ class PostController extends BaseAdminController
             $args = array(
                 'user_type' => $this->loggedInAdminUser->adminUserRole->id,
                 'user' => $this->loggedInAdminUser->id,
+                'post_template' => $item->page_template,
                 'model_name' => 'Post',
                 'post_with_related_category_id' => $checkedNodes
             );
