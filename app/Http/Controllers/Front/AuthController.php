@@ -132,8 +132,24 @@ class AuthController extends BaseFrontController
         return $this->_viewFront('auth.login');
     }
 
+    /**
+     * Get the failed login response instance.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $this->_setFlashMessage($this->getFailedLoginMessage(), 'error');
+        $this->_showFlashMessages();
+        return redirect()->back()
+            ->withInput($request->only($this->loginUsername(), 'remember'));
+    }
+
     protected function authenticated()
     {
+        $this->_setFlashMessage('You now logged in', 'info');
+        $this->_showFlashMessages();
         return redirect($this->redirectPath());
     }
 
