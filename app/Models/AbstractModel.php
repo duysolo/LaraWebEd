@@ -190,14 +190,19 @@ abstract class AbstractModel extends Model
             foreach($fields as $key => $row)
             {
                 $obj = $obj->where(function($q) use ($key, $row){
-
-                    if($row['compare'] == 'LIKE')
-                    {
-                        $q->where($key, $row['compare'], '%'.$row['value'].'%');
-                    }
-                    else
-                    {
-                        $q->where($key, $row['compare'], $row['value']);
+                    switch ($row['compare']) {
+                        case 'LIKE': {
+                            $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                        } break;
+                        case 'IN': {
+                            $q->whereIn($key, (array)$row['value']);
+                        } break;
+                        case 'NOT_IN': {
+                            $q->whereNotIn($key, (array)$row['value']);
+                        } break;
+                        default: {
+                            $q->where($key, $row['compare'], $row['value']);
+                        } break;
                     }
                 });
             }
