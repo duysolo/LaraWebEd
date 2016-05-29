@@ -26,7 +26,7 @@ class GlobalActionsController extends BaseFrontController
         {
             $data['content'] = nl2br($data['content']);
         }
-        $result = $object->fastEdit($this->_stripTagsData($data), true);
+        $result = $object->fastEdit(_stripTags($data), true);
         $errorCode = ($result['error']) ? 500 : 200;
         $messageType = ($result['error']) ? 'error' : 'success';
         return $this->_responseAutoDetect($request, $result['message'], $result['error'], $errorCode, $messageType, true);
@@ -34,7 +34,7 @@ class GlobalActionsController extends BaseFrontController
 
     public function postSubscribeEmail(Request $request, Models\SubscribedEmails $object)
     {
-        $result = $object->fastEdit($this->_stripTagsData($request->all()), true);
+        $result = $object->fastEdit(_stripTags($request->all()), true);
         $errorCode = ($result['error']) ? 500 : 200;
         $messageType = ($result['error']) ? 'error' : 'success';
         return $this->_responseAutoDetect($request, $result['message'], $result['error'], $errorCode, $messageType);

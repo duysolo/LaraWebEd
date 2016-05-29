@@ -46,3 +46,14 @@ function _sendEmail($view, $subject, $data, $to = [], $cc = [], $bcc = [])
         }
     });
 }
+
+function _stripTags($data, $allowTags = '<p><a><br><br/><b><strong>')
+{
+    if (!is_array($data)) {
+        return strip_tags($data, $allowTags);
+    }
+    foreach ($data as $key => $row) {
+        $data[$key] = strip_tags($row, $allowTags);
+    }
+    return $data;
+}

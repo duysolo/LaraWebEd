@@ -144,17 +144,6 @@ abstract class BaseController extends Controller
         return _validateGoogleCaptcha($this->_getSetting('google_captcha_secret_key'), $response);
     }
 
-    protected function _stripTagsData($data, $allowTags = '<p><a><br><br/><b><strong>')
-    {
-        if (!is_array($data)) {
-            return strip_tags($data, $allowTags);
-        }
-        foreach ($data as $key => $row) {
-            $data[$key] = strip_tags($row, $allowTags);
-        }
-        return $data;
-    }
-
     protected function _sendFeedbackEmail($view, $subject, $data, $cc = [], $bcc = [])
     {
         return _sendEmail($view, $subject, $data, [
