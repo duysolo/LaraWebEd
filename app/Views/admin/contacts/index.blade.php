@@ -29,10 +29,7 @@
                 },
                 onDataLoad: function(grid){
 
-                },
-                editableFields: [2],
-                actionPosition: 6,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/pages/fast-edit') }}'
+                }
             });
         });
     </script>

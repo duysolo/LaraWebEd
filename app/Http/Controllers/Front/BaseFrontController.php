@@ -5,8 +5,13 @@ use App\Http\Controllers\BaseController;
 use App\Http\Requests\Request;
 use App\Models;
 
+use App\Http\Controllers\Front\FrontFoundation\Cart;
+
 abstract class BaseFrontController extends BaseController
 {
+    //To use cart functions, uncomment this line
+    //use Cart;
+
     protected $dis = [], $bodyClass = '';
 
     public function __construct()
@@ -16,6 +21,9 @@ abstract class BaseFrontController extends BaseController
             abort(503);
         }
         $this->_setMetaSEO();
+
+        //To use cart functions, uncomment this line
+        //$this->_getCart();
     }
 
     protected function _loadFrontMenu($menuActive = '', $type = 'custom-link')
@@ -26,9 +34,9 @@ abstract class BaseFrontController extends BaseController
         $menu->args = array(
             'languageId' => $this->currentLanguageId,
             'menuName' => 'main-menu',
-            'menuClass' => 'nav navbar-nav',
-            'container' => '',
-            'containerClass' => '',
+            'menuClass' => '',
+            'container' => 'nav',
+            'containerClass' => 'nav-primary',
             'containerId' => '',
             'containerTag' => 'ul',
             'childTag' => 'li',
@@ -61,6 +69,11 @@ abstract class BaseFrontController extends BaseController
         ]);
     }
 
+
+    /**
+     * @param Models\Foundation\MetaFunctions $modelObject
+     * @param int $rules: $contentId
+     **/
     protected function _getAllCustomFields($modelObject, $contentId)
     {
         $this->dis['currentObjectCustomFields'] = $modelObject->getAllContentMeta($contentId);

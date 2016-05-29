@@ -167,6 +167,48 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-md-3">Hot line</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="{{ $settings['hot_line'] or '' }}" name="hot_line"/>
+                                <span class="help-block">Hot line.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Facebook</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="{{ $settings['facebook'] or '' }}" name="facebook"/>
+                                <span class="help-block">Facebook fanpage.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Twitter</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="{{ $settings['twitter'] or '' }}" name="twitter"/>
+                                <span class="help-block">Twitter.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Youtube</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="{{ $settings['youtube'] or '' }}" name="youtube"/>
+                                <span class="help-block">Youtube chanel.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Instagram</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="{{ $settings['instagram'] or '' }}" name="instagram"/>
+                                <span class="help-block">Instagram.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Pinterest</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="{{ $settings['pinterest'] or '' }}" name="pinterest"/>
+                                <span class="help-block">Pinterest.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-md-3">Construction mode</label>
                             <div class="col-md-7">
                                 <div class="md-checkbox">

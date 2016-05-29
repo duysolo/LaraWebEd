@@ -6,6 +6,8 @@ use App\Models;
 use App\Models\AbstractModel;
 use Illuminate\Support\Facades\Validator;
 
+use Carbon\Carbon;
+
 use App\Models\Contracts;
 
 class Product extends AbstractModel implements Contracts\MultiLanguageInterface
@@ -25,17 +27,21 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
     protected $primaryKey = 'id';
 
     protected $rules = [
+        'brand_id' => 'integer|min:0',
         'global_title' => 'required|max:255',
-        'status' => 'integer|required',
-        'created_by' => 'integer'
+        'status' => 'integer|required|between:0,1',
+        'created_by' => 'integer',
+        'is_popular' => 'integer|between:0,1'
     ];
 
     protected $editableFields = [
+        'brand_id',
         'global_title',
         'status',
         'page_template',
         'order',
-        'created_by'
+        'created_by',
+        'is_popular'
     ];
 
     public function productContent()
@@ -51,6 +57,11 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
     public function category()
     {
         return $this->belongsToMany('App\Models\ProductCategory', 'product_categories_products', 'product_id', 'category_id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo('App\Models\Brand', 'brand_id');
     }
 
     public function updateItem($id, $data, $justUpdateSomeFields = false)
@@ -89,11 +100,16 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
             $post->category()->sync($data['category_ids']);
         }
 
+        /*Save brand*/
+        if (isset($data['brand_id'])) {
+            $post->brand_id = $data['brand_id'];
+        }
+
         /*Update page template*/
         if (isset($data['page_template'])) {
             $post->page_template = $data['page_template'];
-            $post->save();
         }
+        $post->save();
 
         /*Update post content*/
         $postContent = static::getContentById($id, $languageId);
@@ -158,6 +174,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
     {
         $dataPost = ['status' => 1];
         if (isset($data['title'])) $dataPost['global_title'] = $data['title'];
+        if (isset($data['brand_id'])) $dataPost['global_title'] = $data['brand_id'];
         if (isset($data['created_by'])) $dataPost['created_by'] = $data['created_by'];
         if (isset($data['category_ids'])) $dataPost['category_ids'] = $data['category_ids'];
         if (!isset($data['status'])) $data['status'] = 1;
@@ -187,7 +204,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         $args = array_merge($defaultArgs, $options);
 
         $select = (array)$select;
-        if(!$select) $select = ['products.global_title', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        if(!$select) $select = ['products.global_title', 'products.brand_id', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('product_contents', 'products.id', '=', 'product_contents.product_id')
             ->join('languages', 'languages.id', '=', 'product_contents.language_id')
@@ -211,7 +228,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         $args = array_merge($defaultArgs, $options);
 
         $select = (array)$select;
-        if(!$select) $select = ['products.global_title', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        if(!$select) $select = ['products.global_title', 'products.brand_id', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
         return static::join('product_contents', 'products.id', '=', 'product_contents.product_id')
             ->join('languages', 'languages.id', '=', 'product_contents.language_id')
@@ -267,6 +284,8 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
                 $items = $items->orderBy($key, $value);
             }
         }
+        if($order == 'random') $items = $items->orderBy(\DB::raw('RAND()'));
+
         if ($select && sizeof($select) > 0) {
             $items = $items->select($select);
         }
@@ -297,6 +316,8 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
                 $items = $items->orderBy($key, $value);
             }
         }
+        if($order == 'random') $items = $items->orderBy(\DB::raw('RAND()'));
+
         if ($select && sizeof($select) > 0) {
             $items = $items->select($select);
         }
@@ -309,9 +330,9 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         $fields = (array)$fields;
         $select = (array)$select;
 
-        if(!$select) $select = ['products.status as global_status', 'products.page_template', 'products.global_title', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        if(!$select) $select = ['products.status as global_status', 'products.page_template', 'products.global_title', 'products.brand_id', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
-        $obj = static::join('product_contents', 'products.id', '=', 'product_contents.page_id')
+        $obj = static::join('product_contents', 'products.id', '=', 'product_contents.product_id')
             ->join('languages', 'languages.id', '=', 'product_contents.language_id');
         if ($fields && is_array($fields)) {
             foreach ($fields as $key => $row) {
@@ -338,8 +359,60 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
                 $obj = $obj->orderBy($key, $value);
             }
         }
+        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+
         $obj = $obj->groupBy('products.id')
             ->select($select);
+
+        if ($multiple) {
+            if ($perPage > 0) return $obj->paginate($perPage);
+            return $obj->get();
+        }
+        return $obj->first();
+    }
+
+    public static function getOnSaleProducts($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
+    {
+        $fields = (array)$fields;
+        $select = (array)$select;
+
+        if(!$select) $select = ['products.status as global_status', 'products.page_template', 'products.global_title', 'products.brand_id', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+
+        $obj = static::join('product_contents', 'products.id', '=', 'product_contents.product_id')
+            ->join('languages', 'languages.id', '=', 'product_contents.language_id')
+            ->where('product_contents.sale_status', '=', 1)
+            ->where('product_contents.sale_from', '<>', '0000-00-00 00:00:00')
+            ->where('product_contents.sale_to', '<>', '0000-00-00 00:00:00')
+            ->where('product_contents.sale_from', '<=', Carbon::now())
+            ->where('product_contents.sale_to', '>=', Carbon::today());
+        if ($fields && is_array($fields)) {
+            foreach ($fields as $key => $row) {
+                $obj = $obj->where(function ($q) use ($key, $row) {
+                    switch ($row['compare']) {
+                        case 'LIKE': {
+                            $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                        } break;
+                        case 'IN': {
+                            $q->whereIn($key, (array)$row['value']);
+                        } break;
+                        case 'NOT_IN': {
+                            $q->whereNotIn($key, (array)$row['value']);
+                        } break;
+                        default: {
+                            $q->where($key, $row['compare'], $row['value']);
+                        } break;
+                    }
+                });
+            }
+        }
+        if ($order && is_array($order)) {
+            foreach ($order as $key => $value) {
+                $obj = $obj->orderBy($key, $value);
+            }
+        }
+        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+
+        $obj = $obj->groupBy('products.id')->select($select);
 
         if ($multiple) {
             if ($perPage > 0) return $obj->paginate($perPage);

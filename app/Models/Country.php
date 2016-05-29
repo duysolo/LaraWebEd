@@ -20,6 +20,7 @@ class Country extends AbstractModel
 
     protected $rules = [
         'country_name' => 'required|max:255',
+        'status' => 'integer|required|between:0,1',
     ];
 
     protected $editableFields = [

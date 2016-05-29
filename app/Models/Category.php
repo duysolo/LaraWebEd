@@ -26,7 +26,7 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
     protected $rules = [
         'global_title' => 'required|max:255',
-        'status' => 'integer|required'
+        'status' => 'integer|required|between:0,1'
     ];
 
     protected $editableFields = [
@@ -211,6 +211,8 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
                 $obj = $obj->orderBy($key, $value);
             }
         }
+        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+        
         $obj = $obj->groupBy('categories.id')
             ->select($select);
 

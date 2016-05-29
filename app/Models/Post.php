@@ -27,8 +27,9 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
     protected $rules = [
         'global_title' => 'required|max:255',
-        'status' => 'integer|required',
-        'created_by' => 'integer'
+        'status' => 'integer|required|between:0,1',
+        'created_by' => 'integer',
+        'is_popular' => 'integer|between:0,1'
     ];
 
     protected $editableFields = [
@@ -36,7 +37,8 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         'status',
         'order',
         'page_template',
-        'created_by'
+        'created_by',
+        'is_popular'
     ];
 
     public function postContent()
@@ -185,7 +187,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
         if(!$select) $select = ['posts.status as global_status', 'posts.page_template', 'posts.global_title', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
 
-        $obj = static::join('post_contents', 'posts.id', '=', 'post_contents.page_id')
+        $obj = static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id');
         if ($fields && is_array($fields)) {
             foreach ($fields as $key => $row) {
@@ -212,6 +214,8 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
                 $obj = $obj->orderBy($key, $value);
             }
         }
+        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+
         $obj = $obj->groupBy('posts.id')
             ->select($select);
 
@@ -312,6 +316,8 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
                 $items = $items->orderBy($key, $value);
             }
         }
+        if($order == 'random') $items = $items->orderBy(\DB::raw('RAND()'));
+
         if ($select && sizeof($select) > 0) {
             $items = $items->select($select);
         }
@@ -342,6 +348,8 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
                 $items = $items->orderBy($key, $value);
             }
         }
+        if($order == 'random') $items = $items->orderBy(\DB::raw('RAND()'));
+
         if ($select && sizeof($select) > 0) {
             $items = $items->select($select);
         }

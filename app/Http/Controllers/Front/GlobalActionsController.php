@@ -27,18 +27,16 @@ class GlobalActionsController extends BaseFrontController
             $data['content'] = nl2br($data['content']);
         }
         $result = $object->fastEdit($this->_stripTagsData($data), true);
-        if($result['error'])
-        {
-            $this->_setFlashMessage($result['message'], 'error');
-            $this->_setFlashMessage(trans('cms.requestNotCompleted'), 'error');
-            $this->_showFlashMessages();
-        }
-        else
-        {
-            $this->_setFlashMessage(trans('cms.requestCompleted'), 'success');
-            $this->_showFlashMessages();
-        }
+        $errorCode = ($result['error']) ? 500 : 200;
+        $messageType = ($result['error']) ? 'error' : 'success';
+        return $this->_responseAutoDetect($request, $result['message'], $result['error'], $errorCode, $messageType, true);
+    }
 
-        return redirect()->back();
+    public function postSubscribeEmail(Request $request, Models\SubscribedEmails $object)
+    {
+        $result = $object->fastEdit($this->_stripTagsData($request->all()), true);
+        $errorCode = ($result['error']) ? 500 : 200;
+        $messageType = ($result['error']) ? 'error' : 'success';
+        return $this->_responseAutoDetect($request, $result['message'], $result['error'], $errorCode, $messageType);
     }
 }

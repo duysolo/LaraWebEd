@@ -214,6 +214,7 @@ abstract class AbstractModel extends Model
                 $obj = $obj->orderBy($key, $value);
             }
         }
+        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
 
         if($select && sizeof($select) > 0)
         {

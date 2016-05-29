@@ -161,9 +161,18 @@
                                                 <input type="text" value="{{ $object->email or '' }}"
                                                        name="email"
                                                        autocomplete="off"
-                                                       {{ isset($object) ? 'disabled' : '' }}
+                                                       {{ isset($object) && $object->id != 0 ? 'disabled' : '' }}
                                                        class="form-control"/>
                                             </div>
+                                            @if($object->id == 0)
+                                                <div class="form-group">
+                                                    <label class="control-label "><b>Password</b></label>
+                                                    <input type="text" value=""
+                                                           name="password"
+                                                           autocomplete="off"
+                                                           class="form-control"/>
+                                                </div>
+                                            @endif
                                             <div class="form-group">
                                                 <label class="control-label "><b>First name</b></label>
                                                 <input type="text" value="{{ $object->first_name or '' }}"

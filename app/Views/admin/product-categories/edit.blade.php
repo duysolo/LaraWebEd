@@ -38,13 +38,13 @@
                 },
                 rules: {
                     title: {
-                        minlength: 3,
+                        minlength: 2,
                         maxlength: 255,
                         required: true
                     },
                     slug: {
                         required: true,
-                        minlength: 3,
+                        minlength: 2,
                         maxlength: 255
                     },
                     description: {

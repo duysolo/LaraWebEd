@@ -26,7 +26,7 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
 
     protected $rules = [
         'global_title' => 'required|max:255',
-        'status' => 'integer|required'
+        'status' => 'integer|required|between:0,1',
     ];
 
     protected $editableFields = [
@@ -210,6 +210,8 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
                 $obj = $obj->orderBy($key, $value);
             }
         }
+        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+        
         $obj = $obj->groupBy('product_categories.id')
             ->select($select);
 

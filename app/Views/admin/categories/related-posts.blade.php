@@ -66,6 +66,8 @@
                                 <option value="">Select...</option>
                                 <option value="1">Activated</option>
                                 <option value="0">Disabled</option>
+                                <option value="set_as_popular">Set as popular</option>
+                                <option value="unset_as_popular">Unset as popular</option>
                             </select>
                             <button class="btn btn-sm green table-group-action-submit" data-toggle="confirmation">
                                 <i class="fa fa-check"></i> Submit
@@ -83,7 +85,7 @@
                                 <th width="40%">Title</th>
                                 <th width="5%">Status</th>
                                 <th width="5%">Order</th>
-                                <th width="10%">Created by</th>
+                                <th width="5%">Popular</th>
                                 <th width="10%">Created at</th>
                                 <th width="10%">Fast edit</th>
                                 <th width="10%">Actions</th>

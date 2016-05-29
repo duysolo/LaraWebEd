@@ -103,6 +103,8 @@ class AuthController extends BaseController
 
         $credentials = $this->getCredentials($request);
 
+        $credentials['status'] = 1;
+
         $checkAdminUser = $this->_checkAdminUser($credentials, $request);
 
         if($checkAdminUser)

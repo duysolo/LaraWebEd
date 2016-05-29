@@ -24,7 +24,7 @@ class Page extends AbstractModel
 
     protected $rules = [
         'global_title' => 'required|max:255',
-        'status' => 'integer|required',
+        'status' => 'integer|required|between:0,1',
         'created_by' => 'integer'
     ];
 
@@ -182,6 +182,8 @@ class Page extends AbstractModel
                 $obj = $obj->orderBy($key, $value);
             }
         }
+        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+        
         $obj = $obj->groupBy('pages.id')
             ->select($select);
 

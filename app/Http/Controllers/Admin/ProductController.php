@@ -55,9 +55,24 @@ class ProductController extends BaseAdminController
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
             $ids = (array)$request->get('id', []);
-            $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
-            ], true);
+            $customActionValue = $request->get('customActionValue', 0);
+            switch ($customActionValue) {
+                case 'set_as_popular': {
+                    $result = $object->updateMultiple($ids, [
+                        'is_popular' => 1
+                    ], true);
+                } break;
+                case 'unset_as_popular': {
+                    $result = $object->updateMultiple($ids, [
+                        'is_popular' => 0
+                    ], true);
+                } break;
+                default: {
+                    $result = $object->updateMultiple($ids, [
+                        'status' => $customActionValue
+                    ], true);
+                } break;
+            }
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
@@ -86,7 +101,11 @@ class ProductController extends BaseAdminController
             }
                 break;
             case 5: {
-                $orderBy = 'created_by';
+                $orderBy = 'is_popular';
+            }
+                break;
+            case 6: {
+                $orderBy = 'brand_id';
             }
                 break;
             default: {
@@ -114,9 +133,16 @@ class ProductController extends BaseAdminController
             if ($row->status != 1) {
                 $status = '<span class="label label-danger label-sm">Disabled</span>';
             }
+            $popular = '';
+            if($row->is_popular != 0) $popular =  '<span class="label label-success label-sm">Popular</span>';
             /*Edit link*/
             $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id . '/' . $this->defaultLanguageId);
             $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
+
+            $brand = '';
+            if($row->brand) {
+                $brand = '<img src="'.$row->brand->thumbnail.'" alt="'.$row->brand->name.'" width="100" style="width: 100px;" class="middle-auto img-responsive">';
+            }
 
             $records["data"][] = array(
                 '<input type="checkbox" name="id[]" value="' . $row->id . '">',
@@ -124,8 +150,8 @@ class ProductController extends BaseAdminController
                 $row->global_title,
                 $status,
                 $row->order,
-                ($row->adminUser) ? $row->adminUser->username : '',
-                $row->created_at->toDateTimeString(),
+                $popular,
+                $brand,
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .
                 '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
@@ -227,6 +253,12 @@ class ProductController extends BaseAdminController
         $dis['currentId'] = $id;
 
         $dis['categoriesHtml'] = $this->_getCategories(0, $checkedNodes);
+
+        $dis['brands'] = Models\Brand::getBy([
+            'status' => 1
+        ], [
+            'name' => 'ASC'
+        ], true, 0);
 
         return $this->_viewAdmin('products.edit', $dis);
     }

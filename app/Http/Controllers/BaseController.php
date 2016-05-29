@@ -171,4 +171,27 @@ abstract class BaseController extends Controller
         if($page) return asset($this->currentLanguageCode.'/'.$page->slug);
         return asset($this->currentLanguageCode);
     }
+
+    protected function _responseJson($error = true, $responseCode = 500, $message = [])
+    {
+        return response()->json([
+            'error' => $error,
+            'response_code' => $responseCode,
+            'message' => $message
+        ]);
+    }
+
+    protected function _responseRedirect($message, $type = 'info', $error = false, $withOldInputWhenError = false)
+    {
+        $this->_setFlashMessage($message, $type);
+        $this->_showFlashMessages();
+        if($error && $withOldInputWhenError) return redirect()->back()->withInput();
+        return redirect()->back();
+    }
+
+    protected function _responseAutoDetect(Request $request, $message, $error = false, $responseCode = 500, $type = 'info', $withOldInputWhenError = false)
+    {
+        if($request->ajax()) return $this->_responseJson($error, $responseCode, $message);
+        return $this->_responseRedirect($message, $type, $error, $withOldInputWhenError);
+    }
 }

@@ -12,6 +12,11 @@ abstract class BaseAdminController extends BaseController
 
         $this->middleware('auth_admin');
         $this->middleware('is_staff');
+        
+        $count = $this->_countUnreadEmail();
+        if($count) view()->share([
+            'unreadMailCount' => $count
+        ]);
     }
 
     protected function _setPageTitle($title, $subTitle = '')
@@ -58,5 +63,10 @@ abstract class BaseAdminController extends BaseController
     {
         if($user->adminUserRole->slug == $role) return true;
         return false;
+    }
+
+    protected function _countUnreadEmail()
+    {
+        return Models\Contact::where('status', '<>', 1)->count();
     }
 }

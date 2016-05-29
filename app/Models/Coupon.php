@@ -35,7 +35,7 @@ class Coupon extends AbstractModel
         'content' => 'string',
         'apply_for_min_price' => 'numeric|required',
         'thumbnail' => 'string|max:255',
-        'status' => 'integer|required',
+        'status' => 'integer|required|between:0,1',
         'created_by' => 'integer|required',
         'each_user_can_use' => 'integer|min:-1',
     ];

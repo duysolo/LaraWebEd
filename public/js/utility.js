@@ -39,60 +39,6 @@ var Utility = function () {
         $window.trigger('scroll');
     };
 
-    /*Show notifications*/
-    /*Notific8 plugin*/
-    function showNotification8($message, $type) {
-        switch ($type) {
-            case 'success':
-            {
-                $type = 'lime';
-            }
-                break;
-            case 'info':
-            {
-                $type = 'teal';
-            }
-                break;
-            case 'warning':
-            {
-                $type = 'tangerine';
-            }
-                break;
-            case 'danger':
-            {
-                $type = 'ruby';
-            }
-                break;
-            case 'error':
-            {
-                $type = 'ruby';
-            }
-                break;
-            default:
-            {
-                $type = 'ebony';
-            }
-                break;
-        }
-        $.notific8('zindex', 11500);
-
-        var settings = {
-            theme: $type,
-            sticky: false,
-            horizontalEdge: 'top',
-            verticalEdge: 'right'
-        };
-
-        if ($message instanceof Array) {
-            $message.forEach(function (value) {
-                $.notific8($.trim(value), settings);
-            });
-        }
-        else {
-            $.notific8($.trim($message), settings);
-        }
-    }
-
     return {
         detectIE: function (callback) {
             detectIE(callback);
@@ -108,9 +54,6 @@ var Utility = function () {
         },
         scrollToTop: function (event) {
             scrollToTop(event);
-        },
-        showNotification: function ($message, $type) {
-            showNotification8($message, $type);
         }
     };
 }();

@@ -20,7 +20,6 @@
     "jquery-placeholder": "mathiasbynens/jquery-placeholder#~2.3.0",
     "font-awesome-sass": "FortAwesome/font-awesome-sass#~4.4.0",
     "jquery": "1.11.3",
-    "notific8": "~2.3.1",
     "bootstrap-sass": "~3.3.6"
   }
 }

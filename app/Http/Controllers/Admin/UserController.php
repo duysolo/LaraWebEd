@@ -175,15 +175,15 @@ class UserController extends BaseAdminController
         return response()->json($result, $result['response_code']);
     }
 
-    public function getEdit(Request $request, User $object, $id)
+    public function getEdit(Request $request, User $object, $id = 0)
     {
         $dis = [];
 
         if ($id == 0) {
             $this->_setPageTitle('Create user');
-        }
-        else
-        {
+            $object->id = $id;
+            $dis['object'] = $object;
+        } else {
             $item = $object->getBy([
                 'id' => $id
             ], null, false, 0, [
@@ -210,7 +210,7 @@ class UserController extends BaseAdminController
 
         $data['id'] = (int)$id;
 
-        if(isset($data['password'])) $data['password'] = bcrypt($data['password']);
+        if (isset($data['password'])) $data['password'] = bcrypt($data['password']);
 
         if ($id != 0) {
             unset($data['email']);

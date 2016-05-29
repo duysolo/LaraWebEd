@@ -237,6 +237,17 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label">Brand:</label>
+                                                        <div class="col-md-10">
+                                                            <select name="brand_id" class="form-control">
+                                                                <option value=""></option>
+                                                                @if(isset($brands)) @foreach ($brands as $key => $row)
+                                                                    <option {{ (isset($object) && $object->brand_id == $row->id) ? 'selected="selected"' : '' }} value="{{ $row->id }}">{{ $row->name }}</option>
+                                                                @endforeach @endif
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     @if(isset($categoriesHtml) && trim($categoriesHtml) != '')
                                                         <div class="form-group">
                                                             <label class="col-md-2 control-label">Categories:</label>
@@ -314,12 +325,12 @@
                                                                 <input type="text" class="form-control form-date-time" name="sale_from"
                                                                        placeholder=""
                                                                        value="{{ $object->sale_from or date('Y-m-d H:i:s', time()) }}"
-                                                                       data-date="{{ $object->sale_from or date('Y-m-d H:i:s', time()) }}">
+                                                                       data-date="{{ _getTimestampOrDefault($object->sale_from) }}">
                                                                 <span class="input-group-addon">to</span>
                                                                 <input type="text" class="form-control form-date-time" name="sale_to"
                                                                        placeholder=""
                                                                        value="{{ $object->sale_to or date('Y-m-d H:i:s', time()) }}"
-                                                                       data-date="{{ $object->sale_to or date('Y-m-d H:i:s', time()) }}">
+                                                                       data-date="{{ _getTimestampOrDefault($object->sale_to) }}">
                                                             </div>
                                                         </div>
                                                     </div>

@@ -30,7 +30,7 @@ class ProductContent extends AbstractModel
         'language_id' => 'min:1|integer|required',
         'description' => 'max:1000',
         'content' => 'string',
-        'status' => 'integer|required',
+        'status' => 'integer|required|between:0,1',
         'thumbnail' => 'string|max:255',
         'tags' => 'string|max:255',
         'price' => 'required|numeric',

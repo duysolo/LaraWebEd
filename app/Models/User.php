@@ -38,7 +38,7 @@ class User extends AbstractModel implements AuthenticatableContract, Authorizabl
 
     protected $rules = [
         'email' => 'required|email|unique:users',
-        'status' => 'integer',
+        'status' => 'integer|between:0,1',
         'password' => 'string|required',
         'first_name' => 'string|required|max:255',
         'last_name' => 'string|max:255',

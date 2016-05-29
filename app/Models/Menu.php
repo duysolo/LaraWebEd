@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class Menu extends AbstractModel
 {
-    protected $editableFields = [
-        'title',
-        'slug',
-        'status'
-    ];
-
     public function __construct()
     {
         parent::__construct();
@@ -33,8 +27,15 @@ class Menu extends AbstractModel
      */
     public $rules = array(
         'slug' => 'required|unique:menus',
+        'status' => 'integer|required|between:0,1',
     );
-
+    
+    protected $editableFields = [
+        'title',
+        'slug',
+        'status'
+    ];
+    
     public function menuContent()
     {
         return $this->hasMany('App\Models\MenuContent', 'menu_id');

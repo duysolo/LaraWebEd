@@ -65,7 +65,6 @@
 <![endif]-->
 
 <!--Google captcha-->
-<script src='//www.google.com/recaptcha/api.js?onload=onloadGoogleCaptchaCallback&render=explicit'></script>
 @include('front/_shared/_google-captcha')
 <!--Google captcha-->
 

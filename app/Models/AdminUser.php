@@ -40,18 +40,18 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
         'password', 'remember_token',
     ];
 
+    protected $rules = [
+        'username' => 'required|between:5,50|string|unique:admin_users',
+        'password' => 'string|required',
+        'status' => 'integer|required|between:0,1',
+        'user_role_id' => 'integer|required',
+    ];
+
     protected $editableFields = [
         'username',
         'status',
         'password',
         'user_role_id'
-    ];
-
-    protected $rules = [
-        'username' => 'required|between:5,50|string|unique:admin_users',
-        'password' => 'string|required',
-        'status' => 'integer|required',
-        'user_role_id' => 'integer|required',
     ];
 
     public function getGuard()

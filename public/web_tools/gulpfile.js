@@ -44,7 +44,6 @@ gulp.task('coreMinJs', function() {
             path.coreThirdParty + 'jquery.min.js',
             path.bower + 'bootstrap-sass/assets/javascripts/bootstrap.min.js',
             path.bower + 'jquery-placeholder/jquery.placeholder.min.js',
-            path.coreThirdParty + 'notific8/dist/jquery.notific8.min.js',
             path.coreThirdParty + 'modernizr.js'
         ])
         .pipe(concat('core.min.js'))

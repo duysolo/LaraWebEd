@@ -25,7 +25,7 @@ class Language extends AbstractModel
     protected $rules = [
         'language_name' => 'required|max:255',
         'language_code' => 'required|unique:languages',
-        'status' => 'integer|required',
+        'status' => 'integer|required|between:0,1',
     ];
 
     protected $editableFields = [

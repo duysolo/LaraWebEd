@@ -19,7 +19,7 @@ class FieldGroup extends AbstractModel
      */
     protected $rules = [
         'title' => 'required|max:255',
-        'status' => 'integer|required',
+        'status' => 'integer|required|between:0,1',
         'field_rules' => 'required|json'
     ];
 

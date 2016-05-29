@@ -52,6 +52,9 @@ $router->group(['middleware' => ['web']], function ($router) {
         /*Coupons*/
         $router->controller('coupons', 'CouponController');
 
+        /*Brands*/
+        $router->controller('brands', 'BrandController');
+
         /*Settings*/
         $router->controller('settings', 'SettingController');
 
@@ -69,6 +72,9 @@ $router->group(['middleware' => ['web']], function ($router) {
 
         /*Contacts*/
         $router->controller('contacts', 'ContactController');
+
+        /*Subscribed emails*/
+        $router->controller('subscribed-emails', 'SubscribedEmailController');
     });
     /*
     |--------------------------------------------------------------------------
@@ -109,6 +115,9 @@ $router->group(['middleware' => ['web']], function ($router) {
 
             $router->controller('auth', 'AuthController');
             $router->controller('password', 'PasswordController');
+
+            //To use cart functions, uncomment this line
+            //$router->controller('cart', 'CartController');
 
             $router->controller('global-actions', 'GlobalActionsController');
 

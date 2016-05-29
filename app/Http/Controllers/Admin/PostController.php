@@ -55,9 +55,24 @@ class PostController extends BaseAdminController
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
             $ids = (array)$request->get('id', []);
-            $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
-            ], true);
+            $customActionValue = $request->get('customActionValue', 0);
+            switch ($customActionValue) {
+                case 'set_as_popular': {
+                    $result = $object->updateMultiple($ids, [
+                        'is_popular' => 1
+                    ], true);
+                } break;
+                case 'unset_as_popular': {
+                    $result = $object->updateMultiple($ids, [
+                        'is_popular' => 0
+                    ], true);
+                } break;
+                default: {
+                    $result = $object->updateMultiple($ids, [
+                        'status' => $customActionValue
+                    ], true);
+                } break;
+            }
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
@@ -114,6 +129,8 @@ class PostController extends BaseAdminController
             if ($row->status != 1) {
                 $status = '<span class="label label-danger label-sm">Disabled</span>';
             }
+            $popular = '';
+            if($row->is_popular != 0) $popular =  '<span class="label label-success label-sm">Popular</span>';
             /*Edit link*/
             $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id . '/' . $this->defaultLanguageId);
             $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
@@ -124,7 +141,7 @@ class PostController extends BaseAdminController
                 $row->global_title,
                 $status,
                 $row->order,
-                ($row->adminUser) ? $row->adminUser->username : '',
+                $popular,
                 $row->created_at->toDateTimeString(),
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .

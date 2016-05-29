@@ -1,4 +1,8 @@
 <?php
+require_once('url.php');
+require_once('custom-fields.php');
+require_once('products.php');
+require_once('date-time.php');
 
 /**
  * Get template for Page, Post, Category, ProductCategory
@@ -21,28 +25,6 @@ function _getPageTemplate($type = 'Page')
     return $arrTemplate;
 }
 
-function _getField($fields, $key) {
-    if(is_array($fields) && isset($fields[$key])) return $fields[$key];
-    return null;
-}
-
-function _getRepeaterField($rawField)
-{
-    if(!$rawField) $rawField = '[]';
-    $meta = (array)json_decode($rawField);
-    return $meta;
-}
-
-function _getSubField($parentMeta, $key)
-{
-    if (!is_array($parentMeta)) $parentMeta = json_decode($parentMeta);
-    foreach ($parentMeta as $row) {
-        if ($row->slug == $key)
-            return $row->field_value;
-    }
-    return '';
-}
-
 function _validateGoogleCaptcha($secret, $response = null)
 {
     if (!$response) return false;
@@ -63,39 +45,4 @@ function _sendEmail($view, $subject, $data, $to = [], $cc = [], $bcc = [])
             $message->bcc($row['email'], $row['name'])->subject($subject);
         }
     });
-}
-
-function _getPageLink($page, $currentLanguageCode = null)
-{
-    if(!is_string($page)) $page = $page->slug;
-    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.$page;
-    return '/'.$page;
-}
-
-function _getPostLink($post, $currentLanguageCode = null)
-{
-    if(!is_string($post)) $post = $post->slug;
-    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.post').'/'.$post;
-    return '/'.trans('url.post').'/'.$post;
-}
-
-function _getProductLink($product, $currentLanguageCode = null)
-{
-    if(!is_string($product)) $product = $product->slug;
-    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.product').'/'.$product;
-    return '/'.trans('url.product').'/'.$product;
-}
-
-function _getCategoryLink($category, $currentLanguageCode = null)
-{
-    if(!is_string($category)) $category = $category->slug;
-    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.category').'/'.$category;
-    return '/'.trans('url.category').'/'.$category;
-}
-
-function _getProductCategoryLink($category, $currentLanguageCode = null)
-{
-    if(!is_string($category)) $category = $category->slug;
-    if($currentLanguageCode) return '/'.$currentLanguageCode.'/'.trans('url.productCategory').'/'.$category;
-    return '/'.trans('url.productCategory').'/'.$category;
 }
