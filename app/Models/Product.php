@@ -174,7 +174,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
     {
         $dataPost = ['status' => 1];
         if (isset($data['title'])) $dataPost['global_title'] = $data['title'];
-        if (isset($data['brand_id'])) $dataPost['global_title'] = $data['brand_id'];
+        if (isset($data['brand_id'])) $dataPost['brand_id'] = $data['brand_id'];
         if (isset($data['created_by'])) $dataPost['created_by'] = $data['created_by'];
         if (isset($data['category_ids'])) $dataPost['category_ids'] = $data['category_ids'];
         if (!isset($data['status'])) $data['status'] = 1;

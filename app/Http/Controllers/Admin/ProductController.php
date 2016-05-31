@@ -61,17 +61,20 @@ class ProductController extends BaseAdminController
                     $result = $object->updateMultiple($ids, [
                         'is_popular' => 1
                     ], true);
-                } break;
+                }
+                    break;
                 case 'unset_as_popular': {
                     $result = $object->updateMultiple($ids, [
                         'is_popular' => 0
                     ], true);
-                } break;
+                }
+                    break;
                 default: {
                     $result = $object->updateMultiple($ids, [
                         'status' => $customActionValue
                     ], true);
-                } break;
+                }
+                    break;
             }
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
@@ -134,14 +137,14 @@ class ProductController extends BaseAdminController
                 $status = '<span class="label label-danger label-sm">Disabled</span>';
             }
             $popular = '';
-            if($row->is_popular != 0) $popular =  '<span class="label label-success label-sm">Popular</span>';
+            if ($row->is_popular != 0) $popular = '<span class="label label-success label-sm">Popular</span>';
             /*Edit link*/
             $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id . '/' . $this->defaultLanguageId);
             $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
 
             $brand = '';
-            if($row->brand) {
-                $brand = '<img src="'.$row->brand->thumbnail.'" alt="'.$row->brand->name.'" width="100" style="width: 100px;" class="middle-auto img-responsive">';
+            if ($row->brand) {
+                $brand = '<img src="' . $row->brand->thumbnail . '" alt="' . $row->brand->name . '" width="100" style="width: 100px;" class="middle-auto img-responsive">';
             }
 
             $records["data"][] = array(
@@ -182,7 +185,7 @@ class ProductController extends BaseAdminController
         $dis = [];
 
         $oldInputs = old();
-        if($oldInputs && $id == 0) {
+        if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
@@ -266,8 +269,12 @@ class ProductController extends BaseAdminController
     public function postEdit(Request $request, Product $object, ProductMeta $objectMeta, $id, $language)
     {
         $data = $request->all();
-        if(isset($data['slug']))
-        {
+        if ($request->has('is_out_of_stock')) {
+            $data['is_out_of_stock'] = 1;
+        } else {
+            $data['is_out_of_stock'] = 0;
+        }
+        if (isset($data['slug'])) {
             if (!$data['slug']) {
                 $data['slug'] = str_slug($data['title']);
             }
@@ -280,12 +287,11 @@ class ProductController extends BaseAdminController
             $result = $object->updateItemContent($id, $language, $data);
         }
 
-        if($result['error'])
-        {
+        if ($result['error']) {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
-            if($id == 0) {
+            if ($id == 0) {
                 return redirect()->back()->withInput();
             }
 

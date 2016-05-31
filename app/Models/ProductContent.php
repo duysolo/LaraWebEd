@@ -32,12 +32,14 @@ class ProductContent extends AbstractModel
         'content' => 'string',
         'status' => 'integer|required|between:0,1',
         'thumbnail' => 'string|max:255',
-        'tags' => 'string|max:255',
+        'tags' => 'string',
+        'label' => 'string|max:100',
         'price' => 'required|numeric',
         'old_price' => 'numeric',
         'sale_status' => 'integer|required',
         'sale_from' => 'date',
         'sale_to' => 'date',
+        'is_out_of_stock' => 'integer|required|between:0,1',
     ];
 
     protected $editableFields = [
@@ -49,11 +51,13 @@ class ProductContent extends AbstractModel
         'status',
         'thumbnail',
         'tags',
+        'label',
         'price',
         'old_price',
         'sale_status',
         'sale_from',
         'sale_to',
+        'is_out_of_stock',
     ];
 
     /**

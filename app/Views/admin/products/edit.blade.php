@@ -220,6 +220,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+                                                        <label class="col-md-2 control-label">Label:</label>
+                                                        <div class="col-md-10">
+                                                            <input type="text" name="label"
+                                                                   class="form-control js-tags-editor"
+                                                                   value="{{ $object->label or '' }}" autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label class="col-md-2 control-label">Description:</label>
                                                         <div class="col-md-10">
                                                             <textarea name="description" class="form-control"
@@ -294,6 +302,19 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+                                                        <label class="col-md-2 control-label">Out of stock:</label>
+                                                        <div class="col-md-10">
+                                                            <div class="md-checkbox" style="margin: 5px 0;">
+                                                                <input type="checkbox" value="1" id="is_out_of_stock" name="is_out_of_stock" {{ isset($object->is_out_of_stock) && $object->is_out_of_stock == 1 ? 'checked' : '' }} class="md-radiobtn">
+                                                                <label for="is_out_of_stock">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span> This product is out of stock
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label class="col-md-2 control-label">Sale status:</label>
                                                         <div class="col-md-10">
                                                             <?php
@@ -325,12 +346,12 @@
                                                                 <input type="text" class="form-control form-date-time" name="sale_from"
                                                                        placeholder=""
                                                                        value="{{ $object->sale_from or date('Y-m-d H:i:s', time()) }}"
-                                                                       data-date="{{ _getTimestampOrDefault($object->sale_from) }}">
+                                                                       data-date="{{ (isset($object->sale_from)) ? _getTimestampOrDefault($object->sale_from) : date('Y-m-d H:i:s', time()) }}">
                                                                 <span class="input-group-addon">to</span>
                                                                 <input type="text" class="form-control form-date-time" name="sale_to"
                                                                        placeholder=""
                                                                        value="{{ $object->sale_to or date('Y-m-d H:i:s', time()) }}"
-                                                                       data-date="{{ _getTimestampOrDefault($object->sale_to) }}">
+                                                                       data-date="{{ (isset($object->sale_to)) ? _getTimestampOrDefault($object->sale_to) : date('Y-m-d H:i:s', time()) }}">
                                                             </div>
                                                         </div>
                                                     </div>
