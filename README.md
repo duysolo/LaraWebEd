@@ -76,6 +76,13 @@ Well done! Now, you can login to the dashboard by access to [your_domain_site/ad
 
 > Password: **PassCuaDev@2015**
 
+
+#### Demo site
+Checkout branch **demo-blog** for a demo blog site.
+
 Enjoy!
 
-#####Please star for me to make me happy and continue to develop this cms.
+#####Please star for me to make me happy and continue to develop this cms <3. I always try my best!
+
+####About the future
+I'm creating a ecommerce site with this cms. I will release that site for all of you when done.
