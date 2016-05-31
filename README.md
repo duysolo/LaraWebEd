@@ -73,6 +73,7 @@ On this projects, I use the latest Laravel version (currently 5.2). Please go to
 
 Well done! Now, you can login to the dashboard by access to [your_domain_site/admincp](your_domain_site/admincp)
 > Username: **webmaster**
+
 > Password: **PassCuaDev@2015**
 
 Enjoy!
