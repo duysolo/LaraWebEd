@@ -77,3 +77,5 @@ Well done! Now, you can login to the dashboard by access to [your_domain_site/ad
 > Password: **PassCuaDev@2015**
 
 Enjoy!
+
+#####Please star for me to make me happy and continue to develop this cms.
