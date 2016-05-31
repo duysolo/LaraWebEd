@@ -11,8 +11,7 @@
     @include('front/_shared/_metas')
 
     <!-- GLOBAL PLUGINS -->
-    <link rel="stylesheet" href="/third_party/notific8/dist/jquery.notific8.min.css">
-    <link rel="stylesheet" href="/fonts/Open-Sans/font.css">
+    {{--<link rel="stylesheet" href="/fonts/Open-Sans/font.css">--}}
     <!-- GLOBAL PLUGINS -->
 
     <!-- OTHER PLUGINS -->
@@ -44,11 +43,7 @@
     </header>
 
     <main class="main">
-        <div class="container">
-            <div class="row">
-                @yield('content')
-            </div>
-        </div>
+        @yield('content')
     </main>
 
     <footer class="footer">

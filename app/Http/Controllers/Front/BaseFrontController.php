@@ -34,9 +34,9 @@ abstract class BaseFrontController extends BaseController
         $menu->args = array(
             'languageId' => $this->currentLanguageId,
             'menuName' => 'main-menu',
-            'menuClass' => '',
-            'container' => 'nav',
-            'containerClass' => 'nav-primary',
+            'menuClass' => 'nav navbar-nav',
+            'container' => '',
+            'containerClass' => '',
             'containerId' => '',
             'containerTag' => 'ul',
             'childTag' => 'li',

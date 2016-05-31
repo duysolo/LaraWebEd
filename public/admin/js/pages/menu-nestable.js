@@ -58,7 +58,7 @@ var MenuNestable = function () {
             });
 
             // Edit attr
-            $body.on('keyup', '.nestable-menu .item-details input[type="text"]', function(event) {
+            $body.on('change blur keyup', '.nestable-menu .item-details input[type="text"]', function(event) {
                 event.preventDefault();
                 var current = $(this);
                 var parent = current.closest('li.dd-item');

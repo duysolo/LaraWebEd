@@ -106,6 +106,6 @@ gulp.task("build", [
 ]);
 
 gulp.task("watch", function(){
-    gulp.watch(path.baseAdmin + 'scss/**/*.scss', ['sassAdmin']);
-    gulp.watch(path.baseAdmin + 'js/**/*.js', ['scriptsAdmin', 'copyPagesJs']);
+    gulp.watch(path.baseAdmin + 'scss/**/*.scss', ['sass']);
+    gulp.watch(path.baseAdmin + 'js/**/*.js', ['scripts', 'copyPagesJs']);
 });

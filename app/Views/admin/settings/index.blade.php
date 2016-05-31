@@ -24,7 +24,6 @@
                 focusInvalid: false, // do not focus the last invalid input
                 ignore: "",  // validate all fields including form hidden input
                 messages: {
-
                 },
                 rules: {
                     'email_receives_feedback': {
@@ -36,15 +35,12 @@
                         minlength: 3
                     }
                 },
-
                 highlight: function (element) {
                     $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
                 },
-
                 unhighlight: function (element) {
                     $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
                 },
-
                 success: function (label) {
                     label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
                 }
@@ -206,6 +202,13 @@
                             <div class="col-md-7">
                                 <input type="text" class="form-control" value="{{ $settings['pinterest'] or '' }}" name="pinterest"/>
                                 <span class="help-block">Pinterest.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Github</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="{{ $settings['github'] or '' }}" name="github"/>
+                                <span class="help-block">Github page.</span>
                             </div>
                         </div>
                         <div class="form-group">

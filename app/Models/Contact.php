@@ -24,7 +24,7 @@ class Contact extends AbstractModel
         'phone' => 'numeric',
         'email' => 'required|email',
         'content' => 'string|required|between:30,5000',
-        'status' => 'integer|required|between:0,1',
+        'status' => 'integer|between:0,1',
     ];
 
     protected $editableFields = [

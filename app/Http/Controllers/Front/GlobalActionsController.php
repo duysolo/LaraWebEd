@@ -16,9 +16,7 @@ class GlobalActionsController extends BaseFrontController
     {
         $googleCaptchaResponse = $request->get('g-recaptcha-response', null);
         if (!$this->_validateGoogleCaptcha($googleCaptchaResponse)) {
-            $this->_setFlashMessage(trans('captcha.error'), 'error');
-            $this->_showFlashMessages();
-            return redirect()->back();
+            return $this->_responseAutoDetect($request, trans('captcha.error'), true, 500, 'error', true);
         }
 
         $data = $request->all();

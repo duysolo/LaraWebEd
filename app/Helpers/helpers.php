@@ -3,6 +3,7 @@ require_once('url.php');
 require_once('custom-fields.php');
 require_once('products.php');
 require_once('date-time.php');
+require_once('settings.php');
 
 /**
  * Get template for Page, Post, Category, ProductCategory
