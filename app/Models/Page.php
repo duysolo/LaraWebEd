@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class Page extends AbstractModel
 {
@@ -25,7 +23,7 @@ class Page extends AbstractModel
     protected $rules = [
         'global_title' => 'required|max:255',
         'status' => 'integer|required|between:0,1',
-        'created_by' => 'integer'
+        'created_by' => 'integer',
     ];
 
     protected $editableFields = [
@@ -33,7 +31,7 @@ class Page extends AbstractModel
         'status',
         'order',
         'page_template',
-        'created_by'
+        'created_by',
     ];
 
     public function pageContent()
@@ -52,7 +50,7 @@ class Page extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
 
         $page = static::find($id);
@@ -62,7 +60,9 @@ class Page extends AbstractModel
             return $result;
         }
 
-        if (isset($data['slug'])) $data['slug'] = str_slug($data['slug']);
+        if (isset($data['slug'])) {
+            $data['slug'] = str_slug($data['slug']);
+        }
 
         /*Update page template*/
         if (isset($data['page_template'])) {
@@ -89,7 +89,7 @@ class Page extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
         $object = static::find($id);
 
@@ -129,10 +129,21 @@ class Page extends AbstractModel
     public function createItem($language, $data)
     {
         $dataPage = ['status' => 1];
-        if (isset($data['title'])) $dataPage['global_title'] = $data['title'];
-        if (isset($data['page_template'])) $dataPage['page_template'] = $data['page_template'];
-        if (!isset($data['status'])) $data['status'] = 1;
-        if (!isset($data['language_id'])) $data['language_id'] = $language;
+        if (isset($data['title'])) {
+            $dataPage['global_title'] = $data['title'];
+        }
+
+        if (isset($data['page_template'])) {
+            $dataPage['page_template'] = $data['page_template'];
+        }
+
+        if (!isset($data['status'])) {
+            $data['status'] = 1;
+        }
+
+        if (!isset($data['language_id'])) {
+            $data['language_id'] = $language;
+        }
 
         $resultCreateItem = $this->updateItem(0, $dataPage);
 
@@ -140,7 +151,7 @@ class Page extends AbstractModel
         if (!$resultCreateItem['error']) {
             $page_id = $resultCreateItem['object']->id;
             $resultUpdateItemContent = $this->updateItemContent($page_id, $language, $data);
-            if($resultUpdateItemContent['error']) {
+            if ($resultUpdateItemContent['error']) {
                 $this->deleteItem($resultCreateItem['object']->id);
             }
             return $resultUpdateItemContent;
@@ -150,10 +161,12 @@ class Page extends AbstractModel
 
     public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
-        $fields = (array)$fields;
+        $fields = (array) $fields;
 
-        $select = (array)$select;
-        if(!$select) $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         $obj = static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
             ->join('languages', 'languages.id', '=', 'page_contents.language_id');
@@ -161,18 +174,18 @@ class Page extends AbstractModel
             foreach ($fields as $key => $row) {
                 $obj = $obj->where(function ($q) use ($key, $row) {
                     switch ($row['compare']) {
-                        case 'LIKE': {
-                            $q->where($key, $row['compare'], '%' . $row['value'] . '%');
-                        } break;
-                        case 'IN': {
-                            $q->whereIn($key, (array)$row['value']);
-                        } break;
-                        case 'NOT_IN': {
-                            $q->whereNotIn($key, (array)$row['value']);
-                        } break;
-                        default: {
-                            $q->where($key, $row['compare'], $row['value']);
-                        } break;
+                        case 'LIKE':{
+                                $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                            }break;
+                        case 'IN':{
+                                $q->whereIn($key, (array) $row['value']);
+                            }break;
+                        case 'NOT_IN':{
+                                $q->whereNotIn($key, (array) $row['value']);
+                            }break;
+                        default:{
+                                $q->where($key, $row['compare'], $row['value']);
+                            }break;
                     }
                 });
             }
@@ -182,13 +195,18 @@ class Page extends AbstractModel
                 $obj = $obj->orderBy($key, $value);
             }
         }
-        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
-        
+        if ($order == 'random') {
+            $obj = $obj->orderBy(\DB::raw('RAND()'));
+        }
+
         $obj = $obj->groupBy('pages.id')
             ->select($select);
 
         if ($multiple) {
-            if ($perPage > 0) return $obj->paginate($perPage);
+            if ($perPage > 0) {
+                return $obj->paginate($perPage);
+            }
+
             return $obj->get();
         }
         return $obj->first();
@@ -196,22 +214,30 @@ class Page extends AbstractModel
 
     public static function getById($id, $languageId, $options = [], $select = [])
     {
-        $options = (array)$options;
+        $options = (array) $options;
         $defaultArgs = [
             'status' => 1,
-            'global_status' => 1
+            'global_status' => 1,
         ];
         $args = array_merge($defaultArgs, $options);
 
-        $select = (array)$select;
-        if(!$select) $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         return static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
             ->join('languages', 'languages.id', '=', 'page_contents.language_id')
             ->where('pages.id', '=', $id)
             ->where(function ($q) use ($args) {
-                if ($args['global_status'] != null) $q->where('pages.status', '=', $args['global_status']);
-                if ($args['status'] != null) $q->where('page_contents.status', '=', $args['status']);
+                if ($args['global_status'] != null) {
+                    $q->where('pages.status', '=', $args['global_status']);
+                }
+
+                if ($args['status'] != null) {
+                    $q->where('page_contents.status', '=', $args['status']);
+                }
+
             })
             ->where('page_contents.language_id', '=', $languageId)
             ->select($select)
@@ -220,22 +246,30 @@ class Page extends AbstractModel
 
     public static function getBySlug($slug, $languageId, $options = [], $select = [])
     {
-        $options = (array)$options;
+        $options = (array) $options;
         $defaultArgs = [
             'status' => 1,
-            'global_status' => 1
+            'global_status' => 1,
         ];
         $args = array_merge($defaultArgs, $options);
 
-        $select = (array)$select;
-        if(!$select) $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         return static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
             ->join('languages', 'languages.id', '=', 'page_contents.language_id')
             ->where('page_contents.slug', '=', $slug)
             ->where(function ($q) use ($args) {
-                if ($args['global_status'] != null) $q->where('pages.status', '=', $args['global_status']);
-                if ($args['status'] != null) $q->where('page_contents.status', '=', $args['status']);
+                if ($args['global_status'] != null) {
+                    $q->where('pages.status', '=', $args['global_status']);
+                }
+
+                if ($args['status'] != null) {
+                    $q->where('page_contents.status', '=', $args['status']);
+                }
+
             })
             ->where('page_contents.language_id', '=', $languageId)
             ->select($select)
@@ -246,7 +280,7 @@ class Page extends AbstractModel
     {
         return Models\PageContent::getBy([
             'page_id' => $id,
-            'language_id' => $languageId
+            'language_id' => $languageId,
         ], null, false, 0, $select);
     }
 }

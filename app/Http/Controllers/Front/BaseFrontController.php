@@ -2,10 +2,7 @@
 
 use Acme;
 use App\Http\Controllers\BaseController;
-use App\Http\Requests\Request;
 use App\Models;
-
-use App\Http\Controllers\Front\FrontFoundation\Cart;
 
 abstract class BaseFrontController extends BaseController
 {
@@ -44,7 +41,7 @@ abstract class BaseFrontController extends BaseController
             'subMenuClass' => 'dropdown-menu sub-menu',
             'menuActive' => [
                 'type' => $type,
-                'related_id' => $menuActive
+                'related_id' => $menuActive,
             ],
             'activeClass' => 'active current-menu-item',
             'isAdminMenu' => false,
@@ -55,7 +52,7 @@ abstract class BaseFrontController extends BaseController
     protected function _setPageTitle($title)
     {
         view()->share([
-            'pageTitle' => $title
+            'pageTitle' => $title,
         ]);
     }
 
@@ -64,11 +61,10 @@ abstract class BaseFrontController extends BaseController
         view()->share([
             'currentFrontEditLink' => [
                 'title' => $title,
-                'link' => '/' . $this->adminCpAccess . '/' . $link
-            ]
+                'link' => '/' . $this->adminCpAccess . '/' . $link,
+            ],
         ]);
     }
-
 
     /**
      * @param Models\Foundation\MetaFunctions $modelObject
@@ -98,7 +94,7 @@ abstract class BaseFrontController extends BaseController
             $data['image'] = asset($this->_getSetting('site_logo'));
         }
         view()->share([
-            'metaSEO' => $data
+            'metaSEO' => $data,
         ]);
     }
 }

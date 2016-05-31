@@ -2,15 +2,13 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class Setting extends AbstractModel
 {
     protected $editableFields = [
         'option_key',
-        'option_value'
+        'option_value',
     ];
 
     public function __construct()
@@ -50,7 +48,7 @@ class Setting extends AbstractModel
             'error' => false,
             'response_code' => 200,
             'errors' => [],
-            'message' => 'Done but some error occurred.'
+            'message' => 'Done but some error occurred.',
         ];
         foreach ($data as $key => $row) {
             $setting = static::getSetting($key);

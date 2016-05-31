@@ -20,12 +20,11 @@ class AuthController extends BaseController
     | authentication of existing users. By default, this controller uses
     | a simple trait to add these behaviors. Why don't you explore it?
     |
-    */
+     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    var $username, $loginPath, $redirectTo, $redirectPath, $redirectToLoginPage;
-
+    public $username, $loginPath, $redirectTo, $redirectPath, $redirectToLoginPage;
 
     /**
      * Create a new authentication controller instance.
@@ -38,9 +37,9 @@ class AuthController extends BaseController
 
         $this->username = 'username';
         $this->loginPath = 'auth';
-        $this->redirectTo = '/'.$this->adminCpAccess.'/dashboard';
-        $this->redirectPath = '/'.$this->adminCpAccess.'/dashboard';
-        $this->redirectToLoginPage = '/'.$this->adminCpAccess.'/auth/login';
+        $this->redirectTo = '/' . $this->adminCpAccess . '/dashboard';
+        $this->redirectPath = '/' . $this->adminCpAccess . '/dashboard';
+        $this->redirectToLoginPage = '/' . $this->adminCpAccess . '/auth/login';
 
         $this->middleware('guest_admin', ['except' => ['getLogout', 'postLogin', 'getLogin']]);
     }
@@ -107,8 +106,7 @@ class AuthController extends BaseController
 
         $checkAdminUser = $this->_checkAdminUser($credentials, $request);
 
-        if($checkAdminUser)
-        {
+        if ($checkAdminUser) {
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 

@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class ProductCategoryContent extends AbstractModel
 {
@@ -45,7 +43,7 @@ class ProductCategoryContent extends AbstractModel
         'status',
         'thumbnail',
         'tags',
-        'icon_font'
+        'icon_font',
     ];
 
     /**
@@ -57,7 +55,6 @@ class ProductCategoryContent extends AbstractModel
     {
         return $this->belongsTo('App\Models\ProductCategory', 'category_id');
     }
-
 
     /**
      * Set the relationship

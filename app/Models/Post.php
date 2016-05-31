@@ -2,11 +2,8 @@
 namespace App\Models;
 
 use App\Models;
-use App\Models\Category;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
-
+use App\Models\Category;
 use App\Models\Contracts;
 
 class Post extends AbstractModel implements Contracts\MultiLanguageInterface
@@ -29,7 +26,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         'global_title' => 'required|max:255',
         'status' => 'integer|required|between:0,1',
         'created_by' => 'integer',
-        'is_popular' => 'integer|between:0,1'
+        'is_popular' => 'integer|between:0,1',
     ];
 
     protected $editableFields = [
@@ -38,7 +35,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         'order',
         'page_template',
         'created_by',
-        'is_popular'
+        'is_popular',
     ];
 
     public function postContent()
@@ -75,7 +72,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
 
         $post = static::find($id);
@@ -85,7 +82,9 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
             return $result;
         }
 
-        if (isset($data['slug'])) $data['slug'] = str_slug($data['slug']);
+        if (isset($data['slug'])) {
+            $data['slug'] = str_slug($data['slug']);
+        }
 
         /*Save categories*/
         if (isset($data['category_ids'])) {
@@ -117,7 +116,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
         $object = static::find($id);
 
@@ -160,11 +159,25 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
     public function createItem($language, $data)
     {
         $dataPost = ['status' => 1];
-        if (isset($data['title'])) $dataPost['global_title'] = $data['title'];
-        if (isset($data['created_by'])) $dataPost['created_by'] = $data['created_by'];
-        if (isset($data['category_ids'])) $dataPost['category_ids'] = $data['category_ids'];
-        if (!isset($data['status'])) $data['status'] = 1;
-        if (!isset($data['language_id'])) $data['language_id'] = $language;
+        if (isset($data['title'])) {
+            $dataPost['global_title'] = $data['title'];
+        }
+
+        if (isset($data['created_by'])) {
+            $dataPost['created_by'] = $data['created_by'];
+        }
+
+        if (isset($data['category_ids'])) {
+            $dataPost['category_ids'] = $data['category_ids'];
+        }
+
+        if (!isset($data['status'])) {
+            $data['status'] = 1;
+        }
+
+        if (!isset($data['language_id'])) {
+            $data['language_id'] = $language;
+        }
 
         $resultCreateItem = $this->updateItem(0, $dataPost);
 
@@ -172,7 +185,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         if (!$resultCreateItem['error']) {
             $post_id = $resultCreateItem['object']->id;
             $resultUpdateItemContent = $this->updateItemContent($post_id, $language, $data);
-            if($resultUpdateItemContent['error']) {
+            if ($resultUpdateItemContent['error']) {
                 $this->deleteItem($resultCreateItem['object']->id);
             }
             return $resultUpdateItemContent;
@@ -182,10 +195,12 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
     public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
-        $fields = (array)$fields;
-        $select = (array)$select;
+        $fields = (array) $fields;
+        $select = (array) $select;
 
-        if(!$select) $select = ['posts.status as global_status', 'posts.page_template', 'posts.global_title', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        if (!$select) {
+            $select = ['posts.status as global_status', 'posts.page_template', 'posts.global_title', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         $obj = static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id');
@@ -193,18 +208,18 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
             foreach ($fields as $key => $row) {
                 $obj = $obj->where(function ($q) use ($key, $row) {
                     switch ($row['compare']) {
-                        case 'LIKE': {
-                            $q->where($key, $row['compare'], '%' . $row['value'] . '%');
-                        } break;
-                        case 'IN': {
-                            $q->whereIn($key, (array)$row['value']);
-                        } break;
-                        case 'NOT_IN': {
-                            $q->whereNotIn($key, (array)$row['value']);
-                        } break;
-                        default: {
-                            $q->where($key, $row['compare'], $row['value']);
-                        } break;
+                        case 'LIKE':{
+                                $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                            }break;
+                        case 'IN':{
+                                $q->whereIn($key, (array) $row['value']);
+                            }break;
+                        case 'NOT_IN':{
+                                $q->whereNotIn($key, (array) $row['value']);
+                            }break;
+                        default:{
+                                $q->where($key, $row['compare'], $row['value']);
+                            }break;
                     }
                 });
             }
@@ -214,13 +229,18 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
                 $obj = $obj->orderBy($key, $value);
             }
         }
-        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+        if ($order == 'random') {
+            $obj = $obj->orderBy(\DB::raw('RAND()'));
+        }
 
         $obj = $obj->groupBy('posts.id')
             ->select($select);
 
         if ($multiple) {
-            if ($perPage > 0) return $obj->paginate($perPage);
+            if ($perPage > 0) {
+                return $obj->paginate($perPage);
+            }
+
             return $obj->get();
         }
         return $obj->first();
@@ -228,22 +248,30 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
     public static function getById($id, $languageId, $options = [], $select = [])
     {
-        $options = (array)$options;
+        $options = (array) $options;
         $defaultArgs = [
             'status' => 1,
-            'global_status' => 1
+            'global_status' => 1,
         ];
         $args = array_merge($defaultArgs, $options);
 
-        $select = (array)$select;
-        if(!$select) $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         return static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id')
             ->where('posts.id', '=', $id)
             ->where(function ($q) use ($args) {
-                if ($args['global_status'] != null) $q->where('posts.status', '=', $args['global_status']);
-                if ($args['status'] != null) $q->where('post_contents.status', '=', $args['status']);
+                if ($args['global_status'] != null) {
+                    $q->where('posts.status', '=', $args['global_status']);
+                }
+
+                if ($args['status'] != null) {
+                    $q->where('post_contents.status', '=', $args['status']);
+                }
+
             })
             ->where('post_contents.language_id', '=', $languageId)
             ->select($select)
@@ -252,22 +280,30 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
     public static function getBySlug($slug, $languageId, $options = [], $select = [])
     {
-        $options = (array)$options;
+        $options = (array) $options;
         $defaultArgs = [
             'status' => 1,
-            'global_status' => 1
+            'global_status' => 1,
         ];
         $args = array_merge($defaultArgs, $options);
 
-        $select = (array)$select;
-        if(!$select) $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         return static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id')
             ->where('post_contents.slug', '=', $slug)
             ->where(function ($q) use ($args) {
-                if ($args['global_status'] != null) $q->where('posts.status', '=', $args['global_status']);
-                if ($args['status'] != null) $q->where('post_contents.status', '=', $args['status']);
+                if ($args['global_status'] != null) {
+                    $q->where('posts.status', '=', $args['global_status']);
+                }
+
+                if ($args['status'] != null) {
+                    $q->where('post_contents.status', '=', $args['status']);
+                }
+
             })
             ->where('post_contents.language_id', '=', $languageId)
             ->select($select)
@@ -278,7 +314,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
     {
         return PostContent::getBy([
             'post_id' => $id,
-            'language_id' => $languageId
+            'language_id' => $languageId,
         ], null, false, 0, $select);
     }
 
@@ -296,18 +332,18 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         foreach ($otherFields as $key => $row) {
             $items = $items->where(function ($q) use ($key, $row) {
                 switch ($row['compare']) {
-                    case 'LIKE': {
-                        $q->where($key, $row['compare'], '%' . $row['value'] . '%');
-                    } break;
-                    case 'IN': {
-                        $q->whereIn($key, (array)$row['value']);
-                    } break;
-                    case 'NOT_IN': {
-                        $q->whereNotIn($key, (array)$row['value']);
-                    } break;
-                    default: {
-                        $q->where($key, $row['compare'], $row['value']);
-                    } break;
+                    case 'LIKE':{
+                            $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                        }break;
+                    case 'IN':{
+                            $q->whereIn($key, (array) $row['value']);
+                        }break;
+                    case 'NOT_IN':{
+                            $q->whereNotIn($key, (array) $row['value']);
+                        }break;
+                    default:{
+                            $q->where($key, $row['compare'], $row['value']);
+                        }break;
                 }
             });
         }
@@ -316,12 +352,17 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
                 $items = $items->orderBy($key, $value);
             }
         }
-        if($order == 'random') $items = $items->orderBy(\DB::raw('RAND()'));
+        if ($order == 'random') {
+            $items = $items->orderBy(\DB::raw('RAND()'));
+        }
 
         if ($select && sizeof($select) > 0) {
             $items = $items->select($select);
         }
-        if ($perPage > 0) return $items->paginate($perPage);
+        if ($perPage > 0) {
+            return $items->paginate($perPage);
+        }
+
         return $items->get();
     }
 
@@ -348,12 +389,17 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
                 $items = $items->orderBy($key, $value);
             }
         }
-        if($order == 'random') $items = $items->orderBy(\DB::raw('RAND()'));
+        if ($order == 'random') {
+            $items = $items->orderBy(\DB::raw('RAND()'));
+        }
 
         if ($select && sizeof($select) > 0) {
             $items = $items->select($select);
         }
-        if ($perPage > 0) return $items->paginate($perPage);
+        if ($perPage > 0) {
+            return $items->paginate($perPage);
+        }
+
         return $items->get();
     }
 }

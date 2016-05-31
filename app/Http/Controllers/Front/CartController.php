@@ -1,9 +1,6 @@
 <?php namespace App\Http\Controllers\Front;
 
-use Acme;
 use App\Models;
-use App\Models\Product;
-use App\Models\ProductMeta;
 use Illuminate\Http\Request;
 
 class CartController extends BaseFrontController
@@ -19,12 +16,17 @@ class CartController extends BaseFrontController
         $this->_unsetCart();
         $product = Models\ProductContent::find($productContentId);
         if ($product) {
-            $quantity = ($request->get('quantity', null)) ? (int)$request->get('quantity', null) : (int)$quantity;
-            if ((int)$quantity < 1) $quantity = 1;
+            $quantity = ($request->get('quantity', null)) ? (int) $request->get('quantity', null) : (int) $quantity;
+            if ((int) $quantity < 1) {
+                $quantity = 1;
+            }
 
-            return $this->_addToCart($request, (int)$productContentId, (int)$quantity);
+            return $this->_addToCart($request, (int) $productContentId, (int) $quantity);
         }
-        if (!$request->ajax()) return $this->_responseRedirect(trans('cart.addCartError'), 'error');
+        if (!$request->ajax()) {
+            return $this->_responseRedirect(trans('cart.addCartError'), 'error');
+        }
+
         return $this->_responseJson(true, 500, trans('cart.addCartError'));
     }
 
@@ -32,13 +34,18 @@ class CartController extends BaseFrontController
     {
         $this->_unsetCart();
         $product = Models\ProductContent::find($productContentId);
-        if($product)
-        {
-            $quantity = (int)$quantity;
-            if((int)$quantity < 1) $quantity = 1;
-            return $this->_addToCart($request, (int)$productContentId, (int)$quantity);
+        if ($product) {
+            $quantity = (int) $quantity;
+            if ((int) $quantity < 1) {
+                $quantity = 1;
+            }
+
+            return $this->_addToCart($request, (int) $productContentId, (int) $quantity);
         }
-        if (!$request->ajax()) return $this->_responseRedirect(trans('cart.productNotExistsInCart'), 'error');
+        if (!$request->ajax()) {
+            return $this->_responseRedirect(trans('cart.productNotExistsInCart'), 'error');
+        }
+
         return $this->_responseJson(true, 500, trans('cart.productNotExistsInCart'));
     }
 
@@ -46,10 +53,16 @@ class CartController extends BaseFrontController
     {
         if ($this->_checkItemExistsInCart($id)) {
             $this->_deleteCartItem($id);
-            if (!$request->ajax()) return $this->_responseRedirect(trans('cart.updateCartCompleted'), 'success');
+            if (!$request->ajax()) {
+                return $this->_responseRedirect(trans('cart.updateCartCompleted'), 'success');
+            }
+
             return $this->_responseJson(false, 200, trans('cart.updateCartCompleted'));
         }
-        if (!$request->ajax()) return $this->_responseRedirect(trans('cart.productNotExistsInCart'), 'error');
+        if (!$request->ajax()) {
+            return $this->_responseRedirect(trans('cart.productNotExistsInCart'), 'error');
+        }
+
         return $this->_responseJson(true, 500, trans('cart.productNotExistsInCart'));
     }
 }

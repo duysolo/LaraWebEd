@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Event;
-use App\Events;
 use App\Models;
 use Illuminate\Http\Request;
 
 class DashboardController extends BaseAdminController
 {
-    var $bodyClass = 'dashboard-controller dashboard-page';
+    public $bodyClass = 'dashboard-controller dashboard-page';
     public function __construct()
     {
         parent::__construct();

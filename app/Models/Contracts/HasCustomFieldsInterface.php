@@ -1,7 +1,6 @@
 <?php
 namespace App\Models\Contracts;
 
-
 interface HasCustomFieldsInterface
 {
     public static function getContentMeta($content_id, $key);

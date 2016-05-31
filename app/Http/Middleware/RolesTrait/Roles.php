@@ -23,8 +23,7 @@ trait Roles
 
         $adminCpAccess = \Config::get('app.adminCpAccess');
 
-        if($loggedInUser->status != 1)
-        {
+        if ($loggedInUser->status != 1) {
             $this->_setFlashMessage('Your account is disabled.', 'error');
             $this->_showFlashMessages();
             return redirect()->to($adminCpAccess . '/auth/login');
@@ -33,8 +32,7 @@ trait Roles
         if (!$loggedInUser->adminUserRole || !$this->checkRole($loggedInUser->adminUserRole->slug)) {
             $this->_setFlashMessage('You need ' . $this->neededRole . ' role to access this page.', 'error');
             $this->_showFlashMessages();
-            if(isset($this->redirectAdminPath))
-            {
+            if (isset($this->redirectAdminPath)) {
                 return redirect()->to($adminCpAccess . '/' . $this->redirectAdminPath);
             }
             return redirect()->to($adminCpAccess . '/dashboard');

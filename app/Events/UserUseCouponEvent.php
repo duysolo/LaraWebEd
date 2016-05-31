@@ -3,11 +3,9 @@
 namespace App\Events;
 
 use App\Events\Event;
+use App\Models\Coupon;
 use App\Models\User;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-
-use App\Models\Coupon;
 
 class UserUseCouponEvent extends Event
 {

@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class PageContent extends AbstractModel
 {
@@ -43,7 +41,7 @@ class PageContent extends AbstractModel
         'content',
         'status',
         'thumbnail',
-        'tags'
+        'tags',
     ];
 
     /**
@@ -55,7 +53,6 @@ class PageContent extends AbstractModel
     {
         return $this->belongsTo('App\Models\Page', 'page_id');
     }
-
 
     /**
      * Set the relationship

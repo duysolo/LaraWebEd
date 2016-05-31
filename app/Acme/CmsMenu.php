@@ -1,21 +1,20 @@
 <?php namespace Acme;
 
 use App\Models;
-use App\Models\Language;
 
 class CmsMenu
 {
     /**
      * Construct
      */
-    var $localeObj, $languageCode;
+    public $localeObj, $languageCode;
 
     public function __construct()
     {
 
     }
 
-    var $args = array(
+    public $args = array(
         'menuName' => '',
         'menuClass' => '',
         'container' => '',
@@ -27,7 +26,7 @@ class CmsMenu
         'subMenuClass' => 'sub-menu',
         'menuActive' => [
             'type' => 'custom-link',
-            'related_id' => 0
+            'related_id' => 0,
         ],
         'activeClass' => 'active',
         'isAdminMenu' => false,
@@ -48,7 +47,7 @@ class CmsMenu
             'subMenuClass' => 'sub-menu',
             'menuActive' => [
                 'type' => 'custom-link',
-                'related_id' => 0
+                'related_id' => 0,
             ],
             'activeClass' => 'active',
             'isAdminMenu' => false,
@@ -64,7 +63,10 @@ class CmsMenu
             ->first();
         // Menu exists
         if (!is_null($menu)) {
-            if ($defaultArgs['container'] != '') $output .= '<' . $defaultArgs['container'] . ' class="' . $defaultArgs['containerClass'] . '" id="' . $defaultArgs['containerId'] . '">'; //<nav>
+            if ($defaultArgs['container'] != '') {
+                $output .= '<' . $defaultArgs['container'] . ' class="' . $defaultArgs['containerClass'] . '" id="' . $defaultArgs['containerId'] . '">';
+            }
+            //<nav>
             $output .= '<' . $defaultArgs['containerTag'] . ' class="' . $defaultArgs['menuClass'] . '"' . (($defaultArgs['isAdminMenu']) ? ' data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200"' : '') . '>'; //<ul>
             $child_args = array(
                 'menuContentId' => $menu->menu_content_id,
@@ -88,7 +90,10 @@ class CmsMenu
             $output .= $this->getMenuItems($child_args);
             // $output.= '<div class="clearfix"></div></'.$defaultArgs['containerTag'].'>'; //</ul>
             $output .= '</' . $defaultArgs['containerTag'] . '>'; //</ul>
-            if ($defaultArgs['container'] != '') $output .= '</' . $defaultArgs['container'] . '>'; //</nav>
+            if ($defaultArgs['container'] != '') {
+                $output .= '</' . $defaultArgs['container'] . '>';
+            }
+            //</nav>
         }
         return $output;
     }
@@ -182,57 +187,57 @@ class CmsMenu
         if ($args['item']->type == $args['menuActive']['type']) {
             if (is_array($args['menuActive']['related_id'])) {
                 switch ($args['menuActive']['type']) {
-                    case 'category': {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
+                    case 'category':{
+                            if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
+                                $result = $args['defaultActiveClass'];
+                            }
                         }
-                    }
                         break;
-                    case 'product-category': {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
+                    case 'product-category':{
+                            if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
+                                $result = $args['defaultActiveClass'];
+                            }
                         }
-                    }
                         break;
-                    default: {
-                        if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
-                            $result = $args['defaultActiveClass'];
+                    default:{
+                            if (in_array($args['item']->related_id, $args['menuActive']['related_id'])) {
+                                $result = $args['defaultActiveClass'];
+                            }
                         }
-                    }
                         break;
                 }
             } else {
                 switch ($args['menuActive']['type']) {
-                    case 'category': {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'product-category': {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
-                        }
-                    }
-                        break;
-                    case 'custom-link': {
-                        $currentUrl = \Request::url();
-                        if ($args['isAdminMenu']) {
-                            if ($args['menuActive']['related_id'] == $args['item']->url) {
-                                $result = $args['defaultActiveClass'];
-                            }
-                        } else {
-                            if (asset($args['item']->url) == asset($currentUrl) || asset($args['item']->url) == asset($currentUrl . '/')) {
+                    case 'category':{
+                            if ($args['menuActive']['related_id'] == $args['item']->related_id) {
                                 $result = $args['defaultActiveClass'];
                             }
                         }
-                    }
                         break;
-                    default: {
-                        if ($args['menuActive']['related_id'] == $args['item']->related_id) {
-                            $result = $args['defaultActiveClass'];
+                    case 'product-category':{
+                            if ($args['menuActive']['related_id'] == $args['item']->related_id) {
+                                $result = $args['defaultActiveClass'];
+                            }
                         }
-                    }
+                        break;
+                    case 'custom-link':{
+                            $currentUrl = \Request::url();
+                            if ($args['isAdminMenu']) {
+                                if ($args['menuActive']['related_id'] == $args['item']->url) {
+                                    $result = $args['defaultActiveClass'];
+                                }
+                            } else {
+                                if (asset($args['item']->url) == asset($currentUrl) || asset($args['item']->url) == asset($currentUrl . '/')) {
+                                    $result = $args['defaultActiveClass'];
+                                }
+                            }
+                        }
+                        break;
+                    default:{
+                            if ($args['menuActive']['related_id'] == $args['item']->related_id) {
+                                $result = $args['defaultActiveClass'];
+                            }
+                        }
                         break;
                 }
             }
@@ -253,13 +258,16 @@ class CmsMenu
         }
         $result = false;
         $menuNodes = Models\MenuNode::getBy([
-            'parent_id' => $args['parent']->id
+            'parent_id' => $args['parent']->id,
         ], ['position' => 'ASC'], true);
         foreach ($menuNodes as $key => $row) {
             $childArgs = $args;
             $childArgs['parent'] = $row;
             $result = $this->_recursiveIsChildItemActive($childArgs);
-            if ($result) return true;
+            if ($result) {
+                return true;
+            }
+
         }
         return $result;
     }
@@ -269,80 +277,86 @@ class CmsMenu
     {
         $data_title = '';
         switch ($item->type) {
-            case 'page': {
-                $title = $item->title;
-                if (!$title) {
-                    $page = Models\Page::getBy([
-                        'id' => $item->related_id
-                    ]);
-                    if ($page) {
-                        $pageContent = $page->pageContent()->join('languages', 'languages.id', '=', 'page_contents.language_id')
-                            ->where('languages.id', '=', $this->localeObj->id)
-                            ->select('page_contents.title')
-                            ->first();
-                        if ($pageContent) {
-                            $title = ((trim($pageContent->title) != '') ? trim($pageContent->title) : trim($page->global_title));
+            case 'page':{
+                    $title = $item->title;
+                    if (!$title) {
+                        $page = Models\Page::getBy([
+                            'id' => $item->related_id,
+                        ]);
+                        if ($page) {
+                            $pageContent = $page->pageContent()->join('languages', 'languages.id', '=', 'page_contents.language_id')
+                                ->where('languages.id', '=', $this->localeObj->id)
+                                ->select('page_contents.title')
+                                ->first();
+                            if ($pageContent) {
+                                $title = ((trim($pageContent->title) != '') ? trim($pageContent->title) : trim($page->global_title));
+                            }
+                        } else {
+                            $title = '';
                         }
-                    } else {
-                        $title = '';
                     }
+                    $data_title = $title;
                 }
-                $data_title = $title;
-            }
                 break;
-            case 'category': {
-                $title = $item->title;
-                if (!$title) {
-                    $cat = Models\Category::getWithContent([
-                        'categories.id' => [
-                            'compare' => '=',
-                            'value' => $item->related_id
-                        ],
-                        'category_contents.language_id' => [
-                            'compare' => '=',
-                            'value' => $this->localeObj->id
-                        ]
-                    ]);
-                    if ($cat) {
-                        $title = ((trim($cat->title) != '') ? trim($cat->title) : trim($cat->global_title));
-                    } else {
-                        $title = '';
+            case 'category':{
+                    $title = $item->title;
+                    if (!$title) {
+                        $cat = Models\Category::getWithContent([
+                            'categories.id' => [
+                                'compare' => '=',
+                                'value' => $item->related_id,
+                            ],
+                            'category_contents.language_id' => [
+                                'compare' => '=',
+                                'value' => $this->localeObj->id,
+                            ],
+                        ]);
+                        if ($cat) {
+                            $title = ((trim($cat->title) != '') ? trim($cat->title) : trim($cat->global_title));
+                        } else {
+                            $title = '';
+                        }
                     }
+                    $data_title = $title;
                 }
-                $data_title = $title;
-            }
                 break;
-            case 'product-category': {
-                $title = $item->title;
-                if (!$title) {
-                    $cat = Models\ProductCategory::getWithContent([
-                        'product_categories.id' => [
-                            'compare' => '=',
-                            'value' => $item->related_id
-                        ],
-                        'product_category_contents.language_id' => [
-                            'compare' => '=',
-                            'value' => $this->localeObj->id
-                        ]
-                    ]);
-                    if ($cat) {
-                        $title = ((trim($cat->title) != '') ? trim($cat->title) : trim($cat->global_title));
-                    } else {
-                        $title = '';
+            case 'product-category':{
+                    $title = $item->title;
+                    if (!$title) {
+                        $cat = Models\ProductCategory::getWithContent([
+                            'product_categories.id' => [
+                                'compare' => '=',
+                                'value' => $item->related_id,
+                            ],
+                            'product_category_contents.language_id' => [
+                                'compare' => '=',
+                                'value' => $this->localeObj->id,
+                            ],
+                        ]);
+                        if ($cat) {
+                            $title = ((trim($cat->title) != '') ? trim($cat->title) : trim($cat->global_title));
+                        } else {
+                            $title = '';
+                        }
                     }
+                    $data_title = $title;
                 }
-                $data_title = $title;
-            }
                 break;
-            case 'custom-link': {
-                $data_title = $item->title;
-                if (!$data_title) $data_title = '';
-            }
+            case 'custom-link':{
+                    $data_title = $item->title;
+                    if (!$data_title) {
+                        $data_title = '';
+                    }
+
+                }
                 break;
-            default: {
-                $data_title = $item->title;
-                if (!$data_title) $data_title = '';
-            }
+            default:{
+                    $data_title = $item->title;
+                    if (!$data_title) {
+                        $data_title = '';
+                    }
+
+                }
                 break;
         }
         $data_title = htmlentities($data_title);
@@ -354,84 +368,84 @@ class CmsMenu
     {
         $result = '';
         switch ($item->type) {
-            case 'page': {
-                $slug = '';
-                $page = Models\Page::getWithContent([
-                    'pages.id' => [
-                        'compare' => '=',
-                        'value' => $item->related_id
-                    ],
-                    'page_contents.language_id' => [
-                        'compare' => '=',
-                        'value' => $this->localeObj->id
-                    ]
-                ]);
-                if ($page) {
-                    $slug = (trim($page->slug) != '') ? trim($page->slug) : '';
-                }
+            case 'page':{
+                    $slug = '';
+                    $page = Models\Page::getWithContent([
+                        'pages.id' => [
+                            'compare' => '=',
+                            'value' => $item->related_id,
+                        ],
+                        'page_contents.language_id' => [
+                            'compare' => '=',
+                            'value' => $this->localeObj->id,
+                        ],
+                    ]);
+                    if ($page) {
+                        $slug = (trim($page->slug) != '') ? trim($page->slug) : '';
+                    }
 
-                $result = _getPageLink($slug, $this->languageCode);
-            }
+                    $result = _getPageLink($slug, $this->languageCode);
+                }
                 break;
-            case 'category': {
-                $cat = Models\Category::getWithContent([
-                    'categories.id' => [
-                        'compare' => '=',
-                        'value' => $item->related_id
-                    ],
-                    'category_contents.language_id' => [
-                        'compare' => '=',
-                        'value' => $this->localeObj->id
-                    ]
-                ]);
-                if ($cat) {
-                    $data_slug = ($cat && $cat->slug) ? $cat->slug : $cat->global_slug;
-                    if ($cat->parent_id != 0) {
-                        $data_slug = $this->getParentCategorySlugs($cat->parent_id, $data_slug);
+            case 'category':{
+                    $cat = Models\Category::getWithContent([
+                        'categories.id' => [
+                            'compare' => '=',
+                            'value' => $item->related_id,
+                        ],
+                        'category_contents.language_id' => [
+                            'compare' => '=',
+                            'value' => $this->localeObj->id,
+                        ],
+                    ]);
+                    if ($cat) {
+                        $data_slug = ($cat && $cat->slug) ? $cat->slug : $cat->global_slug;
+                        if ($cat->parent_id != 0) {
+                            $data_slug = $this->getParentCategorySlugs($cat->parent_id, $data_slug);
+                        }
+                    } else {
+                        $data_slug = '';
                     }
-                } else {
-                    $data_slug = '';
+                    $result = _getCategoryLink($data_slug, $this->languageCode);
                 }
-                $result = _getCategoryLink($data_slug, $this->languageCode);
-            }
                 break;
-            case 'product-category': {
-                $cat = Models\ProductCategory::getWithContent([
-                    'product_categories.id' => [
-                        'compare' => '=',
-                        'value' => $item->related_id
-                    ],
-                    'product_category_contents.language_id' => [
-                        'compare' => '=',
-                        'value' => $this->localeObj->id
-                    ]
-                ]);
-                if ($cat) {
-                    $data_slug = ($cat && $cat->slug) ? $cat->slug : $cat->global_slug;
-                    if ($cat->parent_id != 0) {
-                        $data_slug = $this->getParentProductCategorySlugs($cat->parent_id, $data_slug);
+            case 'product-category':{
+                    $cat = Models\ProductCategory::getWithContent([
+                        'product_categories.id' => [
+                            'compare' => '=',
+                            'value' => $item->related_id,
+                        ],
+                        'product_category_contents.language_id' => [
+                            'compare' => '=',
+                            'value' => $this->localeObj->id,
+                        ],
+                    ]);
+                    if ($cat) {
+                        $data_slug = ($cat && $cat->slug) ? $cat->slug : $cat->global_slug;
+                        if ($cat->parent_id != 0) {
+                            $data_slug = $this->getParentProductCategorySlugs($cat->parent_id, $data_slug);
+                        }
+                    } else {
+                        $data_slug = '';
                     }
-                } else {
-                    $data_slug = '';
+                    $result = _getProductCategoryLink($data_slug, $this->languageCode);
                 }
-                $result = _getProductCategoryLink($data_slug, $this->languageCode);
-            }
                 break;
-            case 'custom-link': {
-                if ($isAdminMenu == true) {
-                    $result = asset(\Config::get('app.adminCpAccess') . '/' . $item->url);
-                } else {
-                    $result = $item->url;
+            case 'custom-link':{
+                    if ($isAdminMenu == true) {
+                        $result = asset(\Config::get('app.adminCpAccess') . '/' . $item->url);
+                    } else {
+                        $result = $item->url;
+                    }
                 }
-            }
                 break;
-            default: {
-                if ($isAdminMenu == true) {
-                    $result = asset(\Config::get('app.adminCpAccess') . '/' . $item->url);
-                } else {
-                    $result = $item->url;
+            default:{
+                    if ($isAdminMenu == true) {
+                        $result = asset(\Config::get('app.adminCpAccess') . '/' . $item->url);
+                    } else {
+                        $result = $item->url;
+                    }
                 }
-            }
                 break;
         }
         return $result;
@@ -440,7 +454,10 @@ class CmsMenu
     // Check menu has children or not
     private function checkItemHasChildren($item)
     {
-        if (count($item->child) > 0) return true;
+        if (count($item->child) > 0) {
+            return true;
+        }
+
         return false;
     }
 
@@ -451,19 +468,22 @@ class CmsMenu
         $cat = Models\ProductCategory::getWithContent([
             'product_categories.id' => [
                 'compare' => '=',
-                'value' => $parentId
+                'value' => $parentId,
             ],
             'product_category_contents.language_id' => [
                 'compare' => '=',
-                'value' => $this->localeObj->id
-            ]
+                'value' => $this->localeObj->id,
+            ],
         ]);
         if ($cat) {
             $categorySlug = $cat->slug;
             if ($categorySlug) {
                 $result = $categorySlug . '/' . $result;
             }
-            if ($cat->category_id != 0) $result = $this->getParentProductCategorySlugs($cat->parent_id, $result);
+            if ($cat->category_id != 0) {
+                $result = $this->getParentProductCategorySlugs($cat->parent_id, $result);
+            }
+
         }
         return $result;
     }
@@ -474,19 +494,22 @@ class CmsMenu
         $cat = Models\Category::getWithContent([
             'categories.id' => [
                 'compare' => '=',
-                'value' => $parentId
+                'value' => $parentId,
             ],
             'category_contents.language_id' => [
                 'compare' => '=',
-                'value' => $this->localeObj->id
-            ]
+                'value' => $this->localeObj->id,
+            ],
         ]);
         if ($cat) {
             $categorySlug = $cat->slug;
             if ($categorySlug) {
                 $result = $categorySlug . '/' . $result;
             }
-            if ($cat->category_id != 0) $result = $this->getParentCategorySlugs($cat->parent_id, $result);
+            if ($cat->category_id != 0) {
+                $result = $this->getParentCategorySlugs($cat->parent_id, $result);
+            }
+
         }
         return $result;
     }

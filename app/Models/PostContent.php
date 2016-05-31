@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class PostContent extends AbstractModel
 {
@@ -43,7 +41,7 @@ class PostContent extends AbstractModel
         'content',
         'status',
         'thumbnail',
-        'tags'
+        'tags',
     ];
 
     /**
@@ -55,7 +53,6 @@ class PostContent extends AbstractModel
     {
         return $this->belongsTo('App\Models\Post', 'post_id');
     }
-
 
     /**
      * Set the relationship

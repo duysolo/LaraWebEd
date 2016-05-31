@@ -2,13 +2,8 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Login;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
-use App\Models;
-
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Login;
 
 class UserLoggedInListener
 {

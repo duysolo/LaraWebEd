@@ -20,14 +20,14 @@ class FieldGroup extends AbstractModel
     protected $rules = [
         'title' => 'required|max:255',
         'status' => 'integer|required|between:0,1',
-        'field_rules' => 'required|json'
+        'field_rules' => 'required|json',
     ];
 
     protected $editableFields = [
         'title',
         'field_rules',
         'position',
-        'status'
+        'status',
     ];
 
     /**
@@ -64,7 +64,7 @@ class FieldGroup extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
         $object = static::find($id);
 

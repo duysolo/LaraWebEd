@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Acme;
-use App\Models;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
 class BrandController extends BaseAdminController
 {
-    var $bodyClass = 'brand-controller', $routeLink = 'brands';
+    public $bodyClass = 'brand-controller', $routeLink = 'brands';
 
     public function __construct()
     {
@@ -45,14 +43,13 @@ class BrandController extends BaseAdminController
         $records = [];
         $records["data"] = [];
 
-
         /*Group actions*/
         if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
+                'status' => $request->get('customActionValue', 0),
             ], true);
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
@@ -61,21 +58,21 @@ class BrandController extends BaseAdminController
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1: {
-                $orderBy = 'id';
-            }
+            case 1:{
+                    $orderBy = 'id';
+                }
                 break;
-            case 2: {
-                $orderBy = 'name';
-            }
+            case 2:{
+                    $orderBy = 'name';
+                }
                 break;
-            default: {
-                $orderBy = 'created_at';
-            }
+            default:{
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
@@ -116,11 +113,11 @@ class BrandController extends BaseAdminController
                 '<input type="checkbox" name="id[]" value="' . $row->id . '">',
                 $row->id,
                 $row->name,
-                '<img src="'.$row->thumbnail.'" alt="'.$row->name.'" width="100" style="width: 100px;" class="middle-auto img-responsive">',
+                '<img src="' . $row->thumbnail . '" alt="' . $row->name . '" width="100" style="width: 100px;" class="middle-auto img-responsive">',
                 $status,
                 $row->created_at->toDateTimeString(),
                 '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .
-                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
+                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );
         }
 
@@ -135,7 +132,7 @@ class BrandController extends BaseAdminController
     {
         $data = [
             'id' => $request->get('args_0', null),
-            'global_title' => $request->get('args_1', null)
+            'global_title' => $request->get('args_1', null),
         ];
 
         $result = $object->fastEdit($data, false, true);
@@ -162,7 +159,7 @@ class BrandController extends BaseAdminController
             }
         } else {
             $item = $object->getBy([
-                'id' => $id
+                'id' => $id,
             ], null, false, 0, [
                 '*',
             ]);

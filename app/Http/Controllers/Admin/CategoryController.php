@@ -18,7 +18,7 @@ class CategoryController extends BaseAdminController
     use CategoryWithSubText;
     use CustomFields;
 
-    var $bodyClass = 'category-controller', $routeLink = 'categories', $routeEditPostLink = 'posts';
+    public $bodyClass = 'category-controller', $routeLink = 'categories', $routeEditPostLink = 'posts';
     public function __construct()
     {
         parent::__construct();
@@ -31,7 +31,7 @@ class CategoryController extends BaseAdminController
 
     public function getIndex(Request $request)
     {
-        $this->_setBodyClass($this->bodyClass.' categories-list-page');
+        $this->_setBodyClass($this->bodyClass . ' categories-list-page');
         return $this->_viewAdmin('categories.index');
     }
 
@@ -43,7 +43,7 @@ class CategoryController extends BaseAdminController
         $offset = $request->get('start', 0);
         $limit = $request->get('length', 10);
         $paged = ($offset + $limit) / $limit;
-        Paginator::currentPageResolver(function() use ($paged) {
+        Paginator::currentPageResolver(function () use ($paged) {
             return $paged;
         });
 
@@ -51,66 +51,62 @@ class CategoryController extends BaseAdminController
         $records["data"] = [];
 
         /*Group actions*/
-        if($request->get('customActionType', null) == 'group_action')
-        {
+        if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
+                'status' => $request->get('customActionValue', 0),
             ], true);
-            if(!$result['error'])
-            {
+            if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
             }
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
             case 1:
-            {
-                $orderBy = 'id';
-            }
+                {
+                    $orderBy = 'id';
+                }
                 break;
             case 2:
-            {
-                $orderBy = 'global_title';
-            }
+                {
+                    $orderBy = 'global_title';
+                }
                 break;
             case 3:
-            {
-                $orderBy = 'page_template';
-            }
+                {
+                    $orderBy = 'page_template';
+                }
                 break;
             case 4:
-            {
-                $orderBy = 'status';
-            }
+                {
+                    $orderBy = 'status';
+                }
                 break;
             case 5:
-            {
-                $orderBy = 'order';
-            }
+                {
+                    $orderBy = 'order';
+                }
                 break;
             default:
-            {
-                $orderBy = 'created_at';
-            }
+                {
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
 
         $getByFields = [];
-        if($request->get('global_title', null) != null)
-        {
+        if ($request->get('global_title', null) != null) {
             $getByFields['global_title'] = ['compare' => 'LIKE', 'value' => $request->get('global_title')];
         }
-        if($request->get('status', null) != null)
-        {
+        if ($request->get('status', null) != null) {
             $getByFields['status'] = ['compare' => '=', 'value' => $request->get('status')];
         }
 
@@ -141,27 +137,27 @@ class CategoryController extends BaseAdminController
         return response()->json($result, $result['response_code']);
     }
 
-    public function getViewPosts(Request $request, Category $object, Post $postObject, $id) {
+    public function getViewPosts(Request $request, Category $object, Post $postObject, $id)
+    {
         $dis = [];
 
         $item = $object->find($id);
         /*No page with this id*/
-        if(!$item)
-        {
+        if (!$item) {
             $this->_setFlashMessage('Category not exists.', 'error');
             $this->_showFlashMessages();
             return redirect()->back();
         }
         $dis['object'] = $item;
-        $this->_setBodyClass($this->bodyClass.' categories-related-posts-page');
+        $this->_setBodyClass($this->bodyClass . ' categories-related-posts-page');
         return $this->_viewAdmin('categories.related-posts', $dis);
     }
 
-    public function postViewPosts(Request $request, Category $object, Post $postObject, $id) {
+    public function postViewPosts(Request $request, Category $object, Post $postObject, $id)
+    {
         $item = $object->find($id);
         /*No page with this id*/
-        if(!$item)
-        {
+        if (!$item) {
             $this->_setFlashMessage('Category not exists.', 'error');
             $this->_showFlashMessages();
             return redirect()->back();
@@ -184,24 +180,24 @@ class CategoryController extends BaseAdminController
         if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $customActionValue = $request->get('customActionValue', 0);
             switch ($customActionValue) {
-                case 'set_as_popular': {
-                    $result = $postObject->updateMultiple($ids, [
-                        'is_popular' => 1
-                    ], true);
-                } break;
-                case 'unset_as_popular': {
-                    $result = $postObject->updateMultiple($ids, [
-                        'is_popular' => 0
-                    ], true);
-                } break;
-                default: {
-                    $result = $postObject->updateMultiple($ids, [
-                        'status' => $customActionValue
-                    ], true);
-                } break;
+                case 'set_as_popular':{
+                        $result = $postObject->updateMultiple($ids, [
+                            'is_popular' => 1,
+                        ], true);
+                    }break;
+                case 'unset_as_popular':{
+                        $result = $postObject->updateMultiple($ids, [
+                            'is_popular' => 0,
+                        ], true);
+                    }break;
+                default:{
+                        $result = $postObject->updateMultiple($ids, [
+                            'status' => $customActionValue,
+                        ], true);
+                    }break;
             }
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
@@ -210,33 +206,33 @@ class CategoryController extends BaseAdminController
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1: {
-                $orderBy = 'id';
-            }
+            case 1:{
+                    $orderBy = 'id';
+                }
                 break;
-            case 2: {
-                $orderBy = 'global_title';
-            }
+            case 2:{
+                    $orderBy = 'global_title';
+                }
                 break;
-            case 3: {
-                $orderBy = 'status';
-            }
+            case 3:{
+                    $orderBy = 'status';
+                }
                 break;
-            case 4: {
-                $orderBy = 'order';
-            }
+            case 4:{
+                    $orderBy = 'order';
+                }
                 break;
-            case 5: {
-                $orderBy = 'created_by';
-            }
+            case 5:{
+                    $orderBy = 'created_by';
+                }
                 break;
-            default: {
-                $orderBy = 'created_at';
-            }
+            default:{
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
@@ -260,7 +256,10 @@ class CategoryController extends BaseAdminController
                 $status = '<span class="label label-danger label-sm">Disabled</span>';
             }
             $popular = '';
-            if($row->is_popular != 0) $popular =  '<span class="label label-success label-sm">Popular</span>';
+            if ($row->is_popular != 0) {
+                $popular = '<span class="label label-success label-sm">Popular</span>';
+            }
+
             /*Edit link*/
             $link = asset($this->adminCpAccess . '/' . $this->routeEditPostLink . '/edit/' . $row->id . '/' . $this->defaultLanguageId);
             $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
@@ -275,7 +274,7 @@ class CategoryController extends BaseAdminController
                 $row->created_at->toDateTimeString(),
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .
-                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
+                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );
         }
 
@@ -291,7 +290,7 @@ class CategoryController extends BaseAdminController
         $dis = [];
 
         $oldInputs = old();
-        if($oldInputs && $id == 0) {
+        if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
@@ -301,24 +300,21 @@ class CategoryController extends BaseAdminController
 
         $currentEditLanguage = Models\Language::getBy([
             'id' => $language,
-            'status' => 1
+            'status' => 1,
         ]);
-        if(!$currentEditLanguage)
-        {
+        if (!$currentEditLanguage) {
             $this->_setFlashMessage('This language it not supported', 'error');
             $this->_showFlashMessages();
             return redirect()->back();
         }
         $dis['currentEditLanguage'] = $currentEditLanguage;
 
-        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$id).'/';
+        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
 
-        if(!$id == 0)
-        {
+        if (!$id == 0) {
             $item = $object->find($id);
             /*No page with this id*/
-            if(!$item)
-            {
+            if (!$item) {
                 $this->_setFlashMessage('Item not exists.', 'error');
                 $this->_showFlashMessages();
                 return redirect()->back();
@@ -326,11 +322,10 @@ class CategoryController extends BaseAdminController
 
             $item = $object->getById($id, $language, [
                 'status' => null,
-                'global_status' => null
+                'global_status' => null,
             ]);
             /*Create new if not exists*/
-            if(!$item)
-            {
+            if (!$item) {
                 $item = new CategoryContent();
                 $item->language_id = $language;
                 $item->created_by = $this->loggedInAdminUser->id;
@@ -338,7 +333,7 @@ class CategoryController extends BaseAdminController
                 $item->save();
                 $item = $object->getById($id, $language, [
                     'status' => null,
-                    'global_status' => null
+                    'global_status' => null,
                 ]);
             }
             $dis['object'] = $item;
@@ -349,16 +344,14 @@ class CategoryController extends BaseAdminController
                 'category_id' => $id,
                 'category_template' => $item->page_template,
                 'user' => $this->loggedInAdminUser->id,
-                'model_name' => 'Category'
+                'model_name' => 'Category',
             );
             $customFieldBoxes = new Acme\CmsCustomField();
             $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'category');
             $dis['customFieldBoxes'] = $customFieldBoxes;
 
             $categories = $this->_recursiveGetCategoriesSelectSrc($object, 0, 'global_title', 'asc', 0, $item->parent_id, [$id]);
-        }
-        else
-        {
+        } else {
             $categories = $this->_recursiveGetCategoriesSelectSrc($object, 0, 'global_title', 'asc', 0, 0, []);
         }
 
@@ -370,26 +363,21 @@ class CategoryController extends BaseAdminController
     public function postEdit(Request $request, Category $object, CategoryMeta $objectMeta, $id, $language)
     {
         $data = $request->all();
-        if(!$data['slug'])
-        {
+        if (!$data['slug']) {
             $data['slug'] = str_slug($data['title']);
         }
 
-        if($id == 0)
-        {
+        if ($id == 0) {
             $result = $object->createItem($language, $data);
-        }
-        else
-        {
+        } else {
             $result = $object->updateItemContent($id, $language, $data);
         }
 
-        if($result['error'])
-        {
+        if ($result['error']) {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
-            if($id == 0) {
+            if ($id == 0) {
                 return redirect()->back()->withInput();
             }
 
@@ -403,9 +391,8 @@ class CategoryController extends BaseAdminController
         $customFields = json_decode($request->get('custom_fields'));
         $this->_saveContentMeta($result['object']->id, $customFields, $objectMeta);
 
-        if($id == 0 && !$result['error'])
-        {
-            return redirect()->to(asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$result['object']->category_id.'/'.$language));
+        if ($id == 0 && !$result['error']) {
+            return redirect()->to(asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $result['object']->category_id . '/' . $language));
         }
         return redirect()->back();
     }

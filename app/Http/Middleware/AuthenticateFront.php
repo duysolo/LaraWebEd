@@ -2,14 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Models;
-
-use Illuminate\Support\Facades\Auth;
-
-use Carbon\Carbon;
-
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticateFront
 {
@@ -40,8 +35,7 @@ class AuthenticateFront
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->guest())
-        {
+        if ($this->auth->guest()) {
             return redirect()->guest('auth/login');
         }
         return $next($request);

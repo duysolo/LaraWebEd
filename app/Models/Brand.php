@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+
 class Brand extends AbstractModel
 {
     /**
@@ -22,14 +23,14 @@ class Brand extends AbstractModel
         'name' => 'string|required|max:255|unique:brands',
         'thumbnail' => 'string|required|max:255',
         'link' => 'string|max:255',
-        'status' => 'integer|required|between:0,1'
+        'status' => 'integer|required|between:0,1',
     ];
 
     protected $editableFields = [
         'name',
         'thumbnail',
         'link',
-        'status'
+        'status',
     ];
 
     public function product()
@@ -42,7 +43,7 @@ class Brand extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
         $object = static::find($id);
 

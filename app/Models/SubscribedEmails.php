@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+
 class SubscribedEmails extends AbstractModel
 {
     /**

@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use Acme;
-use App\Models;
 use App\Models\AdminUser;
 use App\Models\AdminUserRole;
 use App\Models\Category;
-use App\Models\ProductCategory;
 use App\Models\FieldGroup;
 use App\Models\FieldItem;
 use App\Models\Page;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
 class CustomFieldController extends BaseAdminController
 {
-    var $bodyClass = 'custom-field-controller';
+    public $bodyClass = 'custom-field-controller';
 
     public function __construct()
     {
@@ -55,9 +54,9 @@ class CustomFieldController extends BaseAdminController
         if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
+                'status' => $request->get('customActionValue', 0),
             ], true);
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
@@ -66,25 +65,25 @@ class CustomFieldController extends BaseAdminController
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1: {
-                $orderBy = 'id';
-            }
+            case 1:{
+                    $orderBy = 'id';
+                }
                 break;
-            case 2: {
-                $orderBy = 'title';
-            }
+            case 2:{
+                    $orderBy = 'title';
+                }
                 break;
-            case 3: {
-                $orderBy = 'status';
-            }
+            case 3:{
+                    $orderBy = 'status';
+                }
                 break;
-            default: {
-                $orderBy = 'created_at';
-            }
+            default:{
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
@@ -119,7 +118,7 @@ class CustomFieldController extends BaseAdminController
                 $row->created_at->toDateTimeString(),
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .
-                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
+                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );
         }
 
@@ -134,7 +133,7 @@ class CustomFieldController extends BaseAdminController
     {
         $data = [
             'id' => $request->get('args_0', null),
-            'title' => $request->get('args_1', null)
+            'title' => $request->get('args_1', null),
         ];
 
         $result = $object->fastEdit($data, false, true);
@@ -144,7 +143,7 @@ class CustomFieldController extends BaseAdminController
     public function getEdit(Request $request, FieldGroup $object, $id = 0)
     {
         $dis = [
-            'currentID' => $id
+            'currentID' => $id,
         ];
 
         if (!$id == 0 && !$id < 1) {
@@ -172,7 +171,7 @@ class CustomFieldController extends BaseAdminController
             'id' => $id,
             'title' => $request->get('title', null),
             'field_rules' => $request->get('custom_fields_rules', null),
-            'status' => 1
+            'status' => 1,
         ];
 
         if ($id == 0) {
@@ -182,8 +181,7 @@ class CustomFieldController extends BaseAdminController
             $result = $object->fastEdit($data, false, true);
         }
 
-        if($result['error'])
-        {
+        if ($result['error']) {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
@@ -218,10 +216,10 @@ class CustomFieldController extends BaseAdminController
     private function _editGroupItems($items, $group_id, $parent = 0)
     {
         $position = 0;
-        $items = (array)$items;
+        $items = (array) $items;
         foreach ($items as $key => $row) {
             $position++;
-            $id = (int)$row->id;
+            $id = (int) $row->id;
 
             $item = FieldItem::findOrNew($id);
             $item->field_group_id = $group_id;
@@ -253,7 +251,7 @@ class CustomFieldController extends BaseAdminController
     private function _checkCurrentSlug($slug)
     {
         $exploded_slug = explode('_', $slug);
-        if ((int)$exploded_slug[0] > 0) {
+        if ((int) $exploded_slug[0] > 0) {
             return true;
         }
         return false;
@@ -600,7 +598,7 @@ class CustomFieldController extends BaseAdminController
         $categories = $categories->orderBy($orderBy, $orderType)->get();
 
         foreach ($categories as $key => $row) {
-            $updateTo .= '<option value="' . $row->id . '"' . (($row->id == (int)$selectedNode && $rel_name == 'category_id') ? ' selected="selected"' : '') . '>' . $child . ' ' . $row->global_title . '</option>';
+            $updateTo .= '<option value="' . $row->id . '"' . (($row->id == (int) $selectedNode && $rel_name == 'category_id') ? ' selected="selected"' : '') . '>' . $child . ' ' . $row->global_title . '</option>';
             $updateTo .= $this->recursiveGetCategoriesSelectSrc($row->id, $orderBy, $orderType, $childText + 1, $selectedNode, $exceptIds, $rel_name);
 
         }
@@ -623,7 +621,7 @@ class CustomFieldController extends BaseAdminController
         $categories = $categories->orderBy($orderBy, $orderType)->get();
 
         foreach ($categories as $key => $row) {
-            $updateTo .= '<option value="' . $row->id . '"' . (($row->id == (int)$selectedNode && $rel_name == 'category_id') ? ' selected="selected"' : '') . '>' . $child . ' ' . $row->global_title . '</option>';
+            $updateTo .= '<option value="' . $row->id . '"' . (($row->id == (int) $selectedNode && $rel_name == 'category_id') ? ' selected="selected"' : '') . '>' . $child . ' ' . $row->global_title . '</option>';
             $updateTo .= $this->recursiveGetProductCategoriesSelectSrc($row->id, $orderBy, $orderType, $childText + 1, $selectedNode, $exceptIds, $rel_name);
 
         }
@@ -651,7 +649,7 @@ class CustomFieldController extends BaseAdminController
         $result = [];
 
         $pages = Page::getBy([], [
-            'global_title' => 'ASC'
+            'global_title' => 'ASC',
         ], true);
         foreach ($pages as $key => $row) {
             $page = new \stdClass();
@@ -669,9 +667,9 @@ class CustomFieldController extends BaseAdminController
         $result = [];
 
         $users = AdminUser::getBy([
-            'status' => 1
+            'status' => 1,
         ], [
-            'id' => 'ASC'
+            'id' => 'ASC',
         ], true);
         foreach ($users as $key => $row) {
             $user = new \stdClass();

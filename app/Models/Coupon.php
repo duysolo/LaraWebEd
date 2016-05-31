@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class Coupon extends AbstractModel
 {
@@ -53,9 +51,9 @@ class Coupon extends AbstractModel
         'status',
         'created_by',
         'expired_at',
-        'each_user_can_use'
+        'each_user_can_use',
     ];
-    
+
     public function language()
     {
         return $this->belongsTo('App\Models\Language', 'language_id');
@@ -72,7 +70,7 @@ class Coupon extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
         $object = static::find($id);
 
@@ -93,9 +91,17 @@ class Coupon extends AbstractModel
     public function createItem($language, $data)
     {
         $dataCoupon = ['status' => 1];
-        if (isset($data['title'])) $dataCoupon['global_title'] = $data['title'];
-        if (!isset($data['status'])) $data['status'] = 1;
-        if (!isset($data['language_id'])) $data['language_id'] = $language;
+        if (isset($data['title'])) {
+            $dataCoupon['global_title'] = $data['title'];
+        }
+
+        if (!isset($data['status'])) {
+            $data['status'] = 1;
+        }
+
+        if (!isset($data['language_id'])) {
+            $data['language_id'] = $language;
+        }
 
         $resultCreateItem = $this->updateItem(0, $dataCoupon);
 

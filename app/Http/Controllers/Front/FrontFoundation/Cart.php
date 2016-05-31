@@ -1,12 +1,11 @@
 <?php namespace App\Http\Controllers\Front\FrontFoundation;
 
-use App\Models;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 trait Cart
 {
-    var $cart = [], $originalCart = [];
+    public $cart = [], $originalCart = [];
 
     protected function _unsetCart()
     {
@@ -25,23 +24,23 @@ trait Cart
                 $productContent = Product::getWithContent([
                     'product_contents.id' => [
                         'compare' => '=',
-                        'value' => $row['product_content_id']
+                        'value' => $row['product_content_id'],
                     ],
                     'products.status' => [
                         'compare' => '=',
-                        'value' => 1
+                        'value' => 1,
                     ],
                     'product_contents.status' => [
                         'compare' => '=',
-                        'value' => 1
+                        'value' => 1,
                     ],
                     'product_contents.language_id' => [
                         'compare' => '=',
-                        'value' => $this->currentLanguageId
+                        'value' => $this->currentLanguageId,
                     ],
                 ], [
                     'product_contents.*',
-                    'products.global_title'
+                    'products.global_title',
                 ]);
                 if ($productContent && $row['quantity'] > 0) {
                     $totalCartItems++;
@@ -68,7 +67,7 @@ trait Cart
         }
         $this->originalCart = session('originalCart');
         view()->share([
-            'shoppingCart' => $this->cart
+            'shoppingCart' => $this->cart,
         ]);
     }
 
@@ -78,10 +77,13 @@ trait Cart
             if ($quantity <= 200) {
                 $this->originalCart[] = [
                     'product_content_id' => $productContentId,
-                    'quantity' => $quantity
+                    'quantity' => $quantity,
                 ];
             } else {
-                if (!$request->ajax()) return $this->_responseRedirect(trans('cart.maxQuantityError'), 'error');
+                if (!$request->ajax()) {
+                    return $this->_responseRedirect(trans('cart.maxQuantityError'), 'error');
+                }
+
                 return $this->_responseJson(true, 500, trans('cart.maxQuantityError'));
             }
         } else {
@@ -90,14 +92,20 @@ trait Cart
 
         session()->put('originalCart', $this->originalCart);
 
-        if (!$request->ajax()) return $this->_responseRedirect(trans('cart.updateCartCompleted'), 'success');
+        if (!$request->ajax()) {
+            return $this->_responseRedirect(trans('cart.updateCartCompleted'), 'success');
+        }
+
         return $this->_responseJson(false, 200, trans('cart.updateCartCompleted'));
     }
 
     protected function _checkItemExistsInCart($productContentId)
     {
         foreach ($this->originalCart as $key => $row) {
-            if ($row['product_content_id'] == $productContentId) return true;
+            if ($row['product_content_id'] == $productContentId) {
+                return true;
+            }
+
         }
         return false;
     }
@@ -112,13 +120,19 @@ trait Cart
                 } else {
                     session()->put('originalCart', $this->originalCart);
 
-                    if (!$request->ajax()) return $this->_responseRedirect(trans('cart.maxQuantityError'), 'error');
+                    if (!$request->ajax()) {
+                        return $this->_responseRedirect(trans('cart.maxQuantityError'), 'error');
+                    }
+
                     return $this->_responseJson(true, 500, trans('cart.maxQuantityError'));
                 }
             }
         }
         session()->put('cart', $this->originalCart);
-        if (!$request->ajax()) return $this->_responseRedirect(trans('cart.updateCartCompleted'), 'success');
+        if (!$request->ajax()) {
+            return $this->_responseRedirect(trans('cart.updateCartCompleted'), 'success');
+        }
+
         return $this->_responseJson(false, 200, trans('cart.updateCartCompleted'));
     }
 

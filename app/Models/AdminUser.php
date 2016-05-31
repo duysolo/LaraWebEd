@@ -2,20 +2,14 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
-
-use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-
-use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUser extends AbstractModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
@@ -51,7 +45,7 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
         'username',
         'status',
         'password',
-        'user_role_id'
+        'user_role_id',
     ];
 
     public function getGuard()
@@ -66,15 +60,18 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
 
     public static function getUserById($id, $options = [])
     {
-        $options = (array)$options;
+        $options = (array) $options;
         $defaultArgs = [
-            'status' => 1
+            'status' => 1,
         ];
         $args = array_merge($defaultArgs, $options);
 
         return static::where('id', '=', $id)
             ->where(function ($q) use ($args) {
-                if ($args['status'] != null) $q->where('status', '=', $args['status']);
+                if ($args['status'] != null) {
+                    $q->where('status', '=', $args['status']);
+                }
+
             })
             ->first();
     }
@@ -84,13 +81,15 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'User not found'
+            'message' => 'User not found',
         ];
         if (!$data['id'] || $data['id'] <= 0) {
             return $result;
         }
 
-        if (isset($data['username'])) unset($data['username']);
+        if (isset($data['username'])) {
+            unset($data['username']);
+        }
 
         if (isset($data['current_password'])) {
             if (!Hash::check($data['current_password'], $this->password)) {
@@ -121,7 +120,7 @@ class AdminUser extends AbstractModel implements AuthenticatableContract, Author
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'User not found'
+            'message' => 'User not found',
         ];
 
         if ($data['password'] != $data['password_confirmation']) {

@@ -2,10 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
-
 use App\Models\Contracts;
 
 class Category extends AbstractModel implements Contracts\MultiLanguageInterface
@@ -26,7 +23,7 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
     protected $rules = [
         'global_title' => 'required|max:255',
-        'status' => 'integer|required|between:0,1'
+        'status' => 'integer|required|between:0,1',
     ];
 
     protected $editableFields = [
@@ -35,7 +32,7 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
         'order',
         'page_template',
         'parent_id',
-        'created_by'
+        'created_by',
     ];
 
     public function categoryContent()
@@ -69,7 +66,7 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
 
         $category = static::find($id);
@@ -79,7 +76,9 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
             return $result;
         }
 
-        if (isset($data['slug'])) $data['slug'] = str_slug($data['slug']);
+        if (isset($data['slug'])) {
+            $data['slug'] = str_slug($data['slug']);
+        }
 
         /*Update page template*/
         if (isset($data['page_template'])) {
@@ -110,7 +109,7 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
         $category = static::find($id);
 
@@ -147,9 +146,9 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
             /*Change all child item of this category to parent*/
             $relatedCategory = new static;
             $relatedCategory->updateMultipleGetByFields([
-                'parent_id' => $id
+                'parent_id' => $id,
             ], [
-                'parent_id' => 0
+                'parent_id' => 0,
             ], true);
         }
 
@@ -159,10 +158,21 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
     public function createItem($language, $data)
     {
         $dataCategory = ['status' => 1];
-        if (isset($data['title'])) $dataCategory['global_title'] = $data['title'];
-        if (isset($data['parent_id'])) $dataCategory['parent_id'] = $data['parent_id'];
-        if (!isset($data['status'])) $data['status'] = 1;
-        if (!isset($data['language_id'])) $data['language_id'] = $language;
+        if (isset($data['title'])) {
+            $dataCategory['global_title'] = $data['title'];
+        }
+
+        if (isset($data['parent_id'])) {
+            $dataCategory['parent_id'] = $data['parent_id'];
+        }
+
+        if (!isset($data['status'])) {
+            $data['status'] = 1;
+        }
+
+        if (!isset($data['language_id'])) {
+            $data['language_id'] = $language;
+        }
 
         $resultCreateItem = $this->updateItem(0, $dataCategory);
 
@@ -170,7 +180,7 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
         if (!$resultCreateItem['error']) {
             $category_id = $resultCreateItem['object']->id;
             $resultUpdateItemContent = $this->updateItemContent($category_id, $language, $data);
-            if($resultUpdateItemContent['error']) {
+            if ($resultUpdateItemContent['error']) {
                 $this->deleteItem($resultCreateItem['object']->id);
             }
             return $resultUpdateItemContent;
@@ -180,9 +190,11 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
     public static function getWithContent($fields = [], $select = [], $order = null, $multiple = false, $perPage = 0)
     {
-        $fields = (array)$fields;
-        $select = (array)$select;
-        if(!$select) $select = ['categories.status as global_status', 'categories.page_template', 'categories.global_title', 'categories.parent_id', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $fields = (array) $fields;
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['categories.status as global_status', 'categories.page_template', 'categories.global_title', 'categories.parent_id', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         $obj = static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'category_contents.language_id');
@@ -190,18 +202,18 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
             foreach ($fields as $key => $row) {
                 $obj = $obj->where(function ($q) use ($key, $row) {
                     switch ($row['compare']) {
-                        case 'LIKE': {
-                            $q->where($key, $row['compare'], '%' . $row['value'] . '%');
-                        } break;
-                        case 'IN': {
-                            $q->whereIn($key, (array)$row['value']);
-                        } break;
-                        case 'NOT_IN': {
-                            $q->whereNotIn($key, (array)$row['value']);
-                        } break;
-                        default: {
-                            $q->where($key, $row['compare'], $row['value']);
-                        } break;
+                        case 'LIKE':{
+                                $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                            }break;
+                        case 'IN':{
+                                $q->whereIn($key, (array) $row['value']);
+                            }break;
+                        case 'NOT_IN':{
+                                $q->whereNotIn($key, (array) $row['value']);
+                            }break;
+                        default:{
+                                $q->where($key, $row['compare'], $row['value']);
+                            }break;
                     }
                 });
             }
@@ -211,13 +223,18 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
                 $obj = $obj->orderBy($key, $value);
             }
         }
-        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
-        
+        if ($order == 'random') {
+            $obj = $obj->orderBy(\DB::raw('RAND()'));
+        }
+
         $obj = $obj->groupBy('categories.id')
             ->select($select);
 
         if ($multiple) {
-            if ($perPage > 0) return $obj->paginate($perPage);
+            if ($perPage > 0) {
+                return $obj->paginate($perPage);
+            }
+
             return $obj->get();
         }
         return $obj->first();
@@ -225,22 +242,30 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
     public static function getById($id, $languageId = 0, $options = [], $select = [])
     {
-        $options = (array)$options;
+        $options = (array) $options;
         $defaultArgs = [
             'status' => 1,
-            'global_status' => 1
+            'global_status' => 1,
         ];
         $args = array_merge($defaultArgs, $options);
 
-        $select = (array)$select;
-        if(!$select) $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         return static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'category_contents.language_id')
             ->where('categories.id', '=', $id)
             ->where(function ($q) use ($args) {
-                if ($args['global_status'] != null) $q->where('categories.status', '=', $args['global_status']);
-                if ($args['status'] != null) $q->where('category_contents.status', '=', $args['status']);
+                if ($args['global_status'] != null) {
+                    $q->where('categories.status', '=', $args['global_status']);
+                }
+
+                if ($args['status'] != null) {
+                    $q->where('category_contents.status', '=', $args['status']);
+                }
+
             })
             ->where('category_contents.language_id', '=', $languageId)
             ->select($select)
@@ -249,22 +274,30 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
     public static function getBySlug($slug, $languageId = 0, $options = [], $select = [])
     {
-        $options = (array)$options;
+        $options = (array) $options;
         $defaultArgs = [
             'status' => 1,
-            'global_status' => 1
+            'global_status' => 1,
         ];
         $args = array_merge($defaultArgs, $options);
 
-        $select = (array)$select;
-        if(!$select) $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        $select = (array) $select;
+        if (!$select) {
+            $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+        }
 
         return static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
             ->join('languages', 'languages.id', '=', 'category_contents.language_id')
             ->where('category_contents.slug', '=', $slug)
             ->where(function ($q) use ($args) {
-                if ($args['global_status'] != null) $q->where('categories.status', '=', $args['global_status']);
-                if ($args['status'] != null) $q->where('category_contents.status', '=', $args['status']);
+                if ($args['global_status'] != null) {
+                    $q->where('categories.status', '=', $args['global_status']);
+                }
+
+                if ($args['status'] != null) {
+                    $q->where('category_contents.status', '=', $args['status']);
+                }
+
             })
             ->where('category_contents.language_id', '=', $languageId)
             ->select($select)
@@ -275,7 +308,7 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
     {
         return Models\CategoryContent::getBy([
             'category_id' => $id,
-            'language_id' => $languageId
+            'language_id' => $languageId,
         ], null, false, 0, $select);
     }
 }

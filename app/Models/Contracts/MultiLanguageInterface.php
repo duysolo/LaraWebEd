@@ -1,7 +1,6 @@
 <?php
 namespace App\Models\Contracts;
 
-
 interface MultiLanguageInterface
 {
     public static function getWithContent();

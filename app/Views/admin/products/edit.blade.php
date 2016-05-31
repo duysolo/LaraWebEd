@@ -318,9 +318,12 @@
                                                         <label class="col-md-2 control-label">Sale status:</label>
                                                         <div class="col-md-10">
                                                             <?php
-                                                                $saleStatus = 1;
-                                                                if(!isset($object) || $object->sale_status != 1) $saleStatus = 0;
-                                                            ?>
+$saleStatus = 1;
+if (!isset($object) || $object->sale_status != 1) {
+    $saleStatus = 0;
+}
+
+?>
                                                             <div class="md-radio" style="margin: 5px 0;">
                                                                 <input type="radio" value="0" id="always_on_sale" name="sale_status" {{ ($saleStatus != 1) ? 'checked' : '' }} class="md-radiobtn">
                                                                 <label for="always_on_sale">

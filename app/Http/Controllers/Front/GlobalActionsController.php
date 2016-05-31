@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers\Front;
 
-use Acme;
 use App\Models;
 use Illuminate\Http\Request;
 
@@ -20,8 +19,7 @@ class GlobalActionsController extends BaseFrontController
         }
 
         $data = $request->all();
-        if(isset($data['content']))
-        {
+        if (isset($data['content'])) {
             $data['content'] = nl2br($data['content']);
         }
         $result = $object->fastEdit(_stripTags($data), true);

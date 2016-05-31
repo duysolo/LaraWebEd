@@ -2,7 +2,6 @@
 namespace App\Models;
 
 use App\Models\Contracts\HasCustomFieldsInterface;
-
 use App\Models\Foundation\MetaFunctions;
 
 class PostMeta extends AbstractModel implements HasCustomFieldsInterface
