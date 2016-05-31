@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+
 class City extends AbstractModel
 {
     /**
@@ -26,7 +27,7 @@ class City extends AbstractModel
     protected $rules = [
         'city_name' => 'required|max:255',
         'latitude' => 'numeric',
-        'longitude' => 'numeric'
+        'longitude' => 'numeric',
     ];
 
     protected $editableFields = [
@@ -38,9 +39,9 @@ class City extends AbstractModel
     public static function getCitiesByCountryId($countryId)
     {
         return static::getBy([
-            'country_id' => $countryId
+            'country_id' => $countryId,
         ], [
-            'city_name' => 'ASC'
+            'city_name' => 'ASC',
         ], true);
     }
 }

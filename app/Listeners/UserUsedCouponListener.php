@@ -3,13 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\UserUseCouponEvent;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
-use App\Models;
 use App\Models\Coupon;
 use App\Models\CouponUserUse;
-use App\Models\CouponUserUseWithTrackedTimes;
 
 class UserUsedCouponListener
 {
@@ -35,8 +30,7 @@ class UserUsedCouponListener
     {
         $this->event = $event;
         //Track the coupon used times of this user
-        if($this->event->coupon && $this->event->user)
-        {
+        if ($this->event->coupon && $this->event->user) {
             $this->_userUsedCoupon();
             $this->_userUsedCouponWithTrackedTimes();
         }
@@ -54,9 +48,9 @@ class UserUsedCouponListener
     {
         $object = CouponUserUse::findByFieldsOrCreate([
             'coupon_id' => $this->event->coupon->id,
-            'user_id' => $this->event->user->id
+            'user_id' => $this->event->user->id,
         ]);
-        $object->total_used = (int)$object->total_used++;
+        $object->total_used = (int) $object->total_used++;
         $object->save();
     }
 }

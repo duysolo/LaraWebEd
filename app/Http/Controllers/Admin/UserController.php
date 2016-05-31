@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
 class UserController extends BaseAdminController
 {
-    var $bodyClass = 'page-controller', $routeLink = 'users';
+    public $bodyClass = 'page-controller', $routeLink = 'users';
 
     public function __construct()
     {
@@ -48,15 +47,18 @@ class UserController extends BaseAdminController
         if ($request->get('customActionType', null) == 'group_action' && $this->loggedInAdminUserRole->slug == 'webmaster') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
 
             /*Remove current logged in user*/
             foreach ($ids as $key => $row) {
-                if ($row == $this->loggedInAdminUser->id) unset($ids[$key]);
+                if ($row == $this->loggedInAdminUser->id) {
+                    unset($ids[$key]);
+                }
+
             }
 
             $result = $object->updateMultiple($ids, [
-                'user_role_id' => $request->get('customActionValue', 3)
+                'user_role_id' => $request->get('customActionValue', 3),
             ], true);
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
@@ -65,33 +67,33 @@ class UserController extends BaseAdminController
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1: {
-                $orderBy = 'id';
-            }
+            case 1:{
+                    $orderBy = 'id';
+                }
                 break;
-            case 2: {
-                $orderBy = 'email';
-            }
+            case 2:{
+                    $orderBy = 'email';
+                }
                 break;
-            case 3: {
-                $orderBy = 'first_name';
-            }
+            case 3:{
+                    $orderBy = 'first_name';
+                }
                 break;
-            case 4: {
-                $orderBy = 'last_name';
-            }
+            case 4:{
+                    $orderBy = 'last_name';
+                }
                 break;
-            case 5: {
-                $orderBy = 'status';
-            }
+            case 5:{
+                    $orderBy = 'status';
+                }
                 break;
-            default: {
-                $orderBy = 'created_at';
-            }
+            default:{
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
@@ -112,7 +114,7 @@ class UserController extends BaseAdminController
 
         $items = $object->searchBy($getByFields, [$orderBy => $orderType], true, $limit, [
             '*',
-            \DB::raw('CONCAT(first_name, " ", last_name) as full_name')
+            \DB::raw('CONCAT(first_name, " ", last_name) as full_name'),
         ]);
 
         $iTotalRecords = $items->count();
@@ -129,8 +131,13 @@ class UserController extends BaseAdminController
             $activeLink = '<button type="button" data-ajax="' . asset($this->adminCpAccess . '/' . $this->routeLink . '/active/' . $row->id) . '" data-method="POST" data-toggle="confirmation" class="btn btn-outline blue btn-sm ajax-link" title="Active this user"><i class="fa fa-check"></i></button>';
             $disableLink = '<button type="button" data-ajax="' . asset($this->adminCpAccess . '/' . $this->routeLink . '/disable/' . $row->id) . '" data-method="POST" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link" title="Disable this user"><i class="fa fa-times"></i></button>';
 
-            if ($row->status == 1) $activeLink = '';
-            if ($row->status != 1) $disableLink = '';
+            if ($row->status == 1) {
+                $activeLink = '';
+            }
+
+            if ($row->status != 1) {
+                $disableLink = '';
+            }
 
             $records["data"][] = array(
                 '<input type="checkbox" name="id[]" value="' . $row->id . '">',
@@ -143,7 +150,7 @@ class UserController extends BaseAdminController
                 $row->last_login_at,
                 $activeLink .
                 $disableLink .
-                $link
+                $link,
             );
         }
 
@@ -168,7 +175,7 @@ class UserController extends BaseAdminController
     {
         $data = [
             'id' => $id,
-            'status' => $status
+            'status' => $status,
         ];
 
         $result = $object->fastEdit($data, false, true);
@@ -185,10 +192,10 @@ class UserController extends BaseAdminController
             $dis['object'] = $object;
         } else {
             $item = $object->getBy([
-                'id' => $id
+                'id' => $id,
             ], null, false, 0, [
                 '*',
-                \DB::raw('CONCAT(first_name, " ", last_name) as full_name')
+                \DB::raw('CONCAT(first_name, " ", last_name) as full_name'),
             ]);
             /*No user found with this id*/
             if (!$item) {
@@ -208,9 +215,11 @@ class UserController extends BaseAdminController
     {
         $data = $request->all();
 
-        $data['id'] = (int)$id;
+        $data['id'] = (int) $id;
 
-        if (isset($data['password'])) $data['password'] = bcrypt($data['password']);
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
 
         if ($id != 0) {
             unset($data['email']);

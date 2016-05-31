@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 
 class ValidateServiceProvider extends ServiceProvider
 {
@@ -29,13 +29,12 @@ class ValidateServiceProvider extends ServiceProvider
 
     private function _validator_UniqueMultiple()
     {
-        Validator::extend('unique_multiple', function ($attribute, $value, $parameters, $validator)
-        {
+        Validator::extend('unique_multiple', function ($attribute, $value, $parameters, $validator) {
             $table = array_shift($parameters);
 
             $query = \DB::table($table);
 
-            foreach ($parameters as $i => $field){
+            foreach ($parameters as $i => $field) {
                 $query->where($field, $validator->getData()[$field]);
             }
 

@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class ProductContent extends AbstractModel
 {
@@ -69,7 +67,6 @@ class ProductContent extends AbstractModel
     {
         return $this->belongsTo('App\Models\Product', 'product_id');
     }
-
 
     /**
      * Set the relationship

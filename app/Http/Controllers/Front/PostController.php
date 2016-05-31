@@ -1,7 +1,5 @@
 <?php namespace App\Http\Controllers\Front;
 
-use Acme;
-use App\Models;
 use App\Models\Post;
 use App\Models\PostMeta;
 use Illuminate\Http\Request;
@@ -20,9 +18,11 @@ class PostController extends BaseFrontController
     {
         $item = $object->getBySlug($slug, $this->currentLanguageId);
 
-        if (!$item) return $this->_showErrorPage(404, 'Page not found');
+        if (!$item) {
+            return $this->_showErrorPage(404, 'Page not found');
+        }
 
-        $this->_setCurrentEditLink('Edit this post', 'posts/edit/'.$item->post_id.'/'.$this->currentLanguageId);
+        $this->_setCurrentEditLink('Edit this post', 'posts/edit/' . $item->post_id . '/' . $this->currentLanguageId);
 
         $this->_loadFrontMenu();
         $this->_setPageTitle($item->title);
@@ -39,8 +39,7 @@ class PostController extends BaseFrontController
         $page_template = $item->page_template;
         if (trim($page_template) != '') {
             $function = '_post_' . str_replace(' ', '', trim($page_template));
-            if(method_exists($this, $function))
-            {
+            if (method_exists($this, $function)) {
                 return $this->{$function}($item);
             }
         }
@@ -49,7 +48,7 @@ class PostController extends BaseFrontController
 
     private function _defaultItem(Post $object)
     {
-        $this->_setBodyClass($this->bodyClass.' post-default');
+        $this->_setBodyClass($this->bodyClass . ' post-default');
         return $this->_viewFront('post-templates.default', $this->dis);
     }
 }

@@ -1,7 +1,5 @@
 <?php namespace App\Http\Controllers\Front;
 
-use Acme;
-use App\Models;
 use App\Models\Category;
 use App\Models\CategoryMeta;
 use App\Models\Post;
@@ -22,7 +20,9 @@ class CategoryController extends BaseFrontController
 
         $item = $object->getBySlug($slug, $this->currentLanguageId);
 
-        if (!$item) return $this->_showErrorPage(404, 'Page not found');
+        if (!$item) {
+            return $this->_showErrorPage(404, 'Page not found');
+        }
 
         $this->_setCurrentEditLink('Edit this category', 'categories/edit/' . $item->category_id . '/' . $this->currentLanguageId);
 
@@ -41,8 +41,7 @@ class CategoryController extends BaseFrontController
         $page_template = $item->page_template;
         if (trim($page_template) != '') {
             $function = '_category_' . str_replace(' ', '', trim($page_template));
-            if(method_exists($this, $function))
-            {
+            if (method_exists($this, $function)) {
                 return $this->{$function}($item);
             }
         }
@@ -51,29 +50,29 @@ class CategoryController extends BaseFrontController
 
     private function _defaultItem(Category $object)
     {
-        $this->_setBodyClass($this->bodyClass.' category-default');
+        $this->_setBodyClass($this->bodyClass . ' category-default');
         return $this->_viewFront('category-templates.default', $this->dis);
     }
 
     /* Template Name: News*/
     private function _category_News(Category $object)
     {
-        $this->_setBodyClass($this->bodyClass.' category-news');
+        $this->_setBodyClass($this->bodyClass . ' category-news');
 
         /*Get related posts*/
         $this->dis['relatedPosts'] = Post::getByCategory($object->category_id, $this->currentLanguageId, [
             'posts.status' => [
                 'compare' => '=',
-                'value' => 1
+                'value' => 1,
             ],
             'post_contents.status' => [
                 'compare' => '=',
-                'value' => 1
+                'value' => 1,
             ],
         ], [
-            'posts.created_at' => 'DESC'
+            'posts.created_at' => 'DESC',
         ], 10, [
-            'post_contents.*', 'posts.status as global_status'
+            'post_contents.*', 'posts.status as global_status',
         ]);
 
         return $this->_viewFront('category-templates.news', $this->dis);

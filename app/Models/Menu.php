@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class Menu extends AbstractModel
 {
@@ -29,13 +27,13 @@ class Menu extends AbstractModel
         'slug' => 'required|unique:menus',
         'status' => 'integer|required|between:0,1',
     );
-    
+
     protected $editableFields = [
         'title',
         'slug',
-        'status'
+        'status',
     ];
-    
+
     public function menuContent()
     {
         return $this->hasMany('App\Models\MenuContent', 'menu_id');
@@ -46,7 +44,7 @@ class Menu extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => []
+            'message' => [],
         ];
         $item = static::find($id);
 
@@ -69,7 +67,7 @@ class Menu extends AbstractModel
                 $menuContents[] = $row->id;
             }
             $tempMenuNode = MenuNode::whereIn('menu_content_id', $menuContents);
-            if($tempMenuNode->delete()) {
+            if ($tempMenuNode->delete()) {
                 $result['message'][] = 'Delete menu node completed!';
             } else {
                 $result['message'][] = 'Some error occurred when delete related menu nodes!';

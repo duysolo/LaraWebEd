@@ -12,18 +12,21 @@ abstract class BaseAdminController extends BaseController
 
         $this->middleware('auth_admin');
         $this->middleware('is_staff');
-        
+
         $count = $this->_countUnreadEmail();
-        if($count) view()->share([
-            'unreadMailCount' => $count
-        ]);
+        if ($count) {
+            view()->share([
+                'unreadMailCount' => $count,
+            ]);
+        }
+
     }
 
     protected function _setPageTitle($title, $subTitle = '')
     {
         view()->share([
             'pageTitle' => $title,
-            'subPageTitle' => $subTitle
+            'subPageTitle' => $subTitle,
         ]);
     }
 
@@ -45,7 +48,7 @@ abstract class BaseAdminController extends BaseController
             'subMenuClass' => 'sub-menu',
             'menuActive' => [
                 'type' => 'custom-link',
-                'related_id' => $menuActive
+                'related_id' => $menuActive,
             ],
             'activeClass' => 'active',
             'isAdminMenu' => true,
@@ -55,13 +58,19 @@ abstract class BaseAdminController extends BaseController
 
     protected function _loggedIn_userHasRole($role)
     {
-        if($this->loggedInAdminUserRole->slug == $role) return true;
+        if ($this->loggedInAdminUserRole->slug == $role) {
+            return true;
+        }
+
         return false;
     }
 
     protected function _userHasRole(Models\AdminUser $user, $role)
     {
-        if($user->adminUserRole->slug == $role) return true;
+        if ($user->adminUserRole->slug == $role) {
+            return true;
+        }
+
         return false;
     }
 

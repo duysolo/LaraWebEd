@@ -18,7 +18,7 @@ class FieldItem extends AbstractModel
      * Validation
      */
     public $rules = array(
-        'title' => 'required'
+        'title' => 'required',
     );
 
     /**

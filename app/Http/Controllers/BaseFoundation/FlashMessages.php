@@ -7,38 +7,33 @@ trait FlashMessages
     protected function _setFlashMessage($message, $type)
     {
         $model = 'infoMessages';
-        switch($type)
-        {
+        switch ($type) {
             case 'info':
-            {
-                $model = 'infoMessages';
-            } break;
+                {
+                    $model = 'infoMessages';
+                }break;
             case 'error':
-            {
-                $model = 'errorMessages';
-            } break;
+                {
+                    $model = 'errorMessages';
+                }break;
             case 'danger':
-            {
-                $model = 'errorMessages';
-            } break;
+                {
+                    $model = 'errorMessages';
+                }break;
             case 'success':
-            {
-                $model = 'successMessages';
-            } break;
+                {
+                    $model = 'successMessages';
+                }break;
             case 'warning':
-            {
-                $model = 'warningMessages';
-            } break;
+                {
+                    $model = 'warningMessages';
+                }break;
         }
-        if(is_array($message))
-        {
-            foreach($message as $key => $value)
-            {
+        if (is_array($message)) {
+            foreach ($message as $key => $value) {
                 array_push($this->$model, $value);
             }
-        }
-        else
-        {
+        } else {
             array_push($this->$model, $message);
         }
     }

@@ -11,7 +11,7 @@ use Illuminate\Pagination\Paginator;
 
 class MenuController extends BaseAdminController
 {
-    var $bodyClass = 'menu-controller', $routeLink = 'menus';
+    public $bodyClass = 'menu-controller', $routeLink = 'menus';
 
     public function __construct()
     {
@@ -48,25 +48,25 @@ class MenuController extends BaseAdminController
         $records["data"] = [];
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1: {
-                $orderBy = 'id';
-            }
+            case 1:{
+                    $orderBy = 'id';
+                }
                 break;
-            case 2: {
-                $orderBy = 'title';
-            }
+            case 2:{
+                    $orderBy = 'title';
+                }
                 break;
-            case 3: {
-                $orderBy = 'slug';
-            }
+            case 3:{
+                    $orderBy = 'slug';
+                }
                 break;
-            default: {
-                $orderBy = 'id';
-            }
+            default:{
+                    $orderBy = 'id';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
@@ -97,7 +97,7 @@ class MenuController extends BaseAdminController
                 $row->created_at->toDateTimeString(),
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .
-                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
+                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );
         }
 
@@ -132,7 +132,7 @@ class MenuController extends BaseAdminController
         $dis = [];
 
         $oldInputs = old();
-        if($oldInputs && $id == 0) {
+        if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
@@ -142,7 +142,7 @@ class MenuController extends BaseAdminController
 
         $currentEditLanguage = Models\Language::getBy([
             'id' => $language,
-            'status' => 1
+            'status' => 1,
         ]);
         if (!$currentEditLanguage) {
             $this->_setFlashMessage('This language it not supported', 'error');
@@ -154,13 +154,13 @@ class MenuController extends BaseAdminController
         $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
 
         $menu = $object->find($id);
-        if(!$menu) {
+        if (!$menu) {
             $menu = new Menu();
             $menuContent = null;
         } else {
             $menuContent = $objectContent->findByFieldsOrCreate([
                 'menu_id' => $menu->id,
-                'language_id' => $language
+                'language_id' => $language,
             ]);
         }
 
@@ -169,9 +169,9 @@ class MenuController extends BaseAdminController
         $dis['object'] = $menu;
 
         $dis['pages'] = Models\Page::getBy([
-            'status' => 1
+            'status' => 1,
         ], [
-            'global_title' => 'ASC'
+            'global_title' => 'ASC',
         ], true);
 
         $dis['categories'] = $this->_getCategoriesSelectSrc($category, 'category', 0);
@@ -199,7 +199,7 @@ class MenuController extends BaseAdminController
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
-            if($id == 0) {
+            if ($id == 0) {
                 return redirect()->back()->withInput();
             }
 
@@ -215,7 +215,7 @@ class MenuController extends BaseAdminController
         if (!$menuContent) {
             $resultEditContent = $objectContent->fastEdit([
                 'menu_id' => $menu->id,
-                'language_id' => $language
+                'language_id' => $language,
             ], true, true);
             if ($resultEditContent['error']) {
                 $this->_setFlashMessage($resultEditContent['message'], 'error');
@@ -243,44 +243,61 @@ class MenuController extends BaseAdminController
 
     private function _getMenuNodes($menu_content_id, $parent_id)
     {
-        if (!$menu_content_id) return [];
+        if (!$menu_content_id) {
+            return [];
+        }
 
         $menu_nodes = MenuNode::getBy([
             'menu_content_id' => $menu_content_id,
-            'parent_id' => $parent_id
+            'parent_id' => $parent_id,
         ], ['position' => 'ASC'], true);
         return $menu_nodes;
     }
 
     private function _getNestableMenuSrc($menu, $parent_id)
     {
-        if(!$menu) return '';
+        if (!$menu) {
+            return '';
+        }
+
         $menu_nodes = $this->_getMenuNodes($menu->id, $parent_id);
         $html_src = '';
         $html_src .= '<ol class="dd-list">';
-        foreach ($menu_nodes as $key => $row) :
+        foreach ($menu_nodes as $key => $row):
             $data_title = $row->title;
             if (!$data_title || $data_title == '' || trim($data_title, '') == '') {
                 switch ($row->type) {
-                    case 'category': {
-                        $category = $row->category;
-                        if ($category) $data_title = $category->global_title;
-                    }
+                    case 'category':{
+                            $category = $row->category;
+                            if ($category) {
+                                $data_title = $category->global_title;
+                            }
+
+                        }
                         break;
-                    case 'product-category': {
-                        $category = $row->productCategory;
-                        if ($category) $data_title = $category->global_title;
-                    }
+                    case 'product-category':{
+                            $category = $row->productCategory;
+                            if ($category) {
+                                $data_title = $category->global_title;
+                            }
+
+                        }
                         break;
-                    case 'page': {
-                        $post = $row->page;
-                        if ($post) $data_title = $post->global_title;
-                    }
+                    case 'page':{
+                            $post = $row->page;
+                            if ($post) {
+                                $data_title = $post->global_title;
+                            }
+
+                        }
                         break;
-                    default: {
-                        $post = $row->page;
-                        if ($post) $data_title = $post->global_title;
-                    }
+                    default:{
+                            $post = $row->page;
+                            if ($post) {
+                                $data_title = $post->global_title;
+                            }
+
+                        }
                         break;
                 }
             }
@@ -349,13 +366,13 @@ class MenuController extends BaseAdminController
         ];
 
         switch ($json_item->type) {
-            case 'custom-link': {
-                $data['related_id'] = 0;
-            }
+            case 'custom-link':{
+                    $data['related_id'] = 0;
+                }
                 break;
-            default: {
-                $data['related_id'] = $json_item->relatedid;
-            }
+            default:{
+                    $data['related_id'] = $json_item->relatedid;
+                }
                 break;
         }
 
@@ -371,7 +388,7 @@ class MenuController extends BaseAdminController
 
     private function _recursiveSaveMenu($json_arr, $menu_content_id, $parent_id)
     {
-        foreach ((array)$json_arr as $key => $row) {
+        foreach ((array) $json_arr as $key => $row) {
             $parent = $this->_saveMenuNode($row, $menu_content_id, $parent_id);
             if ($parent != null) {
                 if (!empty($row->children)) {
@@ -385,9 +402,9 @@ class MenuController extends BaseAdminController
     {
         $postContent = $object::getBy([
             'status' => 1,
-            'parent_id' => $parentId
+            'parent_id' => $parentId,
         ], [
-            'global_title' => 'ASC'
+            'global_title' => 'ASC',
         ], true);
 
         $html_src = '<ul class="list-item">';
@@ -398,7 +415,10 @@ class MenuController extends BaseAdminController
             $html_src .= '</li>';
         }
         $html_src .= '</ul>';
-        if (sizeof($postContent) < 1) return '';
+        if (sizeof($postContent) < 1) {
+            return '';
+        }
+
         return $html_src;
     }
 }

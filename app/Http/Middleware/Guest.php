@@ -39,9 +39,8 @@ class Guest
         $adminUser = new AdminUser();
         $user = auth($adminUser->getGuard())->user();
 
-        if(!$user)
-        {
-            return redirect()->guest($adminCpAccess.'/auth/login');
+        if (!$user) {
+            return redirect()->guest($adminCpAccess . '/auth/login');
         }
 
         return $next($request);

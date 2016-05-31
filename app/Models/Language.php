@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class Language extends AbstractModel
 {
@@ -41,10 +39,10 @@ class Language extends AbstractModel
         return static::where('status', '=', $status)->get();
     }
 
-    static function getAllLanguageCodes()
+    public static function getAllLanguageCodes()
     {
         $languages = static::getBy([
-            'status' => 1
+            'status' => 1,
         ], null, true);
 
         $results = [];
@@ -57,9 +55,9 @@ class Language extends AbstractModel
     public static function getDefaultLanguage()
     {
         $defaultLanguage = Setting::getBy([
-            'option_key' => 'default_language'
+            'option_key' => 'default_language',
         ]);
-        $languageId = (int)$defaultLanguage->option_value;
+        $languageId = (int) $defaultLanguage->option_value;
 
         $language = static::find($languageId);
         return $language;
@@ -69,7 +67,7 @@ class Language extends AbstractModel
     {
         $language = static::getBy([
             'language_code' => $languageCode,
-            'status' => $status
+            'status' => $status,
         ]);
         return $language;
     }
@@ -78,7 +76,7 @@ class Language extends AbstractModel
     {
         $language = static::getBy([
             'default_locale' => $locale,
-            'status' => $status
+            'status' => $status,
         ]);
         return $language;
     }

@@ -1,7 +1,5 @@
 <?php namespace App\Http\Controllers\Front;
 
-use Acme;
-use App\Models;
 use App\Models\Product;
 use App\Models\ProductMeta;
 use Illuminate\Http\Request;
@@ -18,9 +16,11 @@ class ProductController extends BaseFrontController
     {
         $item = $object->getBySlug($slug, $this->currentLanguageId);
 
-        if (!$item) return $this->_showErrorPage(404, 'Page not found');
+        if (!$item) {
+            return $this->_showErrorPage(404, 'Page not found');
+        }
 
-        $this->_setCurrentEditLink('Edit this product', 'products/edit/'.$item->product_id.'/'.$this->currentLanguageId);
+        $this->_setCurrentEditLink('Edit this product', 'products/edit/' . $item->product_id . '/' . $this->currentLanguageId);
 
         $this->_loadFrontMenu();
         $this->_setPageTitle($item->title);
@@ -37,8 +37,7 @@ class ProductController extends BaseFrontController
         $page_template = $item->page_template;
         if (trim($page_template) != '') {
             $function = '_product_' . str_replace(' ', '', trim($page_template));
-            if(method_exists($this, $function))
-            {
+            if (method_exists($this, $function)) {
                 return $this->{$function}($item);
             }
         }
@@ -47,7 +46,7 @@ class ProductController extends BaseFrontController
 
     private function _defaultItem(Product $object)
     {
-        $this->_setBodyClass($this->bodyClass.' product-default');
+        $this->_setBodyClass($this->bodyClass . ' product-default');
         return $this->_viewFront('product-templates.default', $this->dis);
     }
 }

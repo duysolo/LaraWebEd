@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+
 class Contact extends AbstractModel
 {
     /**
@@ -41,7 +42,7 @@ class Contact extends AbstractModel
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
         $object = static::find($id);
 

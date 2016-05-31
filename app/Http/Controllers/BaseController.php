@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\BaseFoundation\FlashMessages;
-
+use App\Http\Controllers\Controller;
 use App\Models;
+use Illuminate\Http\Request;
 
 abstract class BaseController extends Controller
 {
@@ -32,7 +30,7 @@ abstract class BaseController extends Controller
         $this->CMSSettings = Models\Setting::getAllSettings();
         view()->share('CMSSettings', $this->CMSSettings);
 
-        $this->defaultLanguageId = ($this->_getSetting('default_language')) ? (int)$this->_getSetting('default_language') : 59;
+        $this->defaultLanguageId = ($this->_getSetting('default_language')) ? (int) $this->_getSetting('default_language') : 59;
         $this->defaultLanguage = Models\Language::find($this->defaultLanguageId);
         $this->currentLanguage = Models\Language::getLanguageByLocale(app()->getLocale());
         if ($this->currentLanguage) {
@@ -110,21 +108,24 @@ abstract class BaseController extends Controller
 
     protected function _getSetting($key, $default = null)
     {
-        if (isset($this->CMSSettings[$key])) return $this->CMSSettings[$key];
+        if (isset($this->CMSSettings[$key])) {
+            return $this->CMSSettings[$key];
+        }
+
         return $default;
     }
 
     protected function _setBodyClass($class)
     {
         view()->share([
-            'bodyClass' => $class
+            'bodyClass' => $class,
         ]);
     }
 
     protected function _getHeaderAdminBarInFrontend()
     {
         $showHeaderAdminBar = false;
-        $setting = (int)$this->_getSetting('show_admin_bar');
+        $setting = (int) $this->_getSetting('show_admin_bar');
         if ($this->_getLoggedInAdminUser(new Models\AdminUser()) && $setting == 1) {
             $showHeaderAdminBar = true;
         }
@@ -135,7 +136,10 @@ abstract class BaseController extends Controller
 
     protected function _showConstructionMode()
     {
-        if ((int)$this->_getSetting('construction_mode') == 1 && !$this->loggedInAdminUser) return true;
+        if ((int) $this->_getSetting('construction_mode') == 1 && !$this->loggedInAdminUser) {
+            return true;
+        }
+
         return false;
     }
 
@@ -150,14 +154,17 @@ abstract class BaseController extends Controller
             [
                 'name' => $this->_getSetting('site_title'),
                 'email' => $this->_getSetting('email_receives_feedback'),
-            ]
+            ],
         ], $cc, $bcc);
     }
 
     protected function _getHomepageLink()
     {
         $page = Models\Page::getById($this->_getSetting('default_homepage'), $this->currentLanguageId);
-        if($page) return asset($this->currentLanguageCode.'/'.$page->slug);
+        if ($page) {
+            return asset($this->currentLanguageCode . '/' . $page->slug);
+        }
+
         return asset($this->currentLanguageCode);
     }
 
@@ -166,7 +173,7 @@ abstract class BaseController extends Controller
         return response()->json([
             'error' => $error,
             'response_code' => $responseCode,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 
@@ -174,13 +181,19 @@ abstract class BaseController extends Controller
     {
         $this->_setFlashMessage($message, $type);
         $this->_showFlashMessages();
-        if($error && $withOldInputWhenError) return redirect()->back()->withInput();
+        if ($error && $withOldInputWhenError) {
+            return redirect()->back()->withInput();
+        }
+
         return redirect()->back();
     }
 
     protected function _responseAutoDetect(Request $request, $message, $error = false, $responseCode = 500, $type = 'info', $withOldInputWhenError = false)
     {
-        if($request->ajax()) return $this->_responseJson($error, $responseCode, $message);
+        if ($request->ajax()) {
+            return $this->_responseJson($error, $responseCode, $message);
+        }
+
         return $this->_responseRedirect($message, $type, $error, $withOldInputWhenError);
     }
 }

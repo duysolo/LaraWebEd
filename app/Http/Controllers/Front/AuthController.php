@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Front\BaseFrontController;
 use App\Models\User;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 
 class AuthController extends BaseFrontController
@@ -20,11 +19,11 @@ class AuthController extends BaseFrontController
     | authentication of existing users. By default, this controller uses
     | a simple trait to add these behaviors. Why don't you explore it?
     |
-    */
+     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    var $username, $loginPath, $redirectPath, $redirectToLoginPage;
+    public $username, $loginPath, $redirectPath, $redirectToLoginPage;
 
     /**
      * Create a new authentication controller instance.
@@ -44,7 +43,7 @@ class AuthController extends BaseFrontController
          */
         $this->redirectPath = $this->_getHomepageLink();
 
-        $this->redirectToLoginPage = '/'.$this->currentLanguageCode.'/auth/login';
+        $this->redirectToLoginPage = '/' . $this->currentLanguageCode . '/auth/login';
 
         $this->middleware('guest', ['except' => ['getLogout']]);
     }
@@ -75,21 +74,19 @@ class AuthController extends BaseFrontController
             'sex' => $request->get('sex', 0),
             'password' => $request->get('password', null),
             'password_confirmation' => $request->get('password_confirmation', null),
-            'status' => 1
+            'status' => 1,
         ];
 
         $validate = $this->_validateRegister($data);
 
-        if(!$validate)
-        {
+        if (!$validate) {
             return redirect()->back()->withInput();
         }
 
         $data['password'] = bcrypt($data['password']);
         $result = $object->fastEdit($data, true, false);
 
-        if($result['error'])
-        {
+        if ($result['error']) {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
@@ -109,10 +106,9 @@ class AuthController extends BaseFrontController
     {
         $validateUser = new User();
         $validateUser->extendRules([
-            'password' => 'string|required|between:5,32|confirmed'
+            'password' => 'string|required|between:5,32|confirmed',
         ]);
-        if(!$validateUser->validateData($data))
-        {
+        if (!$validateUser->validateData($data)) {
             $errors = $validateUser->getErrors();
             $this->_setFlashMessage($errors, 'error');
             $this->_showFlashMessages();
@@ -128,7 +124,7 @@ class AuthController extends BaseFrontController
         $this->_setPageTitle('Login');
 
         $this->_loadFrontMenu();
-        
+
         return $this->_viewFront('auth.login');
     }
 
@@ -194,7 +190,7 @@ class AuthController extends BaseFrontController
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
-        if ($throttles && ! $lockedOut) {
+        if ($throttles && !$lockedOut) {
             $this->incrementLoginAttempts($request);
         }
 

@@ -17,7 +17,7 @@ class PostController extends BaseAdminController
 
     use CustomFields;
 
-    var $bodyClass = 'post-controller', $routeLink = 'posts';
+    public $bodyClass = 'post-controller', $routeLink = 'posts';
 
     public function __construct()
     {
@@ -54,24 +54,24 @@ class PostController extends BaseAdminController
         if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $customActionValue = $request->get('customActionValue', 0);
             switch ($customActionValue) {
-                case 'set_as_popular': {
-                    $result = $object->updateMultiple($ids, [
-                        'is_popular' => 1
-                    ], true);
-                } break;
-                case 'unset_as_popular': {
-                    $result = $object->updateMultiple($ids, [
-                        'is_popular' => 0
-                    ], true);
-                } break;
-                default: {
-                    $result = $object->updateMultiple($ids, [
-                        'status' => $customActionValue
-                    ], true);
-                } break;
+                case 'set_as_popular':{
+                        $result = $object->updateMultiple($ids, [
+                            'is_popular' => 1,
+                        ], true);
+                    }break;
+                case 'unset_as_popular':{
+                        $result = $object->updateMultiple($ids, [
+                            'is_popular' => 0,
+                        ], true);
+                    }break;
+                default:{
+                        $result = $object->updateMultiple($ids, [
+                            'status' => $customActionValue,
+                        ], true);
+                    }break;
             }
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
@@ -80,33 +80,33 @@ class PostController extends BaseAdminController
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1: {
-                $orderBy = 'id';
-            }
+            case 1:{
+                    $orderBy = 'id';
+                }
                 break;
-            case 2: {
-                $orderBy = 'global_title';
-            }
+            case 2:{
+                    $orderBy = 'global_title';
+                }
                 break;
-            case 3: {
-                $orderBy = 'status';
-            }
+            case 3:{
+                    $orderBy = 'status';
+                }
                 break;
-            case 4: {
-                $orderBy = 'order';
-            }
+            case 4:{
+                    $orderBy = 'order';
+                }
                 break;
-            case 5: {
-                $orderBy = 'created_by';
-            }
+            case 5:{
+                    $orderBy = 'created_by';
+                }
                 break;
-            default: {
-                $orderBy = 'created_at';
-            }
+            default:{
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
@@ -130,7 +130,10 @@ class PostController extends BaseAdminController
                 $status = '<span class="label label-danger label-sm">Disabled</span>';
             }
             $popular = '';
-            if($row->is_popular != 0) $popular =  '<span class="label label-success label-sm">Popular</span>';
+            if ($row->is_popular != 0) {
+                $popular = '<span class="label label-success label-sm">Popular</span>';
+            }
+
             /*Edit link*/
             $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id . '/' . $this->defaultLanguageId);
             $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
@@ -145,7 +148,7 @@ class PostController extends BaseAdminController
                 $row->created_at->toDateTimeString(),
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
                 '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .
-                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
+                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );
         }
 
@@ -173,7 +176,7 @@ class PostController extends BaseAdminController
         $dis = [];
 
         $oldInputs = old();
-        if($oldInputs && $id == 0) {
+        if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
@@ -183,7 +186,7 @@ class PostController extends BaseAdminController
 
         $currentEditLanguage = Models\Language::getBy([
             'id' => $language,
-            'status' => 1
+            'status' => 1,
         ]);
         if (!$currentEditLanguage) {
             $this->_setFlashMessage('This language it not supported', 'error');
@@ -210,7 +213,7 @@ class PostController extends BaseAdminController
 
             $item = $object->getById($id, $language, [
                 'status' => null,
-                'global_status' => null
+                'global_status' => null,
             ]);
             /*Create new if not exists*/
             if (!$item) {
@@ -221,7 +224,7 @@ class PostController extends BaseAdminController
                 $item->save();
                 $item = $object->getById($id, $language, [
                     'status' => null,
-                    'global_status' => null
+                    'global_status' => null,
                 ]);
             }
             $dis['object'] = $item;
@@ -232,7 +235,7 @@ class PostController extends BaseAdminController
                 'user' => $this->loggedInAdminUser->id,
                 'post_template' => $item->page_template,
                 'model_name' => 'Post',
-                'post_with_related_category_id' => $checkedNodes
+                'post_with_related_category_id' => $checkedNodes,
             );
             $customFieldBoxes = new Acme\CmsCustomField();
             $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'post');
@@ -262,7 +265,7 @@ class PostController extends BaseAdminController
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
-            if($id == 0) {
+            if ($id == 0) {
                 return redirect()->back()->withInput();
             }
 
@@ -292,9 +295,9 @@ class PostController extends BaseAdminController
     {
         $result = '';
         $nodes = Category::getBy([
-            'parent_id' => $parent
+            'parent_id' => $parent,
         ], [
-            'global_title' => 'ASC'
+            'global_title' => 'ASC',
         ], true);
         if ($nodes->count() > 0) {
             $result .= '<ul class="list-unstyled">';

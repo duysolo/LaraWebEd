@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Acme;
-use App\Models;
 use App\Models\SubscribedEmails;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
 class SubscribedEmailController extends BaseAdminController
 {
-    var $bodyClass = 'subscribed-emails-controller', $routeLink = 'subscribed-emails';
+    public $bodyClass = 'subscribed-emails-controller', $routeLink = 'subscribed-emails';
 
     public function __construct()
     {
@@ -45,14 +43,13 @@ class SubscribedEmailController extends BaseAdminController
         $records = [];
         $records["data"] = [];
 
-
         /*Group actions*/
         if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
+                'status' => $request->get('customActionValue', 0),
             ], true);
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
@@ -61,21 +58,21 @@ class SubscribedEmailController extends BaseAdminController
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1: {
-                $orderBy = 'id';
-            }
+            case 1:{
+                    $orderBy = 'id';
+                }
                 break;
-            case 2: {
-                $orderBy = 'email';
-            }
+            case 2:{
+                    $orderBy = 'email';
+                }
                 break;
-            default: {
-                $orderBy = 'created_at';
-            }
+            default:{
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];

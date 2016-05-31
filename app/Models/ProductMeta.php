@@ -2,13 +2,12 @@
 namespace App\Models;
 
 use App\Models\Contracts\HasCustomFieldsInterface;
-
 use App\Models\Foundation\MetaFunctions;
 
 class ProductMeta extends AbstractModel implements HasCustomFieldsInterface
 {
     use MetaFunctions;
-    
+
     /**
      * The database table used by the model.
      *

@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Acme;
-use App\Models;
 use App\Models\Coupon;
-use App\Models\CouponContent;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
 class CouponController extends BaseAdminController
 {
-    var $bodyClass = 'coupon-controller', $routeLink = 'coupons';
+    public $bodyClass = 'coupon-controller', $routeLink = 'coupons';
     public function __construct()
     {
         parent::__construct();
@@ -26,7 +23,7 @@ class CouponController extends BaseAdminController
 
     public function getIndex(Request $request)
     {
-        $this->_setBodyClass($this->bodyClass.' coupons-list-page');
+        $this->_setBodyClass($this->bodyClass . ' coupons-list-page');
         return $this->_viewAdmin('coupons.index');
     }
 
@@ -38,79 +35,73 @@ class CouponController extends BaseAdminController
         $offset = $request->get('start', 0);
         $limit = $request->get('length', 10);
         $paged = ($offset + $limit) / $limit;
-        Paginator::currentPageResolver(function() use ($paged) {
+        Paginator::currentPageResolver(function () use ($paged) {
             return $paged;
         });
 
         $records = [];
         $records["data"] = [];
 
-
         /*Group actions*/
-        if($request->get('customActionType', null) == 'group_action')
-        {
+        if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
+                'status' => $request->get('customActionValue', 0),
             ], true);
-            if(!$result['error'])
-            {
+            if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
             }
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
             case 1:
-            {
-                $orderBy = 'id';
-            }
+                {
+                    $orderBy = 'id';
+                }
                 break;
             case 2:
-            {
-                $orderBy = 'title';
-            }
+                {
+                    $orderBy = 'title';
+                }
                 break;
             case 3:
-            {
-                $orderBy = 'coupon_code';
-            }
+                {
+                    $orderBy = 'coupon_code';
+                }
                 break;
             case 4:
-            {
-                $orderBy = 'status';
-            }
+                {
+                    $orderBy = 'status';
+                }
                 break;
             case 5:
-            {
-                $orderBy = 'language_id';
-            }
+                {
+                    $orderBy = 'language_id';
+                }
                 break;
             default:
-            {
-                $orderBy = 'created_at';
-            }
+                {
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
 
         $getByFields = [];
-        if($request->get('title', null) != null)
-        {
+        if ($request->get('title', null) != null) {
             $getByFields['title'] = ['compare' => 'LIKE', 'value' => $request->get('title')];
         }
-        if($request->get('coupon_code', null) != null)
-        {
+        if ($request->get('coupon_code', null) != null) {
             $getByFields['coupon_code'] = ['compare' => '=', 'value' => $request->get('coupon_code')];
         }
-        if($request->get('status', null) != null)
-        {
+        if ($request->get('status', null) != null) {
             $getByFields['status'] = ['compare' => '=', 'value' => $request->get('status')];
         }
 
@@ -119,22 +110,20 @@ class CouponController extends BaseAdminController
         $iTotalRecords = $items->count();
         $sEcho = intval($request->get('sEcho'));
 
-        foreach ($items as $key => $row)
-        {
+        foreach ($items as $key => $row) {
             $status = '<span class="label label-success label-sm">Activated</span>';
-            if($row->status != 1)
-            {
+            if ($row->status != 1) {
                 $status = '<span class="label label-danger label-sm">Disabled</span>';
             }
             /*Edit link*/
-            $link = asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$row->id);
-            $removeLink = asset($this->adminCpAccess.'/'.$this->routeLink.'/delete/'.$row->id);
+            $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id);
+            $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
 
             //Language flag
-            $flag = ($row->language) ? '<img src="/admin/images/flags/'.$row->language->language_code.'.png" title="'.$row->language->language_name.'" alt="'.$row->language->language_name.'">' : '';
+            $flag = ($row->language) ? '<img src="/admin/images/flags/' . $row->language->language_code . '.png" title="' . $row->language->language_name . '" alt="' . $row->language->language_name . '">' : '';
 
             $records["data"][] = array(
-                '<input type="checkbox" name="id[]" value="'.$row->id.'">',
+                '<input type="checkbox" name="id[]" value="' . $row->id . '">',
                 $row->id,
                 $row->title,
                 $row->coupon_code,
@@ -142,8 +131,8 @@ class CouponController extends BaseAdminController
                 $flag,
                 $row->created_at->toDateTimeString(),
                 '<a class="fast-edit" title="Fast edit">Fast edit</a>',
-                '<a href="'.$link.'" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>'.
-                '<button type="button" data-ajax="'.$removeLink.'" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
+                '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-pencil"></i></a>' .
+                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );
         }
 
@@ -171,7 +160,7 @@ class CouponController extends BaseAdminController
         $dis = [];
 
         $oldInputs = old();
-        if($oldInputs && $id == 0) {
+        if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
@@ -179,12 +168,10 @@ class CouponController extends BaseAdminController
             $dis['object'] = $oldObject;
         }
 
-        if(!$id == 0)
-        {
+        if (!$id == 0) {
             $item = $object->find($id);
             /*No page with this id*/
-            if(!$item)
-            {
+            if (!$item) {
                 $this->_setFlashMessage('Item not exists.', 'error');
                 $this->_showFlashMessages();
                 return redirect()->back();
@@ -202,25 +189,20 @@ class CouponController extends BaseAdminController
     {
         $data = $request->all();
         $data['id'] = $id;
-        if($id <= 0)
-        {
+        if ($id <= 0) {
             $justUpdateSomeFields = false;
             $data['created_by'] = $this->loggedInAdminUser->id;
             $data['coupon_code'] = strtoupper(str_random(10));
             $result = $object->fastEdit($data, true, false);
-        }
-        else
-        {
+        } else {
             $result = $object->fastEdit($data, false, true);
         }
 
-
-        if($result['error'])
-        {
+        if ($result['error']) {
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
-            if($id == 0) {
+            if ($id == 0) {
                 return redirect()->back()->withInput();
             }
 
@@ -230,9 +212,8 @@ class CouponController extends BaseAdminController
         $this->_setFlashMessage($result['message'], 'success');
         $this->_showFlashMessages();
 
-        if($id == 0)
-        {
-            return redirect()->to(asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$result['object']->id.'/'));
+        if ($id == 0) {
+            return redirect()->to(asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $result['object']->id . '/'));
         }
         return redirect()->back();
     }

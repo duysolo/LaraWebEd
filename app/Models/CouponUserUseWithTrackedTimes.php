@@ -2,9 +2,7 @@
 namespace App\Models;
 
 use App\Models;
-
 use App\Models\AbstractModel;
-use Illuminate\Support\Facades\Validator;
 
 class CouponUserUseWithTrackedTimes extends AbstractModel
 {
@@ -33,9 +31,9 @@ class CouponUserUseWithTrackedTimes extends AbstractModel
     protected $editableFields = [
         'coupon_id',
         'user_id',
-        'total_used'
+        'total_used',
     ];
-    
+
     public function coupon()
     {
         return $this->belongsTo('App\Models\Coupon', 'coupon_id');

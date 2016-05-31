@@ -1,6 +1,5 @@
 <?php namespace Acme;
 
-use App\Models;
 use App\Models\CategoryMeta;
 use App\Models\FieldGroup;
 use App\Models\FieldItem;
@@ -19,7 +18,7 @@ class CmsCustomField
     /**
      * Construct
      **/
-    function __construct()
+    public function __construct()
     {
 
     }
@@ -27,13 +26,30 @@ class CmsCustomField
     // Get options
     public function getOptionHtml($type, $options, $current_id = 0)
     {
-        if(!property_exists($options, 'defaultvalue')) $options->defaultvalue = '';
-        if(!property_exists($options, 'placeholdertext')) $options->placeholdertext = '';
-        if(!property_exists($options, 'defaultvaluetextarea')) $options->defaultvaluetextarea = '';
-        if(!property_exists($options, 'wyswygtoolbar')) $options->wyswygtoolbar = 'basic';
-        if(!property_exists($options, 'selectchoices')) $options->selectchoices = '';
-        if(!property_exists($options, 'buttonlabel')) $options->buttonlabel = '';
-        
+        if (!property_exists($options, 'defaultvalue')) {
+            $options->defaultvalue = '';
+        }
+
+        if (!property_exists($options, 'placeholdertext')) {
+            $options->placeholdertext = '';
+        }
+
+        if (!property_exists($options, 'defaultvaluetextarea')) {
+            $options->defaultvaluetextarea = '';
+        }
+
+        if (!property_exists($options, 'wyswygtoolbar')) {
+            $options->wyswygtoolbar = 'basic';
+        }
+
+        if (!property_exists($options, 'selectchoices')) {
+            $options->selectchoices = '';
+        }
+
+        if (!property_exists($options, 'buttonlabel')) {
+            $options->buttonlabel = '';
+        }
+
         $html_src = '';
         $defaultvalue = '<div class="line" data-option="defaultvalue"><div class="col-xs-3"><h5>Default Value</h5><p>Appears when creating a new post</p></div><div class="col-xs-9"><input type="text" class="form-control" placeholder="" value="' . $options->defaultvalue . '"></div><div class="clearfix"></div></div>';
         $placeholdertext = '<div class="line" data-option="placeholdertext"><div class="col-xs-3"><h5>Placeholder Text</h5><p>Appears within the input</p></div><div class="col-xs-9"><input type="text" class="form-control" placeholder="" value="' . $options->placeholdertext . '"></div><div class="clearfix"></div></div>';
@@ -44,57 +60,57 @@ class CmsCustomField
         $repeater = '';
 
         switch ($type) {
-            case 'text': {
-                $html_src .= $defaultvalue . $placeholdertext;
-            }
+            case 'text':{
+                    $html_src .= $defaultvalue . $placeholdertext;
+                }
                 break;
-            case 'textarea': {
-                $html_src .= $defaultvaluetextarea . $placeholdertext;
-            }
+            case 'textarea':{
+                    $html_src .= $defaultvaluetextarea . $placeholdertext;
+                }
                 break;
-            case 'number': {
-                $html_src .= $defaultvaluetextarea . $placeholdertext;
-            }
+            case 'number':{
+                    $html_src .= $defaultvaluetextarea . $placeholdertext;
+                }
                 break;
-            case 'email': {
-                $html_src .= $defaultvalue . $placeholdertext;
-            }
+            case 'email':{
+                    $html_src .= $defaultvalue . $placeholdertext;
+                }
                 break;
-            case 'password': {
-                $html_src .= $defaultvalue . $placeholdertext;
-            }
+            case 'password':{
+                    $html_src .= $defaultvalue . $placeholdertext;
+                }
                 break;
-            case 'wyswyg': {
-                $html_src .= $defaultvaluetextarea . $placeholdertext . $wyswygtoolbar;
-            }
+            case 'wyswyg':{
+                    $html_src .= $defaultvaluetextarea . $placeholdertext . $wyswygtoolbar;
+                }
                 break;
-            case 'image': {
-                return $html_src;
-            }
+            case 'image':{
+                    return $html_src;
+                }
                 break;
-            case 'file': {
-                return $html_src;
-            }
+            case 'file':{
+                    return $html_src;
+                }
                 break;
-            case 'select': {
-                $html_src .= $selectchoices . $defaultvalue;
-            }
+            case 'select':{
+                    $html_src .= $selectchoices . $defaultvalue;
+                }
                 break;
-            case 'checkbox': {
-                $html_src .= $selectchoices . $defaultvalue;
-            }
+            case 'checkbox':{
+                    $html_src .= $selectchoices . $defaultvalue;
+                }
                 break;
-            case 'radio': {
-                $html_src .= $selectchoices . $defaultvalue;
-            }
+            case 'radio':{
+                    $html_src .= $selectchoices . $defaultvalue;
+                }
                 break;
-            case 'repeater': {
-                $html_src .= $repeater . $buttonlabel;
-            }
+            case 'repeater':{
+                    $html_src .= $repeater . $buttonlabel;
+                }
                 break;
-            default: {
-                return $html_src;
-            }
+            default:{
+                    return $html_src;
+                }
                 break;
         }
         return $html_src;
@@ -104,9 +120,9 @@ class CmsCustomField
     {
         $fieldItems = FieldItem::getBy([
             'field_group_id' => $group_id,
-            'parent_id' => $parent_id
+            'parent_id' => $parent_id,
         ], [
-            'position' => 'ASC'
+            'position' => 'ASC',
         ], true);
         return $fieldItems;
     }
@@ -116,7 +132,7 @@ class CmsCustomField
         $html_src = '';
         $field_items = $this->getGroupNodes($group_id, $parent_id);
         $html_src .= '<ul class="sortable-wrapper ' . (($disable_sort == true) ? '' : '') . '">';
-        foreach ($field_items as $key => $row) :
+        foreach ($field_items as $key => $row):
             $html_src .= '<li class="" data-position="' . ($key + 1) . '" data-repeateritems=\'\' data-options=\'\' data-id="' . $row->id . '" data-name="' . $row->slug . '" data-title="' . $row->title . '" data-type="' . $row->field_type . '" data-instructions="' . $row->instructions . '">';
             $html_src .= '<div class="field-column">';
             $html_src .= '<div class="text col-xs-4 field-label">' . ((trim($row->title) != '') ? $row->title : '&nbsp;') . '</div>';
@@ -188,7 +204,7 @@ class CmsCustomField
             $html_src .= '</div>';
             $html_src .= '<div class="options">';
 
-            if ($row->field_type == 'repeater') :
+            if ($row->field_type == 'repeater'):
                 $html_src .= '<div class="line" data-option="repeater">';
                 $html_src .= '<div class="col-xs-3">';
                 $html_src .= '<h5>Repeater fields</h5>';
@@ -264,233 +280,236 @@ class CmsCustomField
         $options = json_decode($field_item->options);
         $the_meta = '';
         switch ($use_for) {
-            case 'category': {
-                $the_meta = CategoryMeta::getContentMeta($content_id, $field_item->slug);
-            }
+            case 'category':{
+                    $the_meta = CategoryMeta::getContentMeta($content_id, $field_item->slug);
+                }
                 break;
-            case 'product': {
-                $the_meta = ProductMeta::getContentMeta($content_id, $field_item->slug);
-            }
+            case 'product':{
+                    $the_meta = ProductMeta::getContentMeta($content_id, $field_item->slug);
+                }
                 break;
-            case 'product-category': {
-                $the_meta = ProductCategoryMeta::getContentMeta($content_id, $field_item->slug);
-            }
+            case 'product-category':{
+                    $the_meta = ProductCategoryMeta::getContentMeta($content_id, $field_item->slug);
+                }
                 break;
-            case 'page': {
-                $the_meta = PageMeta::getContentMeta($content_id, $field_item->slug);
-            }
+            case 'page':{
+                    $the_meta = PageMeta::getContentMeta($content_id, $field_item->slug);
+                }
                 break;
-            default: {
-                $the_meta = PostMeta::getContentMeta($content_id, $field_item->slug);
-            }
+            default:{
+                    $the_meta = PostMeta::getContentMeta($content_id, $field_item->slug);
+                }
                 break;
         }
-        if (!$the_meta && property_exists($options, 'defaultvalue')) $the_meta = $options->defaultvalue;
+        if (!$the_meta && property_exists($options, 'defaultvalue')) {
+            $the_meta = $options->defaultvalue;
+        }
+
         switch ($field_item->field_type) {
-            case 'text': {
-                $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-text-wrap">';
-                $html_src .= '<input type="text" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'textarea': {
-                $html_src .= '<div class="meta-box textarea-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-textarea-wrap">';
-                $html_src .= '<textarea rows="3" value="" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">' . $the_meta . '</textarea>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'number': {
-                $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-number-wrap">';
-                $html_src .= '<input type="number" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'email': {
-                $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-email-wrap">';
-                $html_src .= '<input type="email" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'password': {
-                $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-password-wrap">';
-                $html_src .= '<input type="password" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'wyswyg': {
-                $html_src .= '<div class="meta-box textarea-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-wyswyg-wrap scf-textarea-wrap">';
-                $html_src .= '<script>';
-                $html_src .= '$(document).ready(function() {';
-                $html_src .= 'CKEDITOR.replace( "wyswyg_editor_field_' . $field_item->slug . $field_item->id . '", {';
-                if ($options->wyswygtoolbar == 'basic') {
-                    $html_src .= 'toolbar: [[\'mode\', \'Source\', \'Image\', \'TextColor\', \'BGColor\', \'Styles\', \'Format\', \'Font\', \'FontSize\', \'CreateDiv\', \'PageBreak\', \'Bold\', \'Italic\', \'Underline\', \'Strike\', \'Subscript\', \'Superscript\', \'RemoveFormat\']],';
+            case 'text':{
+                    $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-text-wrap">';
+                    $html_src .= '<input type="text" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
                 }
-                $html_src .= '});';
-                $html_src .= '});';
-                $html_src .= '</script>';
-                $html_src .= '<textarea rows="3" value="" name="wyswyg_editor_field_' . $field_item->slug . $field_item->id . '" id="wyswyg_editor_field_' . $field_item->slug . $field_item->id . '" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control wyswyg-editor">' . $the_meta . '</textarea>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
                 break;
-            case 'image': {
-                $img_src = $the_meta;
-                if ((string)$img_src == '') {
+            case 'textarea':{
+                    $html_src .= '<div class="meta-box textarea-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-textarea-wrap">';
+                    $html_src .= '<textarea rows="3" value="" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">' . $the_meta . '</textarea>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'number':{
+                    $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-number-wrap">';
+                    $html_src .= '<input type="number" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'email':{
+                    $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-email-wrap">';
+                    $html_src .= '<input type="email" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'password':{
+                    $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-password-wrap">';
+                    $html_src .= '<input type="password" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" value="' . $the_meta . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'wyswyg':{
+                    $html_src .= '<div class="meta-box textarea-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-wyswyg-wrap scf-textarea-wrap">';
+                    $html_src .= '<script>';
+                    $html_src .= '$(document).ready(function() {';
+                    $html_src .= 'CKEDITOR.replace( "wyswyg_editor_field_' . $field_item->slug . $field_item->id . '", {';
+                    if ($options->wyswygtoolbar == 'basic') {
+                        $html_src .= 'toolbar: [[\'mode\', \'Source\', \'Image\', \'TextColor\', \'BGColor\', \'Styles\', \'Format\', \'Font\', \'FontSize\', \'CreateDiv\', \'PageBreak\', \'Bold\', \'Italic\', \'Underline\', \'Strike\', \'Subscript\', \'Superscript\', \'RemoveFormat\']],';
+                    }
+                    $html_src .= '});';
+                    $html_src .= '});';
+                    $html_src .= '</script>';
+                    $html_src .= '<textarea rows="3" value="" name="wyswyg_editor_field_' . $field_item->slug . $field_item->id . '" id="wyswyg_editor_field_' . $field_item->slug . $field_item->id . '" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control wyswyg-editor">' . $the_meta . '</textarea>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'image':{
+                    $img_src = $the_meta;
+                    if ((string) $img_src == '') {
+                        $img_src = '/admin/images/no-image.png';
+                    }
+                    $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-image-wrap">';
+                    $html_src .= '<div class="select-media-box">';
+                    $html_src .= '<a title="" class="btn blue show-add-media-popup">Choose image</a>';
+                    $html_src .= '<div class="clearfix"></div>';
+                    $html_src .= '<a title="" class="show-add-media-popup"><img src="' . asset($img_src) . '" alt="" class="img-responsive"></a>';
+                    $html_src .= '<input type="hidden"" data-slug="' . $field_item->slug . '" data-fieldtype="' . $field_item->field_type . '" value="' . $the_meta . '" class="input-file">';
+                    $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'file':{
+
+                    $file_src = $the_meta;
                     $img_src = '/admin/images/no-image.png';
+
+                    $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-file-wrap">';
+                    $html_src .= '<div class="select-media-box select-file-box">';
+                    $html_src .= '<a title="" class="btn blue show-add-media-popup select-file-box">Choose file</a>';
+                    $html_src .= '<div class="clearfix"></div>';
+                    $html_src .= '<a title="" class="show-add-media-popup select-file-box"><img src="' . asset($img_src) . '" alt="" class="img-responsive"><span class="title">' . $file_src . '</span></a>';
+                    $html_src .= '<input type="hidden"" data-slug="' . $field_item->slug . '" data-fieldtype="' . $field_item->field_type . '" value="' . $file_src . '" class="input-file">';
+                    $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
                 }
-                $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-image-wrap">';
-                $html_src .= '<div class="select-media-box">';
-                $html_src .= '<a title="" class="btn blue show-add-media-popup">Choose image</a>';
-                $html_src .= '<div class="clearfix"></div>';
-                $html_src .= '<a title="" class="show-add-media-popup"><img src="' . asset($img_src) . '" alt="" class="img-responsive"></a>';
-                $html_src .= '<input type="hidden"" data-slug="' . $field_item->slug . '" data-fieldtype="' . $field_item->field_type . '" value="' . $the_meta . '" class="input-file">';
-                $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
                 break;
-            case 'file': {
+            case 'select':{
+                    $html_src .= '<div class="meta-box select-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-select-wrap">';
+                    $html_src .= '<select class="form-control" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '">';
+                    $html_src .= $this->getChoicesOfSelect($options->selectchoices, $the_meta);
+                    $html_src .= '</select>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'checkbox':{
+                    $html_src .= '<div class="meta-box check-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-checkbox-wrap">';
+                    $html_src .= $this->getChoicesOfCheckbox($options->selectchoices, $the_meta, ['field_type' => $field_item->field_type, 'slug' => $field_item->slug]);
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'radio':{
+                    $html_src .= '<div class="meta-box radio-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-radio-wrap">';
+                    $html_src .= $this->getChoicesOfRadio($options->selectchoices, $the_meta, ['field_type' => $field_item->field_type, 'slug' => $field_item->slug]);
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'repeater':{
+                    $html_src .= '<div class="meta-box repeater-box" data-slug="' . $field_item->slug . '">';
+                    $html_src .= '<p>';
+                    $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
+                    $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
+                    $html_src .= '</p>';
+                    $html_src .= '<div class="scf-repeater-wrap">';
 
-                $file_src = $the_meta;
-                $img_src = '/admin/images/no-image.png';
+                    $options = json_decode($field_item->options);
+                    $repeater_items = $this->get_repeater_items($field_item->field_group_id, $field_item->id);
+                    $the_meta_obj = json_decode($the_meta);
 
-                $html_src .= '<div class="meta-box normal-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-file-wrap">';
-                $html_src .= '<div class="select-media-box select-file-box">';
-                $html_src .= '<a title="" class="btn blue show-add-media-popup select-file-box">Choose file</a>';
-                $html_src .= '<div class="clearfix"></div>';
-                $html_src .= '<a title="" class="show-add-media-popup select-file-box"><img src="' . asset($img_src) . '" alt="" class="img-responsive"><span class="title">' . $file_src . '</span></a>';
-                $html_src .= '<input type="hidden"" data-slug="' . $field_item->slug . '" data-fieldtype="' . $field_item->field_type . '" value="' . $file_src . '" class="input-file">';
-                $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'select': {
-                $html_src .= '<div class="meta-box select-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-select-wrap">';
-                $html_src .= '<select class="form-control" data-fieldtype="' . $field_item->field_type . '" data-slug="' . $field_item->slug . '">';
-                $html_src .= $this->getChoicesOfSelect($options->selectchoices, $the_meta);
-                $html_src .= '</select>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'checkbox': {
-                $html_src .= '<div class="meta-box check-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-checkbox-wrap">';
-                $html_src .= $this->getChoicesOfCheckbox($options->selectchoices, $the_meta, ['field_type' => $field_item->field_type, 'slug' => $field_item->slug]);
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'radio': {
-                $html_src .= '<div class="meta-box radio-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-radio-wrap">';
-                $html_src .= $this->getChoicesOfRadio($options->selectchoices, $the_meta, ['field_type' => $field_item->field_type, 'slug' => $field_item->slug]);
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'repeater': {
-                $html_src .= '<div class="meta-box repeater-box" data-slug="' . $field_item->slug . '">';
-                $html_src .= '<p>';
-                $html_src .= '<label class="sbold">' . $field_item->title . '</label><br>';
-                $html_src .= '<span class="font-size-13">' . $field_item->instructions . '</span>';
-                $html_src .= '</p>';
-                $html_src .= '<div class="scf-repeater-wrap">';
-
-                $options = json_decode($field_item->options);
-                $repeater_items = $this->get_repeater_items($field_item->field_group_id, $field_item->id);
-                $the_meta_obj = json_decode($the_meta);
-
-                $html_src .= '<textarea class="scf-repeater-items form-control dis-none" style="display: none !important;" value="" rows="10">' . json_encode($repeater_items) . '</textarea>';
-                $html_src .= '<ul class="sortable-wrapper" data-slug="' . $field_item->slug . '">';
-                if ($the_meta_obj) : foreach ($the_meta_obj as $key => $row) : $key_index = $key + 1;
-                    $html_src .= '<li data-position="' . $key_index . '">';
-                    $html_src .= '<a href="#" class="remove-field-line"><i class="fa fa-minus"></i></a>';
-                    $html_src .= '<div class="col-xs-12">';
-                    $html_src .= '<ul class="sortable-wrapper disable-sortable" data-type="">';
-                    $html_src .= $this->initRepeaterFieldLine($row, $repeater_items, $key_index);
+                    $html_src .= '<textarea class="scf-repeater-items form-control dis-none" style="display: none !important;" value="" rows="10">' . json_encode($repeater_items) . '</textarea>';
+                    $html_src .= '<ul class="sortable-wrapper" data-slug="' . $field_item->slug . '">';
+                    if ($the_meta_obj): foreach ($the_meta_obj as $key => $row): $key_index = $key + 1;
+                            $html_src .= '<li data-position="' . $key_index . '">';
+                            $html_src .= '<a href="#" class="remove-field-line"><i class="fa fa-minus"></i></a>';
+                            $html_src .= '<div class="col-xs-12">';
+                            $html_src .= '<ul class="sortable-wrapper disable-sortable" data-type="">';
+                            $html_src .= $this->initRepeaterFieldLine($row, $repeater_items, $key_index);
+                            $html_src .= '</ul>';
+                            $html_src .= '</div>';
+                            $html_src .= '<div class="clearfix"></div>';
+                            $html_src .= '</li>';
+                        endforeach;endif;
                     $html_src .= '</ul>';
                     $html_src .= '</div>';
-                    $html_src .= '<div class="clearfix"></div>';
-                    $html_src .= '</li>';
-                endforeach; endif;
-                $html_src .= '</ul>';
-                $html_src .= '</div>';
-                $html_src .= '<div class="text-rig">';
+                    $html_src .= '<div class="text-rig">';
 
-                $btn_label = $options->buttonlabel;
-                if ((trim($btn_label) == '')) {
-                    $btn_label = 'Add new';
+                    $btn_label = $options->buttonlabel;
+                    if ((trim($btn_label) == '')) {
+                        $btn_label = 'Add new';
+                    }
+                    $html_src .= '<a href="#" class="repeater-add-new-field btn btn-success">' . $btn_label . '</a>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
                 }
-                $html_src .= '<a href="#" class="repeater-add-new-field btn btn-success">' . $btn_label . '</a>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
                 break;
-            default: {
-                return '';
-            }
+            default:{
+                    return '';
+                }
                 break;
         }
         return $html_src;
@@ -512,9 +531,14 @@ class CmsCustomField
     {
         $result = '';
         $selectedChoice = json_decode($selectedChoice);
-        if (!$selectedChoice) $selectedChoice = [];
+        if (!$selectedChoice) {
+            $selectedChoice = [];
+        }
+
         $choices = preg_split('/\r\n|[\r\n]/', $choicesString);
-        if (!array_key_exists('current', $other)) $other['current'] = 0;
+        if (!array_key_exists('current', $other)) {
+            $other['current'] = 0;
+        }
 
         foreach ($choices as $key => $row) {
             $currentArr = explode(': ', $row);
@@ -527,7 +551,9 @@ class CmsCustomField
     {
         $result = '';
         $choices = preg_split('/\r\n|[\r\n]/', $choicesString);
-        if (!array_key_exists('current', $other)) $other['current'] = 0;
+        if (!array_key_exists('current', $other)) {
+            $other['current'] = 0;
+        }
 
         foreach ($choices as $key => $row) {
             $currentArr = explode(': ', $row);
@@ -638,116 +664,116 @@ class CmsCustomField
         $html_src = '';
         $selected = (($sub_field->field_value) ? $sub_field->field_value : $options->defaultvalue);
         switch ($sub_field->field_type_updated) {
-            case 'text': {
-                $html_src .= '<div class="scf-text-wrap">';
-                $html_src .= '<input type="text" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'textarea': {
-                $html_src .= '<div class="scf-textarea-wrap">';
-                $html_src .= '<textarea rows="3"  data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">' . $sub_field->field_value . '</textarea>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'number': {
-                $html_src .= 'c<div class="scf-number-wrap">';
-                $html_src .= '<input type="number" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'email': {
-                $html_src .= '<div class="scf-email-wrap">';
-                $html_src .= '<input type="email" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'password': {
-                $html_src .= '<div class="scf-password-wrap">';
-                $html_src .= '<input type="password" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'wyswyg': {
-                $toolbar = '';
-                if ($options->wyswygtoolbar == 'basic') {
-                    $toolbar = 'toolbar: [[\'mode\', \'Source\', \'Image\', \'TextColor\', \'BGColor\', \'Styles\', \'Format\', \'Font\', \'FontSize\', \'CreateDiv\', \'PageBreak\', \'Bold\', \'Italic\', \'Underline\', \'Strike\', \'Subscript\', \'Superscript\', \'RemoveFormat\']], ';
+            case 'text':{
+                    $html_src .= '<div class="scf-text-wrap">';
+                    $html_src .= '<input type="text" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
                 }
-                $html_src .= '<div class="scf-wyswyg-wrap scf-textarea-wrap">';
-                $html_src .= '<script>';
-                $html_src .= '$(document).ready(function() {';
-                $html_src .= 'CKEDITOR.replace( "wyswyg_editor_field_' . $sub_field->slug . $current . '", {';
-                $html_src .= $toolbar;
-                $html_src .= '});});';
-                $html_src .= '</script>';
-                $html_src .= '<textarea rows="3" value="" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" id="wyswyg_editor_field_' . $sub_field->slug . $current . '" placeholder="" class="form-control wyswyg-editor ckeditor">' . $sub_field->field_value . '</textarea>';
-                $html_src .= '</div>';
-            }
                 break;
-            case 'image': {
-                $img_src = $sub_field->field_value;
-                if ((string)$img_src == '') {
+            case 'textarea':{
+                    $html_src .= '<div class="scf-textarea-wrap">';
+                    $html_src .= '<textarea rows="3"  data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">' . $sub_field->field_value . '</textarea>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'number':{
+                    $html_src .= 'c<div class="scf-number-wrap">';
+                    $html_src .= '<input type="number" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'email':{
+                    $html_src .= '<div class="scf-email-wrap">';
+                    $html_src .= '<input type="email" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'password':{
+                    $html_src .= '<div class="scf-password-wrap">';
+                    $html_src .= '<input type="password" data-fieldtype="' . $sub_field->field_type_updated . '" value="' . $sub_field->field_value . '" data-slug="' . $sub_field->slug . '" placeholder="' . $options->placeholdertext . '" class="form-control">';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'wyswyg':{
+                    $toolbar = '';
+                    if ($options->wyswygtoolbar == 'basic') {
+                        $toolbar = 'toolbar: [[\'mode\', \'Source\', \'Image\', \'TextColor\', \'BGColor\', \'Styles\', \'Format\', \'Font\', \'FontSize\', \'CreateDiv\', \'PageBreak\', \'Bold\', \'Italic\', \'Underline\', \'Strike\', \'Subscript\', \'Superscript\', \'RemoveFormat\']], ';
+                    }
+                    $html_src .= '<div class="scf-wyswyg-wrap scf-textarea-wrap">';
+                    $html_src .= '<script>';
+                    $html_src .= '$(document).ready(function() {';
+                    $html_src .= 'CKEDITOR.replace( "wyswyg_editor_field_' . $sub_field->slug . $current . '", {';
+                    $html_src .= $toolbar;
+                    $html_src .= '});});';
+                    $html_src .= '</script>';
+                    $html_src .= '<textarea rows="3" value="" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" id="wyswyg_editor_field_' . $sub_field->slug . $current . '" placeholder="" class="form-control wyswyg-editor ckeditor">' . $sub_field->field_value . '</textarea>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'image':{
+                    $img_src = $sub_field->field_value;
+                    if ((string) $img_src == '') {
+                        $img_src = '/admin/images/no-image.png';
+                    }
+                    $html_src .= '<div class="scf-image-wrap">';
+                    $html_src .= '<div class="select-media-box">';
+                    $html_src .= '<a title="" class="btn blue show-add-media-popup">Choose image</a>';
+                    $html_src .= '<div class="clearfix"></div>';
+                    $html_src .= '<a title="" class="show-add-media-popup"><img src="' . asset($img_src) . '" alt="" class="img-responsive"></a>';
+                    $html_src .= '<input type="hidden"" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" value="' . $img_src . '" class="input-file">';
+                    $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'file':{
+                    $file_src = $sub_field->field_value;
                     $img_src = '/admin/images/no-image.png';
-                }
-                $html_src .= '<div class="scf-image-wrap">';
-                $html_src .= '<div class="select-media-box">';
-                $html_src .= '<a title="" class="btn blue show-add-media-popup">Choose image</a>';
-                $html_src .= '<div class="clearfix"></div>';
-                $html_src .= '<a title="" class="show-add-media-popup"><img src="' . asset($img_src) . '" alt="" class="img-responsive"></a>';
-                $html_src .= '<input type="hidden"" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" value="' . $img_src . '" class="input-file">';
-                $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'file': {
-                $file_src = $sub_field->field_value;
-                $img_src = '/admin/images/no-image.png';
 
-                $html_src .= '<div class="scf-file-wrap">';
-                $html_src .= '<div class="select-media-box select-file-box">';
-                $html_src .= '<a title="" class="btn blue show-add-media-popup select-file-box">Choose file</a>';
-                $html_src .= '<div class="clearfix"></div>';
-                $html_src .= '<a title="" class="show-add-media-popup select-file-box"><img src="' . asset($img_src) . '" alt="" class="img-responsive"><span class="title">' . $file_src . '</span></a>';
-                $html_src .= '<input type="hidden"" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" value="' . $file_src . '" class="input-file">';
-                $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
-                $html_src .= '</div>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'select': {
-                $html_src .= '<div class="scf-select-wrap">';
-                $html_src .= '<select name="" class="form-control" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '">';
-                $html_src .= $this->getChoicesOfSelect($options->selectchoices, $selected);
-                $html_src .= '</select>';
-                $html_src .= '</div>';
-            }
-                break;
-            case 'checkbox': {
-                $selected = $sub_field->field_value;
-                if (!$selected) {
-                    $selected = [];
-                    $selected[] = $options->defaultvalue;
-                    $selected = json_encode($selected);
+                    $html_src .= '<div class="scf-file-wrap">';
+                    $html_src .= '<div class="select-media-box select-file-box">';
+                    $html_src .= '<a title="" class="btn blue show-add-media-popup select-file-box">Choose file</a>';
+                    $html_src .= '<div class="clearfix"></div>';
+                    $html_src .= '<a title="" class="show-add-media-popup select-file-box"><img src="' . asset($img_src) . '" alt="" class="img-responsive"><span class="title">' . $file_src . '</span></a>';
+                    $html_src .= '<input type="hidden"" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '" value="' . $file_src . '" class="input-file">';
+                    $html_src .= '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
+                    $html_src .= '</div>';
+                    $html_src .= '</div>';
                 }
-                $html_src .= '<div class="scf-checkbox-wrap">';
-                $html_src .= $this->getChoicesOfCheckbox($options->selectchoices, $selected, ['field_type' => $sub_field->field_type, 'slug' => $sub_field->slug]);
-                $html_src .= '</div>';
-            }
                 break;
-            case 'radio': {
-                $html_src .= '<div class="scf-radio-wrap">';
-                $html_src .= $this->getChoicesOfRadio($options->selectchoices, $selected, ['field_type' => $sub_field->field_type, 'slug' => $sub_field->slug, 'current' => $current]);
-                $html_src .= '</div>';
-            }
+            case 'select':{
+                    $html_src .= '<div class="scf-select-wrap">';
+                    $html_src .= '<select name="" class="form-control" data-fieldtype="' . $sub_field->field_type_updated . '" data-slug="' . $sub_field->slug . '">';
+                    $html_src .= $this->getChoicesOfSelect($options->selectchoices, $selected);
+                    $html_src .= '</select>';
+                    $html_src .= '</div>';
+                }
                 break;
-            case 'repeater': {
-                return $html_src;
-            }
+            case 'checkbox':{
+                    $selected = $sub_field->field_value;
+                    if (!$selected) {
+                        $selected = [];
+                        $selected[] = $options->defaultvalue;
+                        $selected = json_encode($selected);
+                    }
+                    $html_src .= '<div class="scf-checkbox-wrap">';
+                    $html_src .= $this->getChoicesOfCheckbox($options->selectchoices, $selected, ['field_type' => $sub_field->field_type, 'slug' => $sub_field->slug]);
+                    $html_src .= '</div>';
+                }
                 break;
-            default: {
-                return $html_src;
-            }
+            case 'radio':{
+                    $html_src .= '<div class="scf-radio-wrap">';
+                    $html_src .= $this->getChoicesOfRadio($options->selectchoices, $selected, ['field_type' => $sub_field->field_type, 'slug' => $sub_field->slug, 'current' => $current]);
+                    $html_src .= '</div>';
+                }
+                break;
+            case 'repeater':{
+                    return $html_src;
+                }
+                break;
+            default:{
+                    return $html_src;
+                }
                 break;
         }
         return $html_src;
@@ -767,7 +793,7 @@ class CmsCustomField
             'scf_user' => 0,
             'model_name' => '',
             'product_with_related_product_category_id' => 0,
-            'post_with_related_category_id' => 0
+            'post_with_related_category_id' => 0,
         ];
         $args = array_merge($default_args, $args);
 

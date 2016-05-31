@@ -7,6 +7,6 @@ use App\Http\Middleware\RolesTrait\Roles;
 class RoleWebmaster
 {
     use Roles;
-    var $neededRole = 'webmaster';
-    var $allowRole = [];
+    public $neededRole = 'webmaster';
+    public $allowRole = [];
 }

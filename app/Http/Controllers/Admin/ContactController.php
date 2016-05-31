@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Acme;
-use App\Models;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
 class ContactController extends BaseAdminController
 {
-    var $bodyClass = 'contact-controller', $routeLink = 'contacts';
+    public $bodyClass = 'contact-controller', $routeLink = 'contacts';
     public function __construct()
     {
         parent::__construct();
@@ -25,7 +23,7 @@ class ContactController extends BaseAdminController
 
     public function getIndex(Request $request)
     {
-        $this->_setBodyClass($this->bodyClass.' contacts-list-page');
+        $this->_setBodyClass($this->bodyClass . ' contacts-list-page');
         return $this->_viewAdmin('contacts.index');
     }
 
@@ -37,88 +35,80 @@ class ContactController extends BaseAdminController
         $offset = $request->get('start', 0);
         $limit = $request->get('length', 10);
         $paged = ($offset + $limit) / $limit;
-        Paginator::currentPageResolver(function() use ($paged) {
+        Paginator::currentPageResolver(function () use ($paged) {
             return $paged;
         });
 
         $records = [];
         $records["data"] = [];
 
-
         /*Group actions*/
-        if($request->get('customActionType', null) == 'group_action')
-        {
+        if ($request->get('customActionType', null) == 'group_action') {
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array)$request->get('id', []);
+            $ids = (array) $request->get('id', []);
             $result = $object->updateMultiple($ids, [
-                'status' => $request->get('customActionValue', 0)
+                'status' => $request->get('customActionValue', 0),
             ], true);
-            if(!$result['error'])
-            {
+            if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
             }
         }
 
         /*
-        * Sortable data
-        */
+         * Sortable data
+         */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
             case 1:
-            {
-                $orderBy = 'id';
-            }
+                {
+                    $orderBy = 'id';
+                }
                 break;
             case 2:
-            {
-                $orderBy = 'subject';
-            }
+                {
+                    $orderBy = 'subject';
+                }
                 break;
             case 3:
-            {
-                $orderBy = 'name';
-            }
+                {
+                    $orderBy = 'name';
+                }
                 break;
 
             case 4:
-            {
-                $orderBy = 'phone';
-            }
+                {
+                    $orderBy = 'phone';
+                }
                 break;
             case 5:
-            {
-                $orderBy = 'email';
-            }
+                {
+                    $orderBy = 'email';
+                }
                 break;
             default:
-            {
-                $orderBy = 'created_at';
-            }
+                {
+                    $orderBy = 'created_at';
+                }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
 
         $getByFields = [];
-        if($request->get('subject', null) != null)
-        {
+        if ($request->get('subject', null) != null) {
             $getByFields['subject'] = ['compare' => 'LIKE', 'value' => $request->get('subject')];
         }
-        if($request->get('name', null) != null)
-        {
+        if ($request->get('name', null) != null) {
             $getByFields['name'] = ['compare' => 'LIKE', 'value' => $request->get('name')];
         }
-        if($request->get('phone', null) != null)
-        {
+        if ($request->get('phone', null) != null) {
             $getByFields['phone'] = ['compare' => 'LIKE', 'value' => $request->get('phone')];
         }
-        if($request->get('email', null) != null)
-        {
+        if ($request->get('email', null) != null) {
             $getByFields['email'] = ['compare' => 'LIKE', 'value' => $request->get('email')];
         }
-        if($request->get('status', null) != null)
-        {
+        if ($request->get('status', null) != null) {
             $getByFields['status'] = ['compare' => '=', 'value' => $request->get('status')];
         }
 
@@ -127,29 +117,27 @@ class ContactController extends BaseAdminController
         $iTotalRecords = $items->count();
         $sEcho = intval($request->get('sEcho'));
 
-        foreach ($items as $key => $row)
-        {
+        foreach ($items as $key => $row) {
             $status = '<span class="label label-success label-sm">Viewed</span>';
-            if($row->status != 1)
-            {
+            if ($row->status != 1) {
                 $status = '<span class="label label-danger label-sm">New</span>';
             }
             /*Edit link*/
-            $link = asset($this->adminCpAccess.'/'.$this->routeLink.'/edit/'.$row->id);
-            $removeLink = asset($this->adminCpAccess.'/'.$this->routeLink.'/delete/'.$row->id);
+            $link = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $row->id);
+            $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
 
             $records["data"][] = array(
-                '<input type="checkbox" name="id[]" value="'.$row->id.'">',
+                '<input type="checkbox" name="id[]" value="' . $row->id . '">',
                 $row->id,
                 $row->subject,
                 $row->name,
                 $row->phone,
                 $row->email,
-                substr($row->content, 0, 160).'...',
+                substr($row->content, 0, 160) . '...',
                 $status,
                 $row->created_at->toDateTimeString(),
-                '<a href="'.$link.'" class="btn btn-outline green btn-sm"><i class="icon-eye"></i></a>'.
-                '<button type="button" data-ajax="'.$removeLink.'" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>'
+                '<a href="' . $link . '" class="btn btn-outline green btn-sm"><i class="icon-eye"></i></a>' .
+                '<button type="button" data-ajax="' . $removeLink . '" data-method="DELETE" data-toggle="confirmation" class="btn btn-outline red-sunglo btn-sm ajax-link"><i class="fa fa-trash"></i></button>',
             );
         }
 
@@ -164,7 +152,7 @@ class ContactController extends BaseAdminController
     {
         $data = [
             'id' => $request->get('args_0', null),
-            'global_title' => $request->get('args_1', null)
+            'global_title' => $request->get('args_1', null),
         ];
 
         $result = $object->fastEdit($data, false, true);
@@ -176,8 +164,7 @@ class ContactController extends BaseAdminController
         $dis = [];
         $item = $object->find($id);
         /*No page with this id*/
-        if(!$item)
-        {
+        if (!$item) {
             $this->_setFlashMessage('Item not exists.', 'error');
             $this->_showFlashMessages();
             return redirect()->back();
@@ -186,11 +173,11 @@ class ContactController extends BaseAdminController
         /*Make this item as viewed*/
         $object->fastEdit([
             'id' => $item->id,
-            'status' => 1
+            'status' => 1,
         ], false, true);
 
         $dis['object'] = $item;
-        $this->_setPageTitle('View contact #'.$item->id);
+        $this->_setPageTitle('View contact #' . $item->id);
 
         return $this->_viewAdmin('contacts.edit', $dis);
     }

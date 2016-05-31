@@ -9,22 +9,22 @@
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
 $router->group(['middleware' => ['web']], function ($router) {
     /*
     |--------------------------------------------------------------------------
     | START Routes for Admin actions
     |--------------------------------------------------------------------------
-    */
+     */
     $adminCpAccess = \Config::get('app.adminCpAccess');
 
-    $router->group(['namespace' => 'Admin', 'prefix' => $adminCpAccess], function($router) use($adminCpAccess) {
+    $router->group(['namespace' => 'Admin', 'prefix' => $adminCpAccess], function ($router) use ($adminCpAccess) {
         /*Auth*/
         $router->controller('auth', 'AuthController');
 
-        $router->get('/', function () use($adminCpAccess) {
-            return redirect()->to($adminCpAccess.'/dashboard');
+        $router->get('/', function () use ($adminCpAccess) {
+            return redirect()->to($adminCpAccess . '/dashboard');
         });
 
         /*Dashboard*/
@@ -80,36 +80,32 @@ $router->group(['middleware' => ['web']], function ($router) {
     |--------------------------------------------------------------------------
     | END Routes for Admin actions
     |--------------------------------------------------------------------------
-    */
+     */
 
     /*
     |--------------------------------------------------------------------------
     | START Routes for Front actions
     |--------------------------------------------------------------------------
-    */
+     */
     $languages = \App\Models\Language::getAllLanguageCodes();
 
     $defaultLanguage = \App\Models\Language::getDefaultLanguage();
-    if($defaultLanguage)
-    {
+    if ($defaultLanguage) {
         $defaultLanguageCode = $defaultLanguage->language_code;
-    }
-    else
-    {
+    } else {
         $defaultLanguageCode = 'en';
     }
 
     $currentLanguageCode = Request::segment(1, $defaultLanguageCode);
 
-    if(in_array($currentLanguageCode, $languages))
-    {
+    if (in_array($currentLanguageCode, $languages)) {
         $currentLanguage = \App\Models\Language::getLanguageByCode($currentLanguageCode);
 
-        $router->get('/', function() use ($currentLanguageCode) {
+        $router->get('/', function () use ($currentLanguageCode) {
             return redirect()->to($currentLanguageCode);
         });
 
-        $router->group(['namespace' => 'Front', 'prefix' => $currentLanguageCode], function($router) use ($currentLanguage){
+        $router->group(['namespace' => 'Front', 'prefix' => $currentLanguageCode], function ($router) use ($currentLanguage) {
             /*Set locale*/
             app()->setLocale($currentLanguage->default_locale);
 
@@ -124,22 +120,22 @@ $router->group(['middleware' => ['web']], function ($router) {
             $router->get('/', 'PageController@index');
             $router->get('/{slug_1}', 'PageController@_handle');
 
-            $router->get('/'.trans('url.post').'/{slug_1}', 'PostController@_handle');
+            $router->get('/' . trans('url.post') . '/{slug_1}', 'PostController@_handle');
 
-            $router->get('/'.trans('url.category').'/{slug_1}', 'CategoryController@_handle');
-            $router->get('/'.trans('url.category').'/{slug_1}/{slug_2}', 'CategoryController@_handle');
-            $router->get('/'.trans('url.category').'/{slug_1}/{slug_2}/{slug_3}', 'CategoryController@_handle');
+            $router->get('/' . trans('url.category') . '/{slug_1}', 'CategoryController@_handle');
+            $router->get('/' . trans('url.category') . '/{slug_1}/{slug_2}', 'CategoryController@_handle');
+            $router->get('/' . trans('url.category') . '/{slug_1}/{slug_2}/{slug_3}', 'CategoryController@_handle');
 
-            $router->get('/'.trans('url.product').'/{slug_1}', 'ProductController@_handle');
+            $router->get('/' . trans('url.product') . '/{slug_1}', 'ProductController@_handle');
 
-            $router->get('/'.trans('url.productCategory').'/{slug_1}', 'ProductCategoryController@_handle');
-            $router->get('/'.trans('url.productCategory').'/{slug_1}/{slug_2}', 'ProductCategoryController@_handle');
-            $router->get('/'.trans('url.productCategory').'/{slug_1}/{slug_2}/{slug_3}', 'ProductCategoryController@_handle');
+            $router->get('/' . trans('url.productCategory') . '/{slug_1}', 'ProductCategoryController@_handle');
+            $router->get('/' . trans('url.productCategory') . '/{slug_1}/{slug_2}', 'ProductCategoryController@_handle');
+            $router->get('/' . trans('url.productCategory') . '/{slug_1}/{slug_2}/{slug_3}', 'ProductCategoryController@_handle');
         });
     }
     /*
-    |--------------------------------------------------------------------------
-    | END Routes for Front actions
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| END Routes for Front actions
+|--------------------------------------------------------------------------
+ */
 });

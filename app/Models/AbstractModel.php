@@ -2,7 +2,6 @@
 namespace App\Models;
 
 use App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,23 +38,25 @@ abstract class AbstractModel extends Model
      **/
     public function validateData($data, $rules = null, $justUpdateSomeFields = false)
     {
-        if(!$rules) $rules = $this->rules;
+        if (!$rules) {
+            $rules = $this->rules;
+        }
+
         $result = Validator::make($data, $rules);
-        if($result->fails())
-        {
+        if ($result->fails()) {
             $this->errors = $result->messages()->toArray();
-            if($justUpdateSomeFields == true)
-            {
+            if ($justUpdateSomeFields == true) {
                 $messages = [];
-                foreach($data as $key => $row)
-                {
-                    if(array_key_exists($key, $this->errors))
-                    {
+                foreach ($data as $key => $row) {
+                    if (array_key_exists($key, $this->errors)) {
                         $messages[$key] = $this->errors[$key];
                     }
                 }
                 $this->errors = $messages;
-                if(sizeof($this->errors) > 0) return false;
+                if (sizeof($this->errors) > 0) {
+                    return false;
+                }
+
                 return true;
             }
             return false;
@@ -70,10 +71,8 @@ abstract class AbstractModel extends Model
     public function getErrors()
     {
         $messages = [];
-        foreach($this->errors as $key => $row)
-        {
-            foreach($row as $keyRow => $valueRow)
-            {
+        foreach ($this->errors as $key => $row) {
+            foreach ($row as $keyRow => $valueRow) {
                 array_push($messages, $valueRow);
             }
         }
@@ -97,11 +96,10 @@ abstract class AbstractModel extends Model
     {
         $result = [
             'error' => false,
-            'response_code' => 200
+            'response_code' => 200,
         ];
         $message = $this->getErrors();
-        if($message)
-        {
+        if ($message) {
             $result['error'] = true;
             $result['response_code'] = $code;
             $result['message'] = $message;
@@ -114,7 +112,7 @@ abstract class AbstractModel extends Model
         $result = [
             'error' => false,
             'response_code' => $code,
-            'message' => $message
+            'message' => $message,
         ];
         return $result;
     }
@@ -126,10 +124,8 @@ abstract class AbstractModel extends Model
     public function checkValueNotChange($object, $data)
     {
         $error = $this->getErrorsWithKey();
-        foreach ($data as $key => $row)
-        {
-            if($data[$key] && $object->{$key} == $data[$key] && array_key_exists($key, $error))
-            {
+        foreach ($data as $key => $row) {
+            if ($data[$key] && $object->{$key} == $data[$key] && array_key_exists($key, $error)) {
                 return true;
             }
         }
@@ -139,7 +135,7 @@ abstract class AbstractModel extends Model
     public static function findByFieldsOrCreate($fields)
     {
         $obj = static::where($fields)->first();
-        if(!$obj) {
+        if (!$obj) {
             $obj = new static;
             foreach ($fields as $key => $row) {
                 $obj->$key = $row;
@@ -152,16 +148,16 @@ abstract class AbstractModel extends Model
     public static function getAll($select = null, $order = null, $perPage = 0)
     {
         $query = new static;
-        if($order && is_array($order))
-        {
-            foreach ($order as $key => $value)
-            {
+        if ($order && is_array($order)) {
+            foreach ($order as $key => $value) {
                 $query = $query->orderBy($key, $value);
             }
         }
-        if($select) $query = $query->select($select);
-        if($perPage < 1)
-        {
+        if ($select) {
+            $query = $query->select($select);
+        }
+
+        if ($perPage < 1) {
             return $query->get();
         }
         return $query->paginate($perPage);
@@ -171,11 +167,10 @@ abstract class AbstractModel extends Model
     {
         $obj = new static;
         $searchBy = [];
-        foreach($fields as $key => $row)
-        {
+        foreach ($fields as $key => $row) {
             $current = [
                 'compare' => '=',
-                'value' => $row
+                'value' => $row,
             ];
             $searchBy[$key] = $current;
         }
@@ -185,45 +180,44 @@ abstract class AbstractModel extends Model
     public static function searchBy($fields, $order = null, $multiple = false, $perPage = 0, $select = null)
     {
         $obj = new static;
-        if($fields && is_array($fields))
-        {
-            foreach($fields as $key => $row)
-            {
-                $obj = $obj->where(function($q) use ($key, $row){
+        if ($fields && is_array($fields)) {
+            foreach ($fields as $key => $row) {
+                $obj = $obj->where(function ($q) use ($key, $row) {
                     switch ($row['compare']) {
-                        case 'LIKE': {
-                            $q->where($key, $row['compare'], '%' . $row['value'] . '%');
-                        } break;
-                        case 'IN': {
-                            $q->whereIn($key, (array)$row['value']);
-                        } break;
-                        case 'NOT_IN': {
-                            $q->whereNotIn($key, (array)$row['value']);
-                        } break;
-                        default: {
-                            $q->where($key, $row['compare'], $row['value']);
-                        } break;
+                        case 'LIKE':{
+                                $q->where($key, $row['compare'], '%' . $row['value'] . '%');
+                            }break;
+                        case 'IN':{
+                                $q->whereIn($key, (array) $row['value']);
+                            }break;
+                        case 'NOT_IN':{
+                                $q->whereNotIn($key, (array) $row['value']);
+                            }break;
+                        default:{
+                                $q->where($key, $row['compare'], $row['value']);
+                            }break;
                     }
                 });
             }
         }
-        if($order && is_array($order))
-        {
-            foreach ($order as $key => $value)
-            {
+        if ($order && is_array($order)) {
+            foreach ($order as $key => $value) {
                 $obj = $obj->orderBy($key, $value);
             }
         }
-        if($order == 'random') $obj = $obj->orderBy(\DB::raw('RAND()'));
+        if ($order == 'random') {
+            $obj = $obj->orderBy(\DB::raw('RAND()'));
+        }
 
-        if($select && sizeof($select) > 0)
-        {
+        if ($select && sizeof($select) > 0) {
             $obj = $obj->select($select);
         }
 
-        if($multiple)
-        {
-            if ($perPage > 0) return $obj->paginate($perPage);
+        if ($multiple) {
+            if ($perPage > 0) {
+                return $obj->paginate($perPage);
+            }
+
             return $obj->get();
         }
         return $obj->first();
@@ -234,43 +228,37 @@ abstract class AbstractModel extends Model
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
 
-        if(!isset($data['id']) || !$data['id']) $data['id'] = 0;
-        if($allowCreateNew != true)
-        {
+        if (!isset($data['id']) || !$data['id']) {
+            $data['id'] = 0;
+        }
+
+        if ($allowCreateNew != true) {
             $item = static::find($data['id']);
-            if(!$item)
-            {
+            if (!$item) {
                 $result['response_code'] = 404;
-                $result['message'] = 'Item not exists with id '.$data['id'];
+                $result['message'] = 'Item not exists with id ' . $data['id'];
                 return $result;
             }
-        }
-        else
-        {
+        } else {
             $item = static::findOrNew($data['id']);
         }
         $validate = $this->validateData($data, null, $justUpdateSomeFields);
-        if(!$validate && !$this->checkValueNotChange($item, $data))
-        {
+        if (!$validate && !$this->checkValueNotChange($item, $data)) {
             return $this->getErrorsWithResponse();
         }
 
-        foreach($data as $key => $row)
-        {
-            if($key != $this->primaryKey)
-            {
-                if(in_array('*', $this->getEditableFields()) || in_array($key, $this->getEditableFields()))
-                {
+        foreach ($data as $key => $row) {
+            if ($key != $this->primaryKey) {
+                if (in_array('*', $this->getEditableFields()) || in_array($key, $this->getEditableFields())) {
                     $item->$key = $row;
                 }
             }
         }
 
-        if($item->save())
-        {
+        if ($item->save()) {
             $result = $this->getMessagesWithResponse('Update content completed!', 200);
             $result['object'] = $item;
         }
@@ -281,31 +269,27 @@ abstract class AbstractModel extends Model
     public function updateMultiple($ids, $data, $justUpdateSomeFields = false)
     {
         $validate = $this->validateData($data, null, $justUpdateSomeFields);
-        if(!$validate)
-        {
+        if (!$validate) {
             return $this->getErrorsWithResponse();
         }
 
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
-        foreach($data as $key => $row)
-        {
-            if(!in_array($key, $this->editableFields))
-            {
+        foreach ($data as $key => $row) {
+            if (!in_array($key, $this->editableFields)) {
                 unset($data[$key]);
             }
         }
 
         $items = static::whereIn('id', $ids);
-        if($items->update($data))
-        {
+        if ($items->update($data)) {
             $result['error'] = false;
             $result['response_code'] = 200;
             $result['message'] = [
-                'Update content completed!'
+                'Update content completed!',
             ];
         }
 
@@ -315,31 +299,27 @@ abstract class AbstractModel extends Model
     public function updateMultipleGetByFields($fields, $data, $justUpdateSomeFields = false)
     {
         $validate = $this->validateData($data, null, $justUpdateSomeFields);
-        if(!$validate)
-        {
+        if (!$validate) {
             return $this->getErrorsWithResponse();
         }
 
         $result = [
             'error' => true,
             'response_code' => 500,
-            'message' => 'Some error occurred!'
+            'message' => 'Some error occurred!',
         ];
-        foreach($data as $key => $row)
-        {
-            if(!in_array($key, $this->editableFields))
-            {
+        foreach ($data as $key => $row) {
+            if (!in_array($key, $this->editableFields)) {
                 unset($data[$key]);
             }
         }
 
         $items = static::where($fields);
-        if($items->update($data))
-        {
+        if ($items->update($data)) {
             $result['error'] = false;
             $result['response_code'] = 200;
             $result['message'] = [
-                'Update content completed!'
+                'Update content completed!',
             ];
         }
 
