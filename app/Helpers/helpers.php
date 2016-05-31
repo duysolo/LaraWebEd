@@ -1,9 +1,9 @@
 <?php
-require_once('url.php');
-require_once('custom-fields.php');
-require_once('products.php');
-require_once('date-time.php');
-require_once('settings.php');
+require_once('_url.php');
+require_once('_custom-fields.php');
+require_once('_products.php');
+require_once('_date-time.php');
+require_once('_settings.php');
 
 /**
  * Get template for Page, Post, Category, ProductCategory
