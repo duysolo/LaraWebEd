@@ -70,6 +70,16 @@ On this projects, I use the latest Laravel version (currently 5.2). Please go to
 
 > MAIL_ENCRYPTION=ssl
 
+####Note
+- This site can only be run at domain name, not folder link.
+- On your localhost, setting virtual host. Something like 
+
+> larawebed.mydev.local
+
+is ok. Cannot use as
+
+> localhost/larawebed/...
+
 
 Well done! Now, you can login to the dashboard by access to [your_domain_site/admincp](your_domain_site/admincp)
 > Username: **webmaster**
