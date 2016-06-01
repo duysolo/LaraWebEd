@@ -180,7 +180,8 @@ class BrandController extends BaseAdminController
     public function postEdit(Request $request, Brand $object, $id = 0)
     {
         $data = $request->all();
-
+        $data['id'] = $id;
+        
         if ($id == 0) {
             $result = $object->fastEdit($data, true);
         } else {
