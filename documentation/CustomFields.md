@@ -33,7 +33,7 @@ $currentObjectCustomFields
 
 ````code
 $field_name = '42_title';
-_getField($currentObjectCustomFields, $field_name);
+$title = _getField($currentObjectCustomFields, $field_name);
 ````
 
 - Get repeater field: get a repeater by field name: **_getRepeaterField**
