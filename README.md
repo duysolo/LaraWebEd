@@ -82,8 +82,8 @@ is ok. Cannot use as
 
 Follow these steps to see how to config virtual host: [Virtual host](./documentation/VirtualHost.md)
 
-######For the best, you need should set your domain in local as sub-domain of **mydev.local**, 
-because you dont need to change the secret key and site key for GoogleCaptcha in settings.
+> For the best, you need should set your domain in local as sub-domain of **mydev.local**, 
+> because you dont need to change the secret key and site key for GoogleCaptcha in settings.
 
 
 Well done! Now, you can login to the dashboard by access to [your_domain_site/admincp](your_domain_site/admincp)
