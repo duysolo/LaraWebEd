@@ -1,9 +1,9 @@
 Welcome to LaraWebEd!
 ===================
 
-
-Hey! I'm a front-end developer and newbie in PHP and Laravel. I have just learn Laravel for a few month (just 5 ~ 6 months).
-I have write a CMS for this framework, something like WordPress lol. Support multi language.
+####A starter CMS for Laravel
+I have write a CMS for this framework, Support multi language.
+I'm writing some other feature: ecommerce, manage orders, checkout...
 I hope it can helps you more for start a new project.
 If you need more support, please feel free to contact me via:
 - Facebook: [https://www.facebook.com/duyphan.developer](https://www.facebook.com/duyphan.developer)
@@ -81,6 +81,9 @@ is ok. Cannot use as
 > localhost/larawebed/...
 
 Follow these steps to see how to config virtual host: [Virtual host](./documentation/VirtualHost.md)
+
+######For the best, you need should set your domain in local as sub-domain of **mydev.local**, 
+because you dont need to change the secret key and site key for GoogleCaptcha in settings.
 
 
 Well done! Now, you can login to the dashboard by access to [your_domain_site/admincp](your_domain_site/admincp)
