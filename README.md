@@ -80,6 +80,8 @@ is ok. Cannot use as
 
 > localhost/larawebed/...
 
+Follow these steps to see how to config virtual host: [Virtual host](./documentation/VirtualHost.md)
+
 
 Well done! Now, you can login to the dashboard by access to [your_domain_site/admincp](your_domain_site/admincp)
 > Username: **webmaster**
