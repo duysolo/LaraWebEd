@@ -11,7 +11,7 @@
  Target Server Version : 50625
  File Encoding         : utf-8
 
- Date: 06/01/2016 01:01:41 AM
+ Date: 06/06/2016 15:29:52 PM
 */
 
 SET NAMES utf8;
@@ -41,7 +41,7 @@ COMMIT;
 DROP TABLE IF EXISTS `admin_users`;
 CREATE TABLE `admin_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_role_id` int(11) NOT NULL DEFAULT '3',
+  `user_role_id` int(11) unsigned NOT NULL DEFAULT '3',
   `username` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '',
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'y058f5sx1JyoztWMReNfEMoUz7HzizQZtRCtMG77ai5idtXE0jUejb9QRtXX', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-05-31 19:05:55', '2014-10-14 00:10:13', '2016-05-31 19:05:55');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'y058f5sx1JyoztWMReNfEMoUz7HzizQZtRCtMG77ai5idtXE0jUejb9QRtXX', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-06-06 13:06:19', '2014-10-14 00:10:13', '2016-06-06 13:06:19');
 COMMIT;
 
 -- ----------------------------
@@ -82,8 +82,8 @@ CREATE TABLE `brands` (
 DROP TABLE IF EXISTS `brands_products`;
 CREATE TABLE `brands_products` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `product_id` int(11) DEFAULT NULL,
-  `brand_id` int(11) DEFAULT NULL,
+  `product_id` int(11) unsigned DEFAULT NULL,
+  `brand_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -93,12 +93,12 @@ CREATE TABLE `brands_products` (
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `parent_id` int(11) unsigned NOT NULL DEFAULT '0',
   `global_title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `page_template` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `order` int(11) NOT NULL DEFAULT '0',
-  `created_by` int(11) NOT NULL DEFAULT '0',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
@@ -117,8 +117,8 @@ COMMIT;
 DROP TABLE IF EXISTS `categories_posts`;
 CREATE TABLE `categories_posts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
+  `post_id` int(11) unsigned DEFAULT NULL,
+  `category_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
@@ -135,8 +135,8 @@ COMMIT;
 DROP TABLE IF EXISTS `category_contents`;
 CREATE TABLE `category_contents` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `category_id` int(11) NOT NULL DEFAULT '0',
-  `language_id` int(11) NOT NULL DEFAULT '59',
+  `category_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `language_id` int(11) unsigned NOT NULL DEFAULT '59',
   `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `slug` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
@@ -144,7 +144,7 @@ CREATE TABLE `category_contents` (
   `status` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '1',
   `thumbnail` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `tags` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `created_by` int(11) NOT NULL DEFAULT '0',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
@@ -163,7 +163,7 @@ COMMIT;
 DROP TABLE IF EXISTS `category_metas`;
 CREATE TABLE `category_metas` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `content_id` int(11) DEFAULT NULL,
+  `content_id` int(11) unsigned DEFAULT NULL,
   `meta_key` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `meta_value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
@@ -182,7 +182,7 @@ COMMIT;
 DROP TABLE IF EXISTS `cities`;
 CREATE TABLE `cities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `country_id` int(11) DEFAULT NULL,
+  `country_id` int(11) unsigned DEFAULT NULL,
   `city_name` varchar(255) NOT NULL,
   `latitude` double NOT NULL,
   `longitude` double NOT NULL,
@@ -204,14 +204,28 @@ COMMIT;
 DROP TABLE IF EXISTS `comments`;
 CREATE TABLE `comments` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `related_id` int(11) NOT NULL DEFAULT '0',
-  `comment_to` varchar(255) DEFAULT 'post',
+  `from_user_id` int(11) unsigned DEFAULT NULL,
+  `rating_id` int(11) unsigned DEFAULT NULL,
+  `related_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `comment_to` varchar(255) NOT NULL DEFAULT 'post',
+  `parent_id` int(11) unsigned DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '0',
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(15) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `content` text,
+  `content` text NOT NULL,
   `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `comments`
+-- ----------------------------
+BEGIN;
+INSERT INTO `comments` VALUES ('1', null, null, '1', 'post', null, '1', 'Tedozi Manson', 'duyphan.developer@gmail.com', '0915428202', 'Test', 'Lorem text', '2016-06-04 00:27:30', '2016-06-04 00:27:32'), ('2', null, null, '1', 'post', '1', '1', 'Duy Phan', 'duy@duy.com', '0984848519', 'Test reply', 'Lorem text reply nek', '2016-06-04 08:58:43', '2016-06-05 22:36:30'), ('5', null, null, '1', 'post', '1', '0', 'Tedozi', 'duy@duy.com', '0984848519', 'Here is the comment test', 'Here is the comment test', '2016-06-05 23:20:57', '2016-06-05 23:20:57');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `contacts`
@@ -224,18 +238,12 @@ CREATE TABLE `contacts` (
   `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `contacts`
--- ----------------------------
-BEGIN;
-INSERT INTO `contacts` VALUES ('52', 'Test nek', 'Tedozi Manson', '0915428202', 'duy@duy.com', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto debitis dignissimos doloremque dolorum enim excepturi exercitationem explicabo illo impedit ipsum labore laborum mollitia nemo quaerat, repudiandae rerum sequi, tempora voluptatibus?', '0', '2016-05-29 10:39:15', '2016-05-29 12:23:10'), ('53', 'Test nua nek', 'Duy Phan', '0984848519', 'duy@duy.com', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto debitis dignissimos doloremque dolorum enim excepturi exercitationem explicabo illo impedit ipsum labore laborum mollitia nemo quaerat, repudiandae rerum sequi, tempora voluptatibus?', '0', '2016-05-29 10:42:15', '2016-05-29 12:23:10'), ('54', 'I need a website', 'Tedozi', '0915428202', 'duyphan.developer@gmail.com', 'Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours! ', '0', '2016-05-31 23:44:52', '2016-05-31 23:44:52'), ('55', 'I need a website', 'Tedozi', '0915428202', 'duyphan.developer@gmail.com', 'Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours! <br />\r\nWant to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours! ', '1', '2016-05-31 23:47:23', '2016-05-31 23:48:04');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `countries`
@@ -264,8 +272,8 @@ COMMIT;
 DROP TABLE IF EXISTS `coupon_user_use`;
 CREATE TABLE `coupon_user_use` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `coupon_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `coupon_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
@@ -277,8 +285,8 @@ CREATE TABLE `coupon_user_use` (
 DROP TABLE IF EXISTS `coupon_user_use_with_tracked_times`;
 CREATE TABLE `coupon_user_use_with_tracked_times` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `coupon_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `coupon_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
   `total_used` int(5) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -289,18 +297,18 @@ CREATE TABLE `coupon_user_use_with_tracked_times` (
 DROP TABLE IF EXISTS `coupons`;
 CREATE TABLE `coupons` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `language_id` int(11) NOT NULL,
+  `language_id` int(11) unsigned NOT NULL,
   `coupon_code` varchar(32) DEFAULT '0',
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '0',
   `value` double NOT NULL DEFAULT '0',
   `each_user_can_use` int(5) DEFAULT NULL,
-  `total_quantity` int(10) NOT NULL DEFAULT '0',
-  `total_used` int(10) NOT NULL DEFAULT '0',
-  `apply_for_min_price` double NOT NULL DEFAULT '0',
+  `total_quantity` int(10) unsigned NOT NULL DEFAULT '0',
+  `total_used` int(10) unsigned NOT NULL DEFAULT '0',
+  `apply_for_min_price` double unsigned NOT NULL DEFAULT '0',
   `thumbnail` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
-  `created_by` int(11) NOT NULL DEFAULT '0',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `expired_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -316,19 +324,11 @@ CREATE TABLE `field_groups` (
   `position` int(11) DEFAULT NULL,
   `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `field_rules` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `admin_user_id` int(11) DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
--- ----------------------------
---  Records of `field_groups`
--- ----------------------------
-BEGIN;
-INSERT INTO `field_groups` VALUES ('2', null, 'Common fields', '[{\"field_relation\":\"and\",\"field_options\":[{\"rel_name\":\"model_name\",\"rel_value\":\"Page\",\"rel_type\":\"==\"}]},{\"field_relation\":\"or\",\"field_options\":[{\"rel_name\":\"model_name\",\"rel_value\":\"Post\",\"rel_type\":\"==\"}]},{\"field_relation\":\"or\",\"field_options\":[{\"rel_name\":\"model_name\",\"rel_value\":\"Category\",\"rel_type\":\"==\"}]}]', null, '1', '2016-05-31 22:39:04', '2016-05-31 22:40:57');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `field_items`
@@ -346,13 +346,6 @@ CREATE TABLE `field_items` (
   `options` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
--- ----------------------------
---  Records of `field_items`
--- ----------------------------
-BEGIN;
-INSERT INTO `field_items` VALUES ('5', '2', '0', '2', 'Jumbotron caption', '5_jumbotron_caption', 'text', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}'), ('4', '2', '0', '1', 'Jumbotron text', '4_jumbotron_text', 'text', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `languages`
@@ -419,13 +412,13 @@ CREATE TABLE `menu_nodes` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=515 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=517 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 --  Records of `menu_nodes`
 -- ----------------------------
 BEGIN;
-INSERT INTO `menu_nodes` VALUES ('272', '2', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', 'start', '2015-01-09 07:34:11', '2015-01-26 15:08:30'), ('273', '2', '301', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Post Categories', '', '2015-01-09 07:34:11', '2016-01-18 03:43:37'), ('280', '2', '403', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2015-01-09 07:34:11', '2016-01-21 04:16:51'), ('283', '2', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('291', '2', '403', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2015-01-09 07:34:11', '2016-01-20 09:45:17'), ('297', '2', '403', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('300', '2', '301', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2015-03-14 16:47:08', '2016-01-18 03:43:37'), ('301', '2', '0', '0', 'custom-link', 'post', 'icon-layers', '1', 'Posts', '', '2015-03-14 16:47:08', '2015-12-22 09:48:57'), ('331', '2', '414', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('332', '2', '414', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('403', '2', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2015-09-13 01:22:25', '2016-01-20 09:45:17'), ('414', '2', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'Ecommerce', '', '2016-01-15 07:12:15', '2016-01-18 12:22:11'), ('415', '2', '438', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-01-19 06:50:46', '2016-01-24 14:05:00'), ('416', '2', '403', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-01-21 02:10:32', '2016-01-21 04:16:51'), ('437', '2', '403', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-01-24 06:24:54', '2016-01-24 06:24:54'), ('438', '2', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('439', '2', '438', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('440', '2', '414', '0', 'custom-link', 'coupons', 'fa fa-code', '2', 'Coupons', '', '2016-01-27 09:23:56', '2016-01-27 09:23:56'), ('441', '2', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '6', 'Contacts', '', '2016-01-28 10:14:54', '2016-05-29 09:47:16'), ('462', '8', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', '', '2016-05-12 00:36:16', '2016-05-12 00:36:16'), ('463', '8', '0', '0', 'custom-link', 'posts', 'icon-layers', '1', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('464', '8', '463', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('465', '8', '463', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Categories', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('466', '8', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'E-commerce', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('467', '8', '466', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('468', '8', '466', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('469', '8', '466', '0', 'custom-link', 'coupons', 'fa fa-code', '2', 'Coupons', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('470', '8', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('471', '8', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('472', '8', '471', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('473', '8', '471', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('474', '8', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('475', '8', '474', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('476', '8', '474', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('477', '8', '474', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('478', '8', '474', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('479', '8', '474', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('480', '8', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '6', 'Contacts', '', '2016-05-12 00:43:52', '2016-05-29 09:47:06'), ('501', '8', '466', '0', 'custom-link', 'brands', '', '3', 'Brands', 'icon-umbrella', '2016-05-29 01:36:47', '2016-05-29 01:36:47'), ('502', '8', '0', '0', 'custom-link', 'subscribed-emails', '', '7', 'Subscribed emails', 'icon-envelope', '2016-05-29 01:36:47', '2016-05-29 01:36:47'), ('503', '2', '414', '0', 'custom-link', 'brands', 'icon-umbrella', '3', 'Brands', '', '2016-05-29 01:38:13', '2016-05-29 01:38:34'), ('504', '2', '0', '0', 'custom-link', 'subscribed-emails', 'icon-envelope', '7', 'Subscribed emails', '', '2016-05-29 01:38:13', '2016-05-29 01:38:34'), ('505', '9', '0', '1', 'page', '', '', '0', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('506', '9', '0', '2', 'category', '', '', '1', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('507', '9', '0', '3', 'category', '', '', '2', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('508', '9', '0', '1', 'category', '', '', '3', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('509', '9', '0', '2', 'page', '', '', '4', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('510', '10', '0', '1', 'page', '', '', '0', '', '', '2016-05-31 23:53:48', '2016-05-31 23:54:48'), ('511', '10', '0', '2', 'category', '', '', '1', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('512', '10', '0', '3', 'category', '', '', '2', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('513', '10', '0', '1', 'category', '', '', '3', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('514', '10', '0', '2', 'page', '', '', '4', 'Liên hệ', '', '2016-05-31 23:53:48', '2016-06-01 00:18:30');
+INSERT INTO `menu_nodes` VALUES ('272', '2', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', 'start', '2015-01-09 07:34:11', '2015-01-26 15:08:30'), ('273', '2', '301', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Post Categories', '', '2015-01-09 07:34:11', '2016-01-18 03:43:37'), ('280', '2', '403', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2015-01-09 07:34:11', '2016-01-21 04:16:51'), ('283', '2', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('291', '2', '403', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2015-01-09 07:34:11', '2016-01-20 09:45:17'), ('297', '2', '403', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('300', '2', '301', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2015-03-14 16:47:08', '2016-01-18 03:43:37'), ('301', '2', '0', '0', 'custom-link', 'post', 'icon-layers', '1', 'Posts', '', '2015-03-14 16:47:08', '2015-12-22 09:48:57'), ('331', '2', '414', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('332', '2', '414', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('403', '2', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2015-09-13 01:22:25', '2016-01-20 09:45:17'), ('414', '2', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'Ecommerce', '', '2016-01-15 07:12:15', '2016-01-18 12:22:11'), ('415', '2', '438', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-01-19 06:50:46', '2016-01-24 14:05:00'), ('416', '2', '403', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-01-21 02:10:32', '2016-01-21 04:16:51'), ('437', '2', '403', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-01-24 06:24:54', '2016-01-24 06:24:54'), ('438', '2', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('439', '2', '438', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('440', '2', '414', '0', 'custom-link', 'coupons', 'fa fa-code', '2', 'Coupons', '', '2016-01-27 09:23:56', '2016-01-27 09:23:56'), ('441', '2', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '7', 'Contacts', '', '2016-01-28 10:14:54', '2016-06-03 19:36:11'), ('462', '8', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', '', '2016-05-12 00:36:16', '2016-05-12 00:36:16'), ('463', '8', '0', '0', 'custom-link', 'posts', 'icon-layers', '1', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('464', '8', '463', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('465', '8', '463', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Categories', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('466', '8', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'E-commerce', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('467', '8', '466', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('468', '8', '466', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('469', '8', '466', '0', 'custom-link', 'coupons', 'fa fa-code', '2', 'Coupons', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('470', '8', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('471', '8', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('472', '8', '471', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('473', '8', '471', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('474', '8', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('475', '8', '474', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('476', '8', '474', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('477', '8', '474', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('478', '8', '474', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('479', '8', '474', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('480', '8', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '7', 'Contacts', '', '2016-05-12 00:43:52', '2016-06-03 19:35:30'), ('501', '8', '466', '0', 'custom-link', 'brands', '', '3', 'Brands', 'icon-umbrella', '2016-05-29 01:36:47', '2016-05-29 01:36:47'), ('502', '8', '0', '0', 'custom-link', 'subscribed-emails', '', '8', 'Subscribed emails', 'icon-envelope', '2016-05-29 01:36:47', '2016-06-03 19:35:30'), ('503', '2', '414', '0', 'custom-link', 'brands', 'icon-umbrella', '3', 'Brands', '', '2016-05-29 01:38:13', '2016-05-29 01:38:34'), ('504', '2', '0', '0', 'custom-link', 'subscribed-emails', 'icon-envelope', '8', 'Subscribed emails', '', '2016-05-29 01:38:13', '2016-06-03 19:36:11'), ('505', '9', '0', '1', 'page', '', '', '0', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('506', '9', '0', '2', 'category', '', '', '1', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('507', '9', '0', '3', 'category', '', '', '2', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('508', '9', '0', '1', 'category', '', '', '3', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('509', '9', '0', '2', 'page', '', '', '4', '', '', '2016-05-31 20:24:38', '2016-05-31 20:24:38'), ('510', '10', '0', '1', 'page', '', '', '0', '', '', '2016-05-31 23:53:48', '2016-05-31 23:54:48'), ('511', '10', '0', '2', 'category', '', '', '1', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('512', '10', '0', '3', 'category', '', '', '2', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('513', '10', '0', '1', 'category', '', '', '3', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('514', '10', '0', '2', 'page', '', '', '4', 'Liên hệ', '', '2016-05-31 23:53:48', '2016-06-01 00:18:30'), ('515', '8', '0', '0', 'custom-link', 'comments', 'icon-bubbles', '6', 'Comments', '', '2016-06-03 19:35:30', '2016-06-03 19:35:30'), ('516', '2', '0', '0', 'custom-link', 'comments', 'icon-bubbles', '6', 'Comments', '', '2016-06-03 19:36:11', '2016-06-03 19:36:11');
 COMMIT;
 
 -- ----------------------------
@@ -484,13 +477,13 @@ CREATE TABLE `page_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Records of `page_contents`
 -- ----------------------------
 BEGIN;
-INSERT INTO `page_contents` VALUES ('1', '1', '59', 'Trang chủ', 'trang-chu', '', '', '1', '/uploads/home-bg.jpg', '', '0', '2016-05-31 20:21:02', '2016-05-31 23:52:49'), ('2', '2', '59', 'Liên hệ', 'lien-he', 'Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours!', '<p>Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours!</p>\r\n', '1', '/uploads/contact-bg.jpg', '', '0', '2016-05-31 20:21:37', '2016-05-31 23:52:58'), ('3', '1', '1', 'Homepage', 'homepage', '', '', '1', '/uploads/home-bg.jpg', '', '1', '2016-05-31 23:49:27', '2016-05-31 23:49:43'), ('4', '2', '1', 'Contact us', 'contact-us', 'Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours!', '', '1', '/uploads/about-bg.jpg', '', '1', '2016-05-31 23:49:59', '2016-05-31 23:50:41');
+INSERT INTO `page_contents` VALUES ('1', '1', '59', 'Trang chủ', 'trang-chu', '', '', '1', '/uploads/home-bg.jpg', '', '0', '2016-05-31 20:21:02', '2016-05-31 23:52:49'), ('2', '2', '59', 'Liên hệ', 'lien-he', 'Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours!', '<p>Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours!</p>\r\n', '1', '/uploads/contact-bg.jpg', '', '0', '2016-05-31 20:21:37', '2016-05-31 23:52:58'), ('3', '1', '1', 'Homepage', 'homepage', '', '', '1', '/uploads/home-bg.jpg', '', '1', '2016-05-31 23:49:27', '2016-05-31 23:49:43'), ('4', '2', '1', 'Contact us', 'contact-us', 'Want to get in touch with me? Fill out the form below to send me a message and I will try to get back to you within 24 hours!', '', '1', '/uploads/about-bg.jpg', '', '1', '2016-05-31 23:49:59', '2016-05-31 23:50:41'), ('8', '6', '59', 'Test page', 'test-page', '', '', '1', '', '', '0', '2016-06-06 13:12:03', '2016-06-06 13:12:03');
 COMMIT;
 
 -- ----------------------------
@@ -526,13 +519,13 @@ CREATE TABLE `pages` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 --  Records of `pages`
 -- ----------------------------
 BEGIN;
-INSERT INTO `pages` VALUES ('1', 'Homepage', 'Homepage', '1', '0', '0', '2016-05-31 20:21:02', '2016-05-31 20:21:02'), ('2', 'Contact us', 'Contact Us', '1', '0', '0', '2016-05-31 20:21:37', '2016-05-31 20:21:37');
+INSERT INTO `pages` VALUES ('1', 'Homepage', 'Homepage', '1', '0', '0', '2016-05-31 20:21:02', '2016-06-06 13:13:30'), ('2', 'Contact us', 'Contact Us', '1', '0', '0', '2016-05-31 20:21:37', '2016-06-06 13:13:30'), ('6', 'Test page', '', '1', '0', '0', '2016-06-06 13:12:03', '2016-06-06 13:13:30'), ('7', 'Test page 2', '', '1', '0', '0', '2016-06-06 13:12:13', '2016-06-06 13:13:30');
 COMMIT;
 
 -- ----------------------------
@@ -805,6 +798,21 @@ CREATE TABLE `products` (
 BEGIN;
 INSERT INTO `products` VALUES ('1', '0', '0', 'Đồ lót nữ cao cấp', '', '1', '0', '1', '2016-05-31 19:32:07', '2016-05-31 19:41:06');
 COMMIT;
+
+-- ----------------------------
+--  Table structure for `ratings`
+-- ----------------------------
+DROP TABLE IF EXISTS `ratings`;
+CREATE TABLE `ratings` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `from_user_id` int(11) DEFAULT NULL,
+  `related_id` int(11) NOT NULL DEFAULT '0',
+  `rating_to` varchar(255) DEFAULT 'post',
+  `value` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `settings`

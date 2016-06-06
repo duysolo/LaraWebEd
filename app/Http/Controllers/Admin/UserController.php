@@ -49,14 +49,6 @@ class UserController extends BaseAdminController
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
             $ids = (array) $request->get('id', []);
 
-            /*Remove current logged in user*/
-            foreach ($ids as $key => $row) {
-                if ($row == $this->loggedInAdminUser->id) {
-                    unset($ids[$key]);
-                }
-
-            }
-
             $result = $object->updateMultiple($ids, [
                 'user_role_id' => $request->get('customActionValue', 3),
             ], true);

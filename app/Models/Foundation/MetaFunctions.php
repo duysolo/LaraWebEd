@@ -46,6 +46,7 @@ trait MetaFunctions
         if (trim($value) == '' || $value == '[]') {
             return static::deleteContentMeta($content_id, $key);
         }
+        \DB::beginTransaction();
         if (static::checkContentMetaExists($content_id, $key) != true) {
             $post_meta = new static();
             $post_meta->content_id = $content_id;
@@ -57,11 +58,18 @@ trait MetaFunctions
             ]);
         }
         $post_meta->meta_value = $value;
-        return $post_meta->save();
+        if($post_meta->save()) {
+            \DB::commit();
+            return true;
+        } else {
+            \DB::rollBack();
+            return false;
+        }
     }
 
     public static function deleteContentMeta($content_id, $key)
     {
+        \DB::beginTransaction();
         $post_meta = static::getBy([
             'content_id' => $content_id,
             'meta_key' => $key,
@@ -70,11 +78,18 @@ trait MetaFunctions
             return true;
         }
 
-        return $post_meta->delete();
+        if($post_meta->delete()) {
+            \DB::commit();
+            return true;
+        } else {
+            \DB::rollBack();
+            return false;
+        }
     }
 
     public static function deleteAllContentMeta($content_id)
     {
+        \DB::beginTransaction();
         $post_meta = static::getBy([
             'content_id' => $content_id,
         ]);
@@ -82,6 +97,12 @@ trait MetaFunctions
             return true;
         }
 
-        return $post_meta->delete();
+        if($post_meta->delete()) {
+            \DB::commit();
+            return true;
+        } else {
+            \DB::rollBack();
+            return false;
+        }
     }
 }

@@ -48,17 +48,6 @@ class FieldGroup extends AbstractModel
         return $this->hasMany('App\Models\FieldItem', 'field_group_id');
     }
 
-    /**
-     * Set the relationship
-     * Return user id that've updated the menu
-     *
-     * @var string
-     **/
-    public function user()
-    {
-        return $this->belongsTo('App\Models\AdminUser', 'admin_user_id');
-    }
-
     public static function deleteFieldGroup($id)
     {
         $result = [

@@ -75,6 +75,9 @@ $router->group(['middleware' => ['web']], function ($router) {
 
         /*Subscribed emails*/
         $router->controller('subscribed-emails', 'SubscribedEmailController');
+
+        /*Comments*/
+        $router->controller('comments', 'CommentController');
     });
     /*
     |--------------------------------------------------------------------------

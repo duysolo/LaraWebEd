@@ -72,6 +72,15 @@ class Language extends AbstractModel
         return $language;
     }
 
+    public static function getLanguageById($languageId, $status = 1)
+    {
+        $language = static::getBy([
+            'id' => $languageId,
+            'status' => $status,
+        ]);
+        return $language;
+    }
+
     public static function getLanguageByLocale($locale, $status = 1)
     {
         $language = static::getBy([

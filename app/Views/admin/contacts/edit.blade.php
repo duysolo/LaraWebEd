@@ -29,31 +29,31 @@
                     <div class="form-group">
                         <div class="col-md-3 text-right">Subject</div>
                         <div class="col-md-7">
-                            {{ $object->subject }}
+                            {{ $object->subject or '' }}
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3 text-right">Name</div>
                         <div class="col-md-7">
-                            {{ $object->name }}
+                            {{ $object->name or '' }}
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3 text-right">Phone</div>
                         <div class="col-md-7">
-                            {{ $object->phone }}
+                            {{ $object->phone or '' }}
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3 text-right">Email</div>
                         <div class="col-md-7">
-                            {{ $object->email }}
+                            {{ $object->email or '' }}
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3 text-right">Content</div>
                         <div class="col-md-7">
-                            {!! $object->content !!}
+                            {!! $object->content or '' !!}
                         </div>
                     </div>
                 </div>

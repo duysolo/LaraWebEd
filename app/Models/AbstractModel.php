@@ -235,6 +235,8 @@ abstract class AbstractModel extends Model
             $data['id'] = 0;
         }
 
+        \DB::beginTransaction();
+
         if ($allowCreateNew != true) {
             $item = static::find($data['id']);
             if (!$item) {
@@ -261,6 +263,9 @@ abstract class AbstractModel extends Model
         if ($item->save()) {
             $result = $this->getMessagesWithResponse('Update content completed!', 200);
             $result['object'] = $item;
+            \DB::commit();
+        } else {
+            \DB::rollback();
         }
 
         return $result;
@@ -283,7 +288,7 @@ abstract class AbstractModel extends Model
                 unset($data[$key]);
             }
         }
-
+        \DB::beginTransaction();
         $items = static::whereIn('id', $ids);
         if ($items->update($data)) {
             $result['error'] = false;
@@ -291,6 +296,9 @@ abstract class AbstractModel extends Model
             $result['message'] = [
                 'Update content completed!',
             ];
+            \DB::commit();
+        } else {
+            \DB::rollBack();
         }
 
         return $result;
@@ -314,6 +322,8 @@ abstract class AbstractModel extends Model
             }
         }
 
+        \DB::beginTransaction();
+
         $items = static::where($fields);
         if ($items->update($data)) {
             $result['error'] = false;
@@ -321,6 +331,9 @@ abstract class AbstractModel extends Model
             $result['message'] = [
                 'Update content completed!',
             ];
+            \DB::commit();
+        } else {
+            \DB::rollBack();
         }
 
         return $result;
