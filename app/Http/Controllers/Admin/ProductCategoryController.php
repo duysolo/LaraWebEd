@@ -367,6 +367,8 @@ class ProductCategoryController extends BaseAdminController
             $data['slug'] = str_slug($data['title']);
         }
 
+        \DB::beginTransaction();
+
         if ($id == 0) {
             $result = $object->createItem($language, $data);
         } else {
@@ -374,6 +376,8 @@ class ProductCategoryController extends BaseAdminController
         }
 
         if ($result['error']) {
+            \DB::rollBack();
+
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
@@ -383,6 +387,8 @@ class ProductCategoryController extends BaseAdminController
 
             return redirect()->back();
         }
+
+        \DB::commit();
 
         $this->_setFlashMessage($result['message'], 'success');
         $this->_showFlashMessages();

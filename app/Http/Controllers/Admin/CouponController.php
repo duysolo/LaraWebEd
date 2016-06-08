@@ -190,7 +190,6 @@ class CouponController extends BaseAdminController
         $data = $request->all();
         $data['id'] = $id;
         if ($id <= 0) {
-            $justUpdateSomeFields = false;
             $data['created_by'] = $this->loggedInAdminUser->id;
             $data['coupon_code'] = strtoupper(str_random(10));
             $result = $object->fastEdit($data, true, false);

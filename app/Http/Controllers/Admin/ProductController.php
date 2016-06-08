@@ -283,6 +283,8 @@ class ProductController extends BaseAdminController
             }
         }
 
+        \DB::beginTransaction();
+
         if ($id == 0) {
             $data['created_by'] = $this->loggedInAdminUser->id;
             $result = $object->createItem($language, $data);
@@ -291,6 +293,8 @@ class ProductController extends BaseAdminController
         }
 
         if ($result['error']) {
+            \DB::rollBack();
+
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
@@ -300,6 +304,8 @@ class ProductController extends BaseAdminController
 
             return redirect()->back();
         }
+
+        \DB::commit();
 
         $this->_setFlashMessage($result['message'], 'success');
         $this->_showFlashMessages();

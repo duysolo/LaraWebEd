@@ -233,6 +233,8 @@ class PageController extends BaseAdminController
             $data['slug'] = str_slug($data['title']);
         }
 
+        \DB::beginTransaction();
+
         if ($id == 0) {
             $data['created_by'] = $this->loggedInAdminUser->id;
             $result = $object->createItem($language, $data);
@@ -241,6 +243,8 @@ class PageController extends BaseAdminController
         }
 
         if ($result['error']) {
+            \DB::rollBack();
+
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
@@ -250,6 +254,8 @@ class PageController extends BaseAdminController
 
             return redirect()->back();
         }
+
+        \DB::commit();
 
         $this->_setFlashMessage($result['message'], 'success');
         $this->_showFlashMessages();

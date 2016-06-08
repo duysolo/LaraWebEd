@@ -318,7 +318,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         ], null, false, 0, $select);
     }
 
-    public static function getByCategory($id, $languageId, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getByCategory($id, $languageId, $otherFields = [], $order = null, $select = null, $perPage = 0)
     {
         $items = Post::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
             ->join('languages', 'languages.id', '=', 'post_contents.language_id')

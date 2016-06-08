@@ -281,7 +281,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         ], null, false, 0, $select);
     }
 
-    public static function getByCategory($id, $languageId, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getByCategory($id, $languageId, $otherFields = [], $order = null, $select = null, $perPage = 0)
     {
         $items = Product::join('product_contents', 'products.id', '=', 'product_contents.product_id')
             ->join('languages', 'languages.id', '=', 'product_contents.language_id')

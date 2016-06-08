@@ -29,7 +29,7 @@ class CategoryController extends BaseAdminController
         $this->_loadAdminMenu($this->routeLink);
     }
 
-    public function getIndex(Request $request)
+    public function getIndex(Request $request, Category $object)
     {
         $this->_setBodyClass($this->bodyClass . ' categories-list-page');
         return $this->_viewAdmin('categories.index');
@@ -367,6 +367,8 @@ class CategoryController extends BaseAdminController
             $data['slug'] = str_slug($data['title']);
         }
 
+        \DB::beginTransaction();
+
         if ($id == 0) {
             $result = $object->createItem($language, $data);
         } else {
@@ -374,6 +376,7 @@ class CategoryController extends BaseAdminController
         }
 
         if ($result['error']) {
+            \DB::rollBack();
             $this->_setFlashMessage($result['message'], 'error');
             $this->_showFlashMessages();
 
@@ -383,6 +386,8 @@ class CategoryController extends BaseAdminController
 
             return redirect()->back();
         }
+
+        \DB::commit();
 
         $this->_setFlashMessage($result['message'], 'success');
         $this->_showFlashMessages();
