@@ -24,7 +24,13 @@ class PostController extends BaseFrontController
 
         $this->_setCurrentEditLink('Edit this post', 'posts/edit/' . $item->post_id . '/' . $this->currentLanguageId);
 
-        $this->_loadFrontMenu();
+        $relatedCategoryIds = $item->category()->getRelatedIds();
+        if($relatedCategoryIds) {
+            $relatedCategoryIds = $relatedCategoryIds->toArray();
+        }
+
+        $this->_loadFrontMenu($relatedCategoryIds, 'category');
+
         $this->_setPageTitle($item->title);
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 

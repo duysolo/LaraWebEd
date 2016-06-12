@@ -53,28 +53,4 @@ class CategoryController extends BaseFrontController
         $this->_setBodyClass($this->bodyClass . ' category-default');
         return $this->_viewFront('category-templates.default', $this->dis);
     }
-
-    /* Template Name: News*/
-    private function _category_News(Category $object)
-    {
-        $this->_setBodyClass($this->bodyClass . ' category-news');
-
-        /*Get related posts*/
-        $this->dis['relatedPosts'] = Post::getByCategory($object->category_id, $this->currentLanguageId, [
-            'posts.status' => [
-                'compare' => '=',
-                'value' => 1,
-            ],
-            'post_contents.status' => [
-                'compare' => '=',
-                'value' => 1,
-            ],
-        ], [
-            'posts.created_at' => 'DESC',
-        ], 10, [
-            'post_contents.*', 'posts.status as global_status',
-        ]);
-
-        return $this->_viewFront('category-templates.news', $this->dis);
-    }
 }

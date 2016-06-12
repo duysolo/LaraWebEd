@@ -120,13 +120,13 @@ if (!function_exists('_getCategoryLinkWithParentSlugs')) {
 }
 
 if (!function_exists('_getProductCategoryLinkWithParentSlugs')) {
-    function _getProductCategoryLinkWithParentSlugs($categoryId, $currentLanguageId, $currentLanguageCode = null)
+    function _getProductCategoryLinkWithParentSlugs($categoryId, $currentLanguageCode = null)
     {
         $currentLanguageId = \App\Models\Language::getBy(['language_code' => $currentLanguageCode], null, false, 0, ['id']);
         if ($currentLanguageCode) {
             $currentLanguageCode = $currentLanguageCode . '/';
         }
-        return '/' . $currentLanguageCode . trans('url.productCategory') . '/' . _getCategorySlugs('productCategory', $categoryId, $currentLanguageId);
+        return '/' . $currentLanguageCode . trans('url.productCategory') . '/' . _getCategorySlugs('productCategory', $categoryId, $currentLanguageId->id);
     }
 }
 

@@ -22,6 +22,15 @@ class ProductController extends BaseFrontController
 
         $this->_setCurrentEditLink('Edit this product', 'products/edit/' . $item->product_id . '/' . $this->currentLanguageId);
 
+        $relatedCategoryIds = $item->category()->getRelatedIds();
+        if($relatedCategoryIds) {
+            $relatedCategoryIds = $relatedCategoryIds->toArray();
+        } else {
+            $relatedCategoryIds = [];
+        }
+
+        $this->_loadFrontMenu($relatedCategoryIds, 'product-category');
+
         $this->_loadFrontMenu();
         $this->_setPageTitle($item->title);
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);

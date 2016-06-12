@@ -53,28 +53,4 @@ class ProductCategoryController extends BaseFrontController
         $this->_setBodyClass($this->bodyClass . ' product-category-default');
         return $this->_viewFront('product-category-templates.default', $this->dis);
     }
-
-    /* Template Name: Fashion*/
-    public function _productCategory_Fashion(ProductCategory $object)
-    {
-        $this->_setBodyClass($this->bodyClass . ' product-category-fashion');
-
-        /*Get related products*/
-        $this->dis['relatedProducts'] = Product::getByCategory($object->category_id, $this->currentLanguageId, [
-            'products.status' => [
-                'compare' => '=',
-                'value' => 1,
-            ],
-            'product_contents.status' => [
-                'compare' => '=',
-                'value' => 1,
-            ],
-        ], [
-            'products.created_at' => 'DESC',
-        ], 10, [
-            'product_contents.*', 'products.status as global_status',
-        ]);
-
-        return $this->_viewFront('product-category-templates.fashion', $this->dis);
-    }
 }
