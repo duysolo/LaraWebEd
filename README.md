@@ -1,4 +1,4 @@
-Welcome to LaraWebEd!
+Welcome to LaraWebEd! - A CMS build on Laravel
 ===================
 
 ####A starter CMS for Laravel
@@ -82,7 +82,7 @@ is ok. Cannot use as
 
 Follow these steps to see how to config virtual host: [Virtual host](./documentation/VirtualHost.md)
 
-> For the best, you need should set your domain in local as sub-domain of **mydev.local**, 
+> For the best, you should set your domain in local as sub-domain of **mydev.local**,
 > because you dont need to change the secret key and site key for GoogleCaptcha in settings.
 
 
@@ -92,8 +92,9 @@ Well done! Now, you can login to the dashboard by access to [your_domain_site/ad
 > Password: **PassCuaDev@2015**
 
 
-#### Demo site
+### Demo site
 Checkout branch **demo-blog** for a demo blog site.
+But the version of LaraWebEd of this branch is too old. You can just see how to build a site with LaraWebEd with this branch.
 
 Enjoy!
 
@@ -102,7 +103,7 @@ Enjoy!
 ####About the future
 I'm creating a ecommerce site with this cms. I will release that site for all of you when done.
 
-####Table of content
+###Table of contents
 
 - [Custom fields](./documentation/CustomFields.md)
 - [Page template](./documentation/PageTemplate.md)
