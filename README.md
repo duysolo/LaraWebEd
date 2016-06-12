@@ -1,7 +1,7 @@
 Welcome to LaraWebEd! - A CMS build on Laravel
 ===================
 
-####A starter CMS for Laravel
+###A starter CMS for Laravel
 I have write a CMS for this framework, Support multi language.
 I'm writing some other feature: ecommerce, manage orders, checkout...
 I hope it can helps you more for start a new project.
@@ -10,6 +10,17 @@ If you need more support, please feel free to contact me via:
 - Skype: tedozi.manson
 - Email: duyphan.developer@gmail.com
 
+###Some features of this CMS:
+- Manage page, post, product, category, product category.
+- Manage file by el-finder.
+- Manage page template.
+- Handle custom fields (demo: https://www.youtube.com/watch?v=8ku2yaByYMI)
+- User management.
+- User roles: webmaster, admin, staff in backend.
+- Menu management with drag & drop.
+- Options.
+- Multi language.
+- Manage user feedbacks.
 
 ----------
 
