@@ -117,30 +117,31 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
             return $result;
         }
 
+        \DB::beginTransaction();
+
         $temp = ProductCategoryContent::where('category_id', '=', $id);
         $related = $temp->get();
         if (!count($related)) {
             $related = null;
         }
 
+        $deleteRelated = true;
+        $deleteCustomFields = true;
+        $deleteCategory = true;
+
         /*Remove all related content*/
         if ($related != null) {
-            $customFields = ProductCategoryMeta::join('product_category_contents', 'product_category_contents.id', '=', 'product_metas.content_id')
+            $deleteCustomFields = ProductCategoryMeta::join('product_category_contents', 'product_category_contents.id', '=', 'product_category_metas.content_id')
                 ->join('product_categories', 'product_categories.id', '=', 'product_category_contents.category_id')
                 ->where('product_categories.id', '=', $id)
                 ->delete();
-
-            if ($temp->delete()) {
-                $result['error'] = false;
-                $result['response_code'] = 200;
-                $result['messages'][] = 'Delete related content completed!';
-            }
+            $deleteRelated = $temp->delete();
         }
-        if ($category->delete()) {
-            $result['error'] = false;
-            $result['response_code'] = 200;
-            $result['messages'][] = 'Delete category completed!';
+        $category->product()->sync([]);
 
+        $deleteCategory = $category->delete();
+
+        if($deleteCustomFields && $deleteRelated && $deleteCategory) {
             /*Change all child item of this category to parent*/
             $relatedCategory = new static;
             $relatedCategory->updateMultipleGetByFields([
@@ -148,6 +149,14 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
             ], [
                 'parent_id' => 0,
             ], true);
+
+            $result['error'] = false;
+            $result['response_code'] = 200;
+            $result['message'] = 'Delete category completed!';
+
+            \DB::commit();
+        } else {
+            \DB::rollBack();
         }
 
         return $result;
