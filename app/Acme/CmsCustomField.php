@@ -376,7 +376,7 @@ class CmsCustomField
                     $html_src .= '<script>';
                     $html_src .= '$(document).ready(function() {';
                     $html_src .= 'CKEDITOR.replace( "wyswyg_editor_field_' . $field_item->slug . $field_item->id . '", {';
-                    if ($options->wyswygtoolbar == 'basic') {
+                    if (isset($options->wyswygtoolbar) && $options->wyswygtoolbar == 'basic') {
                         $html_src .= 'toolbar: [[\'mode\', \'Source\', \'Image\', \'TextColor\', \'BGColor\', \'Styles\', \'Format\', \'Font\', \'FontSize\', \'CreateDiv\', \'PageBreak\', \'Bold\', \'Italic\', \'Underline\', \'Strike\', \'Subscript\', \'Superscript\', \'RemoveFormat\']],';
                     }
                     $html_src .= '});';
@@ -585,38 +585,38 @@ class CmsCustomField
         $size_of_items = sizeof($items);
         $current_numb = 0;
 
-        // echo '<pre>';
-        // var_dump($items); exit();
-
         foreach ($items as $key => $row) {
             if ($size_of_repeater < $size_of_items && $key >= $size_of_items - 1) {
                 break;
             }
 
-            $currentKey = 0;
-            foreach ($items as $key2 => $row2) {
+            $currentRepeaterKey = -1;
+            foreach ($repeater_field as $key2 => $row2) {
                 if (property_exists($row2, 'slug')) {
-                    if ($repeater_field[$key]->slug == $row2->slug) {
-                        $currentKey = $key2;
+                    if ($row->slug == $row2->slug) {
+                        $currentRepeaterKey = $key2;
                     }
                 }
+            }
+            if($currentRepeaterKey < 0) {
+                continue;
             }
 
             $html_src .= '<li data-position="' . ($key + 1) . '">';
             $html_src .= '<div class="col-xs-3">';
-            $html_src .= '<span class="field-label">' . $repeater_field[$key]->title . '</span>';
+            $html_src .= '<span class="field-label">' . $repeater_field[$currentRepeaterKey]->title . '</span>';
             $html_src .= '<br>';
-            $html_src .= '<span class="field-instructions">' . $repeater_field[$key]->instructions . '</span>';
+            $html_src .= '<span class="field-instructions">' . $repeater_field[$currentRepeaterKey]->instructions . '</span>';
             $html_src .= '</div>';
             $html_src .= '<div class="col-xs-9">';
 
             $subField = new \stdClass();
             $subField->field_type = $row->field_type;
-            $subField->field_value = $items[$currentKey]->field_value;
-            $subField->slug = $items[$currentKey]->slug;
-            $subField->field_type_updated = $repeater_field[$currentKey]->field_type;
+            $subField->field_value = $items[$key]->field_value;
+            $subField->slug = $repeater_field[$currentRepeaterKey]->slug;
+            $subField->field_type_updated = $repeater_field[$currentRepeaterKey]->field_type;
 
-            $options = $repeater_field[$key]->options;
+            $options = $repeater_field[$currentRepeaterKey]->options;
             $html_src .= $this->initRepeaterInputItem($subField, $options, $current);
 
             $html_src .= '</div>';
@@ -624,12 +624,13 @@ class CmsCustomField
             $html_src .= '</li>';
             $current_numb++;
         }
+
         if ($size_of_repeater > $size_of_items) {
             $offset = $size_of_items;
             for ($i = $offset; $i < $size_of_repeater; $i++) {
                 $currentKey = 0;
                 foreach ($items as $key2 => $row2) {
-                    if ($repeater_field[$key]->slug == $row2->slug) {
+                    if ($repeater_field[$key2]->slug == $row2->slug) {
                         $currentKey = $key2;
                     }
                 }
