@@ -22,7 +22,7 @@ class PostController extends BaseFrontController
             return $this->_showErrorPage(404, 'Page not found');
         }
 
-        $this->_setCurrentEditLink('Edit this post', 'posts/edit/' . $item->post_id . '/' . $this->currentLanguageId);
+        $this->_setCurrentEditLink('Edit this post', 'posts/edit/' . $item->id . '/' . $this->currentLanguageId);
 
         $relatedCategoryIds = $item->category()->getRelatedIds();
         if($relatedCategoryIds) {
@@ -35,7 +35,7 @@ class PostController extends BaseFrontController
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 
         $this->dis['object'] = $item;
-        $this->_getAllCustomFields($objectMeta, $item->id);
+        $this->_getAllCustomFields($objectMeta, $item->content_id);
 
         return $this->_showItem($item);
     }

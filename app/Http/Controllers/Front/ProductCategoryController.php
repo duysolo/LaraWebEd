@@ -24,14 +24,14 @@ class ProductCategoryController extends BaseFrontController
             return $this->_showErrorPage(404, 'Page not found');
         }
 
-        $this->_setCurrentEditLink('Edit this product category', 'product-categories/edit/' . $item->category_id . '/' . $this->currentLanguageId);
+        $this->_setCurrentEditLink('Edit this product category', 'product-categories/edit/' . $item->id . '/' . $this->currentLanguageId);
 
         $this->_loadFrontMenu($item->category_id, 'product-category');
         $this->_setPageTitle($item->title);
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 
         $this->dis['object'] = $item;
-        $this->_getAllCustomFields($objectMeta, $item->id);
+        $this->_getAllCustomFields($objectMeta, $item->content_id);
 
         return $this->_showItem($item);
     }

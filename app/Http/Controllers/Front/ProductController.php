@@ -20,7 +20,7 @@ class ProductController extends BaseFrontController
             return $this->_showErrorPage(404, 'Page not found');
         }
 
-        $this->_setCurrentEditLink('Edit this product', 'products/edit/' . $item->product_id . '/' . $this->currentLanguageId);
+        $this->_setCurrentEditLink('Edit this product', 'products/edit/' . $item->id . '/' . $this->currentLanguageId);
 
         $relatedCategoryIds = $item->category()->getRelatedIds();
         if($relatedCategoryIds) {
@@ -36,7 +36,7 @@ class ProductController extends BaseFrontController
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 
         $this->dis['object'] = $item;
-        $this->_getAllCustomFields($objectMeta, $item->id);
+        $this->_getAllCustomFields($objectMeta, $item->content_id);
 
         return $this->_showItem($item);
     }

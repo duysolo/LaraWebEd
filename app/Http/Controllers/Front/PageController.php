@@ -30,14 +30,14 @@ class PageController extends BaseFrontController
             return $this->_showErrorPage(404, 'Page not found');
         }
 
-        $this->_setCurrentEditLink('Edit this page', 'pages/edit/' . $item->page_id . '/' . $this->currentLanguageId);
+        $this->_setCurrentEditLink('Edit this page', 'pages/edit/' . $item->id . '/' . $this->currentLanguageId);
 
         $this->_loadFrontMenu($item->page_id, 'page');
         $this->_setPageTitle($item->title);
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 
         $this->dis['object'] = $item;
-        $this->_getAllCustomFields($objectMeta, $item->id);
+        $this->_getAllCustomFields($objectMeta, $item->content_id);
 
         //dd($this->dis['currentObjectCustomFields']);
 

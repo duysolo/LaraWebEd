@@ -168,12 +168,13 @@ abstract class BaseController extends Controller
         return asset($this->currentLanguageCode);
     }
 
-    protected function _responseJson($error = true, $responseCode = 500, $message = [])
+    protected function _responseJson($error = true, $responseCode = 500, $message = [], $data = null)
     {
         return response()->json([
             'error' => $error,
             'response_code' => $responseCode,
             'message' => $message,
+            'data' => $data
         ]);
     }
 
@@ -188,10 +189,10 @@ abstract class BaseController extends Controller
         return redirect()->back();
     }
 
-    protected function _responseAutoDetect(Request $request, $message, $error = false, $responseCode = 500, $type = 'info', $withOldInputWhenError = false)
+    protected function _responseAutoDetect(Request $request, $message, $error = false, $responseCode = 500, $type = 'info', $withOldInputWhenError = false, $data = null)
     {
         if ($request->ajax()) {
-            return $this->_responseJson($error, $responseCode, $message);
+            return $this->_responseJson($error, $responseCode, $message, $data);
         }
 
         return $this->_responseRedirect($message, $type, $error, $withOldInputWhenError);
