@@ -60,6 +60,17 @@
                 </div>
                 <div class="portlet-body">
                     <div class="table-container">
+                        <div class="table-actions-wrapper">
+                            <span></span>
+                            <select class="table-group-action-input form-control input-inline input-small input-sm">
+                                <option value="">Select...</option>
+                                <option value="1">Enable these users</option>
+                                <option value="0">Disable these users</option>
+                            </select>
+                            <button class="btn btn-sm green table-group-action-submit" data-toggle="confirmation">
+                                <i class="fa fa-check"></i> Submit
+                            </button>
+                        </div>
                         <table class="table table-striped table-bordered table-hover table-checkable vertical-middle" id="datatable_ajax">
                             <thead>
                             <tr role="row" class="heading">

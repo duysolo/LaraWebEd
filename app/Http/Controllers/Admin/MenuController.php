@@ -81,7 +81,7 @@ class MenuController extends BaseAdminController
 
         $items = $object->searchBy($getByFields, [$orderBy => $orderType], true, $limit);
 
-        $iTotalRecords = $items->count();
+        $iTotalRecords = $items->total();
         $sEcho = intval($request->get('sEcho'));
 
         foreach ($items as $key => $row) {

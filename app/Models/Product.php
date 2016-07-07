@@ -220,7 +220,18 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['products.global_title', 'products.brand_id', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'products.global_title',
+                'products.brand_id',
+                'products.page_template',
+                'products.status as global_status',
+                'product_contents.*',
+                'products.id',
+                'product_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('product_contents', 'products.id', '=', 'product_contents.product_id')
@@ -252,7 +263,18 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['products.global_title', 'products.brand_id', 'products.page_template', 'products.status as global_status', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'products.global_title',
+                'products.brand_id',
+                'products.page_template',
+                'products.status as global_status',
+                'product_contents.*',
+                'products.id',
+                'product_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('product_contents', 'products.id', '=', 'product_contents.product_id')
@@ -372,7 +394,18 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         $select = (array) $select;
 
         if (!$select) {
-            $select = ['products.status as global_status', 'products.page_template', 'products.global_title', 'products.brand_id', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'products.global_title',
+                'products.brand_id',
+                'products.page_template',
+                'products.status as global_status',
+                'product_contents.*',
+                'products.id',
+                'product_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         $obj = static::join('product_contents', 'products.id', '=', 'product_contents.product_id')
@@ -425,7 +458,18 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         $select = (array) $select;
 
         if (!$select) {
-            $select = ['products.status as global_status', 'products.page_template', 'products.global_title', 'products.brand_id', 'product_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'products.global_title',
+                'products.brand_id',
+                'products.page_template',
+                'products.status as global_status',
+                'product_contents.*',
+                'products.id',
+                'product_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         $obj = static::join('product_contents', 'products.id', '=', 'product_contents.product_id')

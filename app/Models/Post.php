@@ -199,7 +199,17 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         $select = (array) $select;
 
         if (!$select) {
-            $select = ['posts.status as global_status', 'posts.page_template', 'posts.global_title', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'posts.status as global_status',
+                'posts.page_template',
+                'posts.global_title',
+                'post_contents.*',
+                'posts.id',
+                'post_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         $obj = static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
@@ -257,7 +267,17 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'posts.status as global_status',
+                'posts.page_template',
+                'posts.global_title',
+                'post_contents.*',
+                'posts.id',
+                'post_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')
@@ -289,7 +309,17 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['posts.global_title', 'posts.page_template', 'posts.status as global_status', 'post_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'posts.status as global_status',
+                'posts.page_template',
+                'posts.global_title',
+                'post_contents.*',
+                'posts.id',
+                'post_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('post_contents', 'posts.id', '=', 'post_contents.post_id')

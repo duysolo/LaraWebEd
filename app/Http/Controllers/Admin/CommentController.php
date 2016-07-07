@@ -122,7 +122,7 @@ class CommentController extends BaseAdminController
 
         $items = $object->searchBy($getByFields, [$orderBy => $orderType], true, $limit);
 
-        $iTotalRecords = $items->count();
+        $iTotalRecords = $items->total();
         $sEcho = intval($request->get('sEcho'));
 
         foreach ($items as $key => $row) {
@@ -155,15 +155,15 @@ class CommentController extends BaseAdminController
                     }
                         break;
                     case 'category': {
-                        $relatedLink = _getCategoryLink($relatedObject->slug, $relatedLanguageCode);
+                        $relatedLink = _getCategoryLinkWithParentSlugs($relatedObject->content_id, $relatedLanguageCode);
                     }
                         break;
                     case 'product': {
                         $relatedLink = _getProductLink($relatedObject->slug, $relatedLanguageCode);
                     }
                         break;
-                    case 'productCategory': {
-                        $relatedLink = _getProductCategoryLink($relatedObject->slug, $relatedLanguageCode);
+                    case 'product-category': {
+                        $relatedLink = _getProductCategoryLinkWithParentSlugs($relatedObject->content_id, $relatedLanguageCode);
                     }
                         break;
                 }

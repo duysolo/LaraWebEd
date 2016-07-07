@@ -201,7 +201,18 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
         $select = (array) $select;
 
         if (!$select) {
-            $select = ['product_categories.status as global_status', 'product_categories.page_template', 'product_categories.global_title', 'product_categories.parent_id', 'product_category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'product_categories.status as global_status',
+                'product_categories.page_template',
+                'product_categories.global_title',
+                'product_categories.parent_id',
+                'product_category_contents.*',
+                'product_categories.id',
+                'product_category_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         $obj = static::join('product_category_contents', 'product_categories.id', '=', 'product_category_contents.category_id')
@@ -259,7 +270,18 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['product_categories.global_title', 'product_categories.status as global_status', 'product_categories.parent_id', 'product_categories.page_template', 'product_category_contents.*'];
+            $select = [
+                'product_categories.status as global_status',
+                'product_categories.page_template',
+                'product_categories.global_title',
+                'product_categories.parent_id',
+                'product_category_contents.*',
+                'product_categories.id',
+                'product_category_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('product_category_contents', 'product_categories.id', '=', 'product_category_contents.category_id')
@@ -291,7 +313,18 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['product_categories.global_title', 'product_categories.status as global_status', 'product_categories.parent_id', 'product_categories.page_template', 'product_category_contents.*'];
+            $select = [
+                'product_categories.status as global_status',
+                'product_categories.page_template',
+                'product_categories.global_title',
+                'product_categories.parent_id',
+                'product_category_contents.*',
+                'product_categories.id',
+                'product_category_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('product_category_contents', 'product_categories.id', '=', 'product_category_contents.category_id')

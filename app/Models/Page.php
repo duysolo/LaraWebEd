@@ -165,7 +165,17 @@ class Page extends AbstractModel
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'pages.status as global_status',
+                'pages.page_template',
+                'pages.global_title',
+                'page_contents.*',
+                'pages.id',
+                'page_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         $obj = static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
@@ -223,7 +233,17 @@ class Page extends AbstractModel
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'pages.status as global_status',
+                'pages.page_template',
+                'pages.global_title',
+                'page_contents.*',
+                'pages.id',
+                'page_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')
@@ -255,7 +275,17 @@ class Page extends AbstractModel
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['pages.status as global_status', 'pages.page_template', 'pages.global_title', 'page_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'pages.status as global_status',
+                'pages.page_template',
+                'pages.global_title',
+                'page_contents.*',
+                'pages.id',
+                'page_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('page_contents', 'pages.id', '=', 'page_contents.page_id')

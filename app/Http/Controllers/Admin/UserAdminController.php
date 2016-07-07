@@ -16,7 +16,7 @@ class UserAdminController extends BaseAdminController
     {
         parent::__construct();
 
-        $this->middleware('is_admin', ['except' => ['getEdit', 'postEdit']]);
+        $this->middleware('is_webmaster', ['except' => ['getEdit', 'postEdit']]);
 
         $this->_setPageTitle('Admin users', 'manage admin users');
         $this->_setBodyClass($this->bodyClass);
@@ -46,25 +46,47 @@ class UserAdminController extends BaseAdminController
         $records["data"] = [];
 
         /*Group actions*/
-        if ($request->get('customActionType', null) == 'group_action' && $this->loggedInAdminUserRole->slug == 'webmaster') {
+        if ($request->get('customActionType', null) == 'group_action') {
+            \DB::beginTransaction();
+
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
-            $ids = (array) $request->get('id', []);
+            $ids = (array)$request->get('id', []);
 
             /*Remove current logged in user*/
             foreach ($ids as $key => $row) {
                 if ($row == $this->loggedInAdminUser->id) {
                     unset($ids[$key]);
                 }
-
             }
 
-            $result = $object->updateMultiple($ids, [
-                'user_role_id' => $request->get('customActionValue', 3),
-            ], true);
+            $customActionValue = $request->get('customActionValue', 3);
+            switch ($customActionValue) {
+                case 'activated': {
+                    $result = $object->updateMultiple($ids, [
+                        'status' => 1,
+                    ], true);
+                }
+                    break;
+                case 'disabled': {
+                    $result = $object->updateMultiple($ids, [
+                        'status' => 0,
+                    ], true);
+                }
+                    break;
+                default: {
+                    $result = $object->updateMultiple($ids, [
+                        'user_role_id' => $customActionValue,
+                    ], true);
+                }
+                    break;
+            }
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
+                \DB::commit();
+            } else {
+                \DB::rollBack();
             }
         }
 
@@ -73,25 +95,25 @@ class UserAdminController extends BaseAdminController
          */
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
-            case 1:{
-                    $orderBy = 'id';
-                }
+            case 1: {
+                $orderBy = 'id';
+            }
                 break;
-            case 2:{
-                    $orderBy = 'username';
-                }
+            case 2: {
+                $orderBy = 'username';
+            }
                 break;
-            case 3:{
-                    $orderBy = 'status';
-                }
+            case 3: {
+                $orderBy = 'status';
+            }
                 break;
-            case 4:{
-                    $orderBy = 'user_role_id';
-                }
+            case 4: {
+                $orderBy = 'user_role_id';
+            }
                 break;
-            default:{
-                    $orderBy = 'created_at';
-                }
+            default: {
+                $orderBy = 'created_at';
+            }
                 break;
         }
         $orderType = $request->get('order')[0]['dir'];
@@ -106,7 +128,7 @@ class UserAdminController extends BaseAdminController
 
         $items = $object->searchBy($getByFields, [$orderBy => $orderType], true, $limit);
 
-        $iTotalRecords = $items->count();
+        $iTotalRecords = $items->total();
         $sEcho = intval($request->get('sEcho'));
 
         foreach ($items as $key => $row) {
@@ -169,7 +191,7 @@ class UserAdminController extends BaseAdminController
 
     public function _ajaxChangeStatus(AdminUser $object, $id, $status = 0)
     {
-        if ($this->loggedInAdminUserRole->slug != 'webmaster' || $id == $this->loggedInAdminUser->id) {
+        if ($id == $this->loggedInAdminUser->id) {
             return response()->json([
                 'error' => true,
                 'response_code' => 500,
@@ -266,7 +288,7 @@ class UserAdminController extends BaseAdminController
 
         $data = $request->all();
 
-        $data['id'] = (int) $id;
+        $data['id'] = (int)$id;
 
         if ($id == 0) {
             $result = $object->createUser($data);

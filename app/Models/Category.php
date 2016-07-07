@@ -202,7 +202,18 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
         $fields = (array) $fields;
         $select = (array) $select;
         if (!$select) {
-            $select = ['categories.status as global_status', 'categories.page_template', 'categories.global_title', 'categories.parent_id', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'categories.status as global_status',
+                'categories.page_template',
+                'categories.global_title',
+                'categories.parent_id',
+                'category_contents.*',
+                'categories.id',
+                'category_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         $obj = static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
@@ -260,7 +271,18 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'categories.status as global_status',
+                'categories.page_template',
+                'categories.global_title',
+                'categories.parent_id',
+                'category_contents.*',
+                'categories.id',
+                'category_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')
@@ -292,7 +314,18 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
         $select = (array) $select;
         if (!$select) {
-            $select = ['categories.global_title', 'categories.status as global_status', 'categories.parent_id', 'categories.page_template', 'category_contents.*', 'languages.language_code', 'languages.language_name', 'languages.default_locale'];
+            $select = [
+                'categories.status as global_status',
+                'categories.page_template',
+                'categories.global_title',
+                'categories.parent_id',
+                'category_contents.*',
+                'categories.id',
+                'category_contents.id as content_id',
+                'languages.language_code',
+                'languages.language_name',
+                'languages.default_locale'
+            ];
         }
 
         return static::join('category_contents', 'categories.id', '=', 'category_contents.category_id')

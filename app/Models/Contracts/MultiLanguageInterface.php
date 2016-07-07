@@ -9,11 +9,5 @@ interface MultiLanguageInterface
 
     public static function getContentById($id, $languageId);
 
-    public function createItem($languageId, $data);
-
-    public function updateItem($id, $data);
-
     public function updateItemContent($id, $languageId, $data);
-
-    public static function deleteItem($id);
 }

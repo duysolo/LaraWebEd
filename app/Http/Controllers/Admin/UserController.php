@@ -44,17 +44,22 @@ class UserController extends BaseAdminController
         $records["data"] = [];
 
         /*Group actions*/
-        if ($request->get('customActionType', null) == 'group_action' && $this->loggedInAdminUserRole->slug == 'webmaster') {
+        if ($request->get('customActionType', null) == 'group_action') {
+            \DB::beginTransaction();
+
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
             $ids = (array) $request->get('id', []);
 
             $result = $object->updateMultiple($ids, [
-                'user_role_id' => $request->get('customActionValue', 3),
+                'status' => $request->get('customActionValue', 0),
             ], true);
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
+                \DB::commit();
+            } else {
+                \DB::rollBack();
             }
         }
 
@@ -109,7 +114,7 @@ class UserController extends BaseAdminController
             \DB::raw('CONCAT(first_name, " ", last_name) as full_name'),
         ]);
 
-        $iTotalRecords = $items->count();
+        $iTotalRecords = $items->total();
         $sEcho = intval($request->get('sEcho'));
 
         foreach ($items as $key => $row) {

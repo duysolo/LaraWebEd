@@ -52,6 +52,8 @@ class PostController extends BaseAdminController
 
         /*Group actions*/
         if ($request->get('customActionType', null) == 'group_action') {
+            \DB::beginTransaction();
+
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
             $ids = (array) $request->get('id', []);
@@ -76,6 +78,9 @@ class PostController extends BaseAdminController
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
+                \DB::commit();
+            } else {
+                \DB::rollBack();
             }
         }
 
@@ -121,7 +126,7 @@ class PostController extends BaseAdminController
 
         $items = $object->searchBy($getByFields, [$orderBy => $orderType], true, $limit);
 
-        $iTotalRecords = $items->count();
+        $iTotalRecords = $items->total();
         $sEcho = intval($request->get('sEcho'));
 
         foreach ($items as $key => $row) {

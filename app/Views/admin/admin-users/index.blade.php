@@ -68,6 +68,8 @@
                                     <option value="1">Set as webmaster</option>
                                     <option value="2">Set as administrator</option>
                                     <option value="3">Set as staff</option>
+                                    <option value="activated">Enable these users</option>
+                                    <option value="disabled">Disable these users</option>
                                 </select>
                                 <button class="btn btn-sm green table-group-action-submit" data-toggle="confirmation">
                                     <i class="fa fa-check"></i> Submit

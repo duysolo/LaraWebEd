@@ -32,6 +32,7 @@ class CategoryController extends BaseAdminController
     public function getIndex(Request $request, Category $object)
     {
         $this->_setBodyClass($this->bodyClass . ' categories-list-page');
+
         return $this->_viewAdmin('categories.index');
     }
 
@@ -52,6 +53,8 @@ class CategoryController extends BaseAdminController
 
         /*Group actions*/
         if ($request->get('customActionType', null) == 'group_action') {
+            \DB::beginTransaction();
+
             $records["customActionStatus"] = "danger";
             $records["customActionMessage"] = "Group action did not completed. Some error occurred.";
             $ids = (array) $request->get('id', []);
@@ -61,6 +64,9 @@ class CategoryController extends BaseAdminController
             if (!$result['error']) {
                 $records["customActionStatus"] = "success";
                 $records["customActionMessage"] = "Group action has been completed.";
+                \DB::commit();
+            } else {
+                \DB::rollBack();
             }
         }
 
@@ -247,7 +253,8 @@ class CategoryController extends BaseAdminController
 
         $items = $postObject->getNoContentByCategory($id, $getByFields, [$orderBy => $orderType], $limit, ['posts.*']);
 
-        $iTotalRecords = $items->count();
+        $iTotalRecords = $items->total();
+
         $sEcho = intval($request->get('sEcho'));
 
         foreach ($items as $key => $row) {
