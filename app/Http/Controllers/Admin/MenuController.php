@@ -129,15 +129,13 @@ class MenuController extends BaseAdminController
 
     public function getEdit(Request $request, Menu $object, MenuContent $objectContent, MenuNode $objectNode, Models\Category $category, Models\ProductCategory $productCategory, $id, $language)
     {
-        $dis = [];
-
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
             }
-            $dis['object'] = $oldObject;
+            $this->dis['object'] = $oldObject;
         }
 
         $currentEditLanguage = Models\Language::getBy([
@@ -149,9 +147,9 @@ class MenuController extends BaseAdminController
             $this->_showFlashMessages();
             return redirect()->back();
         }
-        $dis['currentEditLanguage'] = $currentEditLanguage;
+        $this->dis['currentEditLanguage'] = $currentEditLanguage;
 
-        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
+        $this->dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
 
         $menu = $object->find($id);
         if (!$menu) {
@@ -166,20 +164,20 @@ class MenuController extends BaseAdminController
 
         $this->_setPageTitle('Menu', $menu->title);
 
-        $dis['object'] = $menu;
+        $this->dis['object'] = $menu;
 
-        $dis['pages'] = Models\Page::getBy([
+        $this->dis['pages'] = Models\Page::getBy([
             'status' => 1,
         ], [
             'global_title' => 'ASC',
         ], true);
 
-        $dis['categories'] = $this->_getCategoriesSelectSrc($category, 'category', 0);
-        $dis['productCategories'] = $this->_getCategoriesSelectSrc($productCategory, 'product-category', 0);
+        $this->dis['categories'] = $this->_getCategoriesSelectSrc($category, 'category', 0);
+        $this->dis['productCategories'] = $this->_getCategoriesSelectSrc($productCategory, 'product-category', 0);
 
-        $dis['nestableMenuSrc'] = $this->_getNestableMenuSrc($menuContent, 0);
+        $this->dis['nestableMenuSrc'] = $this->_getNestableMenuSrc($menuContent, 0);
 
-        return $this->_viewAdmin('menus.edit', $dis);
+        return $this->_viewAdmin('menus.edit', $this->dis);
     }
 
     public function postEdit(Request $request, Menu $object, MenuContent $objectContent, MenuNode $objectNode, $id, $language)

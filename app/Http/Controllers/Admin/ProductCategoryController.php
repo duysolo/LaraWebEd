@@ -144,8 +144,6 @@ class ProductCategoryController extends BaseAdminController
 
     public function getViewPosts(Request $request, ProductCategory $object, Product $productObject, $id)
     {
-        $dis = [];
-
         $item = $object->find($id);
         /*No page with this id*/
         if (!$item) {
@@ -153,9 +151,9 @@ class ProductCategoryController extends BaseAdminController
             $this->_showFlashMessages();
             return redirect()->back();
         }
-        $dis['object'] = $item;
+        $this->dis['object'] = $item;
         $this->_setBodyClass($this->bodyClass . ' categories-related-posts-page');
-        return $this->_viewAdmin('product-categories.related-posts', $dis);
+        return $this->_viewAdmin('product-categories.related-posts', $this->dis);
     }
 
     public function postViewPosts(Request $request, ProductCategory $object, Product $productObject, $id)
@@ -297,15 +295,13 @@ class ProductCategoryController extends BaseAdminController
 
     public function getEdit(Request $request, ProductCategory $object, $id, $language)
     {
-        $dis = [];
-
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
             }
-            $dis['object'] = $oldObject;
+            $this->dis['object'] = $oldObject;
         }
 
         $currentEditLanguage = Models\Language::getBy([
@@ -317,9 +313,9 @@ class ProductCategoryController extends BaseAdminController
             $this->_showFlashMessages();
             return redirect()->back();
         }
-        $dis['currentEditLanguage'] = $currentEditLanguage;
+        $this->dis['currentEditLanguage'] = $currentEditLanguage;
 
-        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
+        $this->dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
 
         if (!$id == 0) {
             $item = $object->find($id);
@@ -346,7 +342,7 @@ class ProductCategoryController extends BaseAdminController
                     'global_status' => null,
                 ]);
             }
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit product category', $item->global_title);
 
             $args = array(
@@ -358,16 +354,16 @@ class ProductCategoryController extends BaseAdminController
             );
             $customFieldBoxes = new Acme\CmsCustomField();
             $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'product-category');
-            $dis['customFieldBoxes'] = $customFieldBoxes;
+            $this->dis['customFieldBoxes'] = $customFieldBoxes;
 
             $categories = $this->_recursiveGetCategoriesSelectSrc($object, 0, 'global_title', 'asc', 0, $item->parent_id, [$id]);
         } else {
             $categories = $this->_recursiveGetCategoriesSelectSrc($object, 0, 'global_title', 'asc', 0, 0, []);
         }
 
-        $dis['categoriesHtmlSrc'] = $categories;
+        $this->dis['categoriesHtmlSrc'] = $categories;
 
-        return $this->_viewAdmin('product-categories.edit', $dis);
+        return $this->_viewAdmin('product-categories.edit', $this->dis);
     }
 
     public function postEdit(Request $request, ProductCategory $object, ProductCategoryMeta $objectMeta, $id, $language)

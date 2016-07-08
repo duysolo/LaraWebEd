@@ -178,15 +178,13 @@ class PostController extends BaseAdminController
 
     public function getEdit(Request $request, Post $object, $id, $language)
     {
-        $dis = [];
-
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
             }
-            $dis['object'] = $oldObject;
+            $this->dis['object'] = $oldObject;
         }
 
         $currentEditLanguage = Models\Language::getBy([
@@ -200,9 +198,9 @@ class PostController extends BaseAdminController
         }
         app()->setLocale($currentEditLanguage->default_locale);
 
-        $dis['currentEditLanguage'] = $currentEditLanguage;
+        $this->dis['currentEditLanguage'] = $currentEditLanguage;
 
-        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
+        $this->dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
 
         $checkedNodes = [];
 
@@ -232,7 +230,7 @@ class PostController extends BaseAdminController
                     'global_status' => null,
                 ]);
             }
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit post', $item->global_title);
 
             $args = array(
@@ -244,12 +242,12 @@ class PostController extends BaseAdminController
             );
             $customFieldBoxes = new Acme\CmsCustomField();
             $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'post');
-            $dis['customFieldBoxes'] = $customFieldBoxes;
+            $this->dis['customFieldBoxes'] = $customFieldBoxes;
         }
 
-        $dis['categoriesHtml'] = $this->_getCategories(0, $checkedNodes);
+        $this->dis['categoriesHtml'] = $this->_getCategories(0, $checkedNodes);
 
-        return $this->_viewAdmin('posts.edit', $dis);
+        return $this->_viewAdmin('posts.edit', $this->dis);
     }
 
     public function postEdit(Request $request, Post $object, PostMeta $objectMeta, $id, $language)

@@ -23,13 +23,13 @@ class SettingController extends BaseAdminController
 
     public function getIndex(Request $request)
     {
-        $dis['settings'] = Models\Setting::getAllSettings();
+        $this->dis['settings'] = Models\Setting::getAllSettings();
 
-        $dis['pages'] = Models\Page::getBy([
+        $this->dis['pages'] = Models\Page::getBy([
             'status' => 1,
         ], ['global_title' => 'ASC'], true);
 
-        return $this->_viewAdmin('settings.index', $dis);
+        return $this->_viewAdmin('settings.index', $this->dis);
     }
 
     public function postIndex(Request $request)

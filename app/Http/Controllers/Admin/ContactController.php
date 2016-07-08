@@ -166,7 +166,6 @@ class ContactController extends BaseAdminController
 
     public function getEdit(Request $request, Contact $object, $id)
     {
-        $dis = [];
         $item = $object->find($id);
         /*No page with this id*/
         if (!$item) {
@@ -181,10 +180,10 @@ class ContactController extends BaseAdminController
             'status' => 1,
         ], false, true);
 
-        $dis['object'] = $item;
+        $this->dis['object'] = $item;
         $this->_setPageTitle('View contact #' . $item->id);
 
-        return $this->_viewAdmin('contacts.edit', $dis);
+        return $this->_viewAdmin('contacts.edit', $this->dis);
     }
 
     public function deleteDelete(Request $request, Contact $object, $id)

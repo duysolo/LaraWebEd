@@ -166,15 +166,13 @@ class PageController extends BaseAdminController
 
     public function getEdit(Request $request, Page $object, $id, $language)
     {
-        $dis = [];
-
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
             }
-            $dis['object'] = $oldObject;
+            $this->dis['object'] = $oldObject;
         }
 
         $currentEditLanguage = Models\Language::getBy([
@@ -186,9 +184,9 @@ class PageController extends BaseAdminController
             $this->_showFlashMessages();
             return redirect()->back();
         }
-        $dis['currentEditLanguage'] = $currentEditLanguage;
+        $this->dis['currentEditLanguage'] = $currentEditLanguage;
 
-        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
+        $this->dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
 
         if (!$id == 0) {
             $item = $object->find($id);
@@ -215,7 +213,7 @@ class PageController extends BaseAdminController
                     'global_status' => null,
                 ]);
             }
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit page', $item->global_title);
 
             $args = array(
@@ -227,10 +225,10 @@ class PageController extends BaseAdminController
             );
             $customFieldBoxes = new Acme\CmsCustomField();
             $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'page');
-            $dis['customFieldBoxes'] = $customFieldBoxes;
+            $this->dis['customFieldBoxes'] = $customFieldBoxes;
         }
 
-        return $this->_viewAdmin('pages.edit', $dis);
+        return $this->_viewAdmin('pages.edit', $this->dis);
     }
 
     public function postEdit(Request $request, Page $object, PageMeta $objectMeta, $id, $language)

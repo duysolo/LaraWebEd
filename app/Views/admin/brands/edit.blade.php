@@ -14,42 +14,44 @@
 
 @section('js-init')
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('.js-validate-form').validate({
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                messages: {},
-                rules: {
-                    name: {
-                        minlength: 3,
-                        maxlength: 255,
-                        required: true
+        (function($){
+            $(document).ready(function(){
+                $('.js-validate-form').validate({
+                    errorElement: 'span', //default input error message container
+                    errorClass: 'help-block help-block-error', // default input error message class
+                    focusInvalid: false, // do not focus the last invalid input
+                    ignore: "",  // validate all fields including form hidden input
+                    messages: {},
+                    rules: {
+                        name: {
+                            minlength: 3,
+                            maxlength: 255,
+                            required: true
+                        },
+                        thumbnail: {
+                            required: true,
+                            maxlength: 255
+                        },
+                        link: {
+                            minlength: 3,
+                            maxlength: 255
+                        }
                     },
-                    thumbnail: {
-                        required: true,
-                        maxlength: 255
+
+                    highlight: function (element) {
+                        $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
                     },
-                    link: {
-                        minlength: 3,
-                        maxlength: 255
+
+                    unhighlight: function (element) {
+                        $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    },
+
+                    success: function (label) {
+                        label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
                     }
-                },
-
-                highlight: function (element) {
-                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
-                },
-
-                unhighlight: function (element) {
-                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
-                },
-
-                success: function (label) {
-                    label.closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                }
+                });
             });
-        });
+        })(jQuery);
     </script>
 @endsection
 
@@ -72,6 +74,15 @@
                         <div class="col-md-7">
                             <input type="text" name="link" class="form-control"
                                    value="{{ $object->link or '' }}" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3 text-right">Status</div>
+                        <div class="col-md-7">
+                            <select name="status" class="form-control">
+                                <option value="1" {{ (isset($object) && $object->status == 1) ? 'selected' : '' }}>Activated</option>
+                                <option value="0" {{ (isset($object) && $object->status == 0) ? 'selected' : '' }}>Disabled</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">

@@ -6,6 +6,8 @@ use App\Models;
 
 abstract class BaseAdminController extends BaseController
 {
+    protected $dis = [], $bodyClass = '';
+
     public function __construct()
     {
         parent::__construct();
@@ -15,11 +17,8 @@ abstract class BaseAdminController extends BaseController
 
         $count = $this->_countUnreadEmail();
         if ($count) {
-            view()->share([
-                'unreadMailCount' => $count,
-            ]);
+            view()->share('unreadMailCount', $count);
         }
-
     }
 
     protected function _setPageTitle($title, $subTitle = '')

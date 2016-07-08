@@ -20,19 +20,18 @@ class DashboardController extends BaseAdminController
 
     public function getIndex(Request $request)
     {
-        $dis = [];
         $pages = Models\Page::count();
-        $dis['pagesCount'] = $pages;
+        $this->dis['pagesCount'] = $pages;
 
         $posts = Models\Post::count();
-        $dis['postsCount'] = $posts;
+        $this->dis['postsCount'] = $posts;
 
         $products = Models\Product::count();
-        $dis['productsCount'] = $products;
+        $this->dis['productsCount'] = $products;
 
         $users = Models\User::where(['status' => 1])->count();
-        $dis['usersCount'] = $users;
+        $this->dis['usersCount'] = $users;
 
-        return $this->_viewAdmin('dashboard.index', $dis);
+        return $this->_viewAdmin('dashboard.index', $this->dis);
     }
 }

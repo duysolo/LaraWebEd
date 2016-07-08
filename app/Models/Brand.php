@@ -52,8 +52,6 @@ class Brand extends AbstractModel
             return $result;
         }
 
-        $object->product()->sync([]);
-
         if ($object->delete()) {
             $result['error'] = false;
             $result['response_code'] = 200;

@@ -29,9 +29,10 @@ if (! function_exists('_getPageTemplate')) {
 }
 
 if (! function_exists('_validateGoogleCaptcha')) {
-    function _validateGoogleCaptcha($secret, $response = null)
+    function _validateGoogleCaptcha($response = null)
     {
-        if (!$response) {
+        $secret = env('RECAPTCHA_SECRET_KEY');
+        if (!$response || !$secret) {
             return false;
         }
 

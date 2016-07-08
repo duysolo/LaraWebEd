@@ -143,11 +143,6 @@ abstract class BaseController extends Controller
         return false;
     }
 
-    protected function _validateGoogleCaptcha($response)
-    {
-        return _validateGoogleCaptcha($this->_getSetting('google_captcha_secret_key'), $response);
-    }
-
     protected function _sendFeedbackEmail($view, $subject, $data, $cc = [], $bcc = [])
     {
         return _sendEmail($view, $subject, $data, [

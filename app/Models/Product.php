@@ -25,6 +25,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
     protected $rules = [
         'brand_id' => 'integer|min:0',
         'global_title' => 'required|max:255',
+        'sku' => 'required|max:100|unique:products',
         'status' => 'integer|required|between:0,1',
         'created_by' => 'integer',
         'is_popular' => 'integer|between:0,1',
@@ -33,6 +34,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
     protected $editableFields = [
         'brand_id',
         'global_title',
+        'sku',
         'status',
         'page_template',
         'order',
@@ -98,9 +100,12 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
             $post->category()->sync($data['category_ids']);
         }
 
-        /*Save brand*/
+        /*Save to global*/
         if (isset($data['brand_id'])) {
             $post->brand_id = $data['brand_id'];
+        }
+        if (isset($data['sku'])) {
+            $post->sku = $data['sku'];
         }
 
         /*Update page template*/
@@ -175,6 +180,10 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
             $dataPost['global_title'] = $data['title'];
         }
 
+        if (isset($data['sku'])) {
+            $dataPost['sku'] = $data['sku'];
+        }
+
         if (isset($data['brand_id'])) {
             $dataPost['brand_id'] = $data['brand_id'];
         }
@@ -222,6 +231,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         if (!$select) {
             $select = [
                 'products.global_title',
+                'products.sku',
                 'products.brand_id',
                 'products.page_template',
                 'products.status as global_status',
@@ -265,6 +275,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         if (!$select) {
             $select = [
                 'products.global_title',
+                'products.sku',
                 'products.brand_id',
                 'products.page_template',
                 'products.status as global_status',
@@ -396,6 +407,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         if (!$select) {
             $select = [
                 'products.global_title',
+                'products.sku',
                 'products.brand_id',
                 'products.page_template',
                 'products.status as global_status',
@@ -460,6 +472,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         if (!$select) {
             $select = [
                 'products.global_title',
+                'products.sku',
                 'products.brand_id',
                 'products.page_template',
                 'products.status as global_status',

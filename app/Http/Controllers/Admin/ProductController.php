@@ -101,18 +101,22 @@ class ProductController extends BaseAdminController
                 }
                 break;
             case 3:{
+                $orderBy = 'sku';
+            }
+                break;
+            case 4:{
                     $orderBy = 'status';
                 }
                 break;
-            case 4:{
+            case 5:{
                     $orderBy = 'order';
                 }
                 break;
-            case 5:{
+            case 6:{
                     $orderBy = 'is_popular';
                 }
                 break;
-            case 6:{
+            case 7:{
                     $orderBy = 'brand_id';
                 }
                 break;
@@ -126,6 +130,9 @@ class ProductController extends BaseAdminController
         $getByFields = [];
         if ($request->get('global_title', null) != null) {
             $getByFields['global_title'] = ['compare' => 'LIKE', 'value' => $request->get('global_title')];
+        }
+        if ($request->get('sku', null) != null) {
+            $getByFields['sku'] = ['compare' => 'LIKE', 'value' => $request->get('sku')];
         }
         if ($request->get('status', null) != null) {
             $getByFields['status'] = ['compare' => '=', 'value' => $request->get('status')];
@@ -159,6 +166,7 @@ class ProductController extends BaseAdminController
                 '<input type="checkbox" name="id[]" value="' . $row->id . '">',
                 $row->id,
                 $row->global_title,
+                $row->sku,
                 $status,
                 $row->order,
                 $popular,
@@ -181,7 +189,8 @@ class ProductController extends BaseAdminController
         $data = [
             'id' => $request->get('args_0', null),
             'global_title' => $request->get('args_1', null),
-            'order' => $request->get('args_2', null),
+            'sku' => $request->get('args_2', null),
+            'order' => $request->get('args_3', null),
         ];
 
         $result = $object->fastEdit($data, false, true);
@@ -190,15 +199,13 @@ class ProductController extends BaseAdminController
 
     public function getEdit(Request $request, Product $object, $id, $language)
     {
-        $dis = [];
-
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
             }
-            $dis['object'] = $oldObject;
+            $this->dis['object'] = $oldObject;
         }
 
         $currentEditLanguage = Models\Language::getBy([
@@ -212,9 +219,9 @@ class ProductController extends BaseAdminController
         }
         app()->setLocale($currentEditLanguage->default_locale);
 
-        $dis['currentEditLanguage'] = $currentEditLanguage;
+        $this->dis['currentEditLanguage'] = $currentEditLanguage;
 
-        $dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
+        $this->dis['rawUrlChangeLanguage'] = asset($this->adminCpAccess . '/' . $this->routeLink . '/edit/' . $id) . '/';
 
         $checkedNodes = [];
 
@@ -246,7 +253,7 @@ class ProductController extends BaseAdminController
                     'global_status' => null,
                 ]);
             }
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit product', $item->global_title);
 
             $args = array(
@@ -258,20 +265,20 @@ class ProductController extends BaseAdminController
             );
             $customFieldBoxes = new Acme\CmsCustomField();
             $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'product');
-            $dis['customFieldBoxes'] = $customFieldBoxes;
+            $this->dis['customFieldBoxes'] = $customFieldBoxes;
         }
 
-        $dis['currentId'] = $id;
+        $this->dis['currentId'] = $id;
 
-        $dis['categoriesHtml'] = $this->_getCategories(0, $checkedNodes);
+        $this->dis['categoriesHtml'] = $this->_getCategories(0, $checkedNodes);
 
-        $dis['brands'] = Models\Brand::getBy([
+        $this->dis['brands'] = Models\Brand::getBy([
             'status' => 1,
         ], [
             'name' => 'ASC',
         ], true, 0);
 
-        return $this->_viewAdmin('products.edit', $dis);
+        return $this->_viewAdmin('products.edit', $this->dis);
     }
 
     public function postEdit(Request $request, Product $object, ProductMeta $objectMeta, $id, $language)

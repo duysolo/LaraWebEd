@@ -3,7 +3,7 @@
     var onloadGoogleCaptchaCallback = function () {
         if (document.getElementById('contactBoxCaptcha')) {
             grecaptcha.render('contactBoxCaptcha', {
-                'sitekey': ' {{ $CMSSettings['google_captcha_site_key'] }}',
+                'sitekey': ' {{ env('RECAPTCHA_SITE_KEY') }}',
                 'theme': 'light'
             });
         }

@@ -210,7 +210,7 @@ class UserAdminController extends BaseAdminController
 
     public function getEdit(Request $request, AdminUser $object, $id)
     {
-        $dis = [
+        $this->dis = [
             'needToInputCurrentPassword' => false,
         ];
 
@@ -229,13 +229,13 @@ class UserAdminController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit user', $item->username);
 
-            $dis['needToInputCurrentPassword'] = $this->_needToInputCurrentPassword($item);
+            $this->dis['needToInputCurrentPassword'] = $this->_needToInputCurrentPassword($item);
         }
 
-        return $this->_viewAdmin('admin-users.edit', $dis);
+        return $this->_viewAdmin('admin-users.edit', $this->dis);
     }
 
     private function _needToInputCurrentPassword(AdminUser $user)

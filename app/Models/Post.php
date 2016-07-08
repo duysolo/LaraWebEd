@@ -27,6 +27,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         'status' => 'integer|required|between:0,1',
         'created_by' => 'integer',
         'is_popular' => 'integer|between:0,1',
+        'order' => 'integer',
     ];
 
     protected $editableFields = [

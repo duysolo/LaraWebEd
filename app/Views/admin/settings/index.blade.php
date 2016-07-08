@@ -152,17 +152,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Google captcha</label>
-                            <div class="col-md-7">
-                                <div class="mar-bot-15">
-                                    <label>Site key</label>
-                                    <input type="text" class="form-control" value="{{ $settings['google_captcha_site_key'] or '' }}" name="google_captcha_site_key"/>
-                                </div>
-                                <label>Secret key</label>
-                                <input type="text" class="form-control" value="{{ $settings['google_captcha_secret_key'] or '' }}" name="google_captcha_secret_key"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="control-label col-md-3">Hot line</label>
                             <div class="col-md-7">
                                 <input type="text" class="form-control" value="{{ $settings['hot_line'] or '' }}" name="hot_line"/>

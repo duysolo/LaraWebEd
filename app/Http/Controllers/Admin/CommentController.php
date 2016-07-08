@@ -208,7 +208,6 @@ class CommentController extends BaseAdminController
 
     public function getEdit(Request $request, Comment $object, $id)
     {
-        $dis = [];
         $item = $object->find($id);
         /*No page with this id*/
         if (!$item) {
@@ -217,10 +216,10 @@ class CommentController extends BaseAdminController
             return redirect()->back();
         }
 
-        $dis['object'] = $item;
+        $this->dis['object'] = $item;
         $this->_setPageTitle('View comment #' . $item->id);
 
-        return $this->_viewAdmin('comments.edit', $dis);
+        return $this->_viewAdmin('comments.edit', $this->dis);
     }
 
     public function postEdit(Request $request, Comment $object, $id)
@@ -252,7 +251,6 @@ class CommentController extends BaseAdminController
 
     public function getReply(Request $request, Comment $object, $id)
     {
-        $dis = [];
         $item = $object->find($id);
         /*No comment with this id*/
         if (!$item) {
@@ -263,10 +261,10 @@ class CommentController extends BaseAdminController
 
         $object->parent_id = $item->id;
 
-        $dis['object'] = $object;
+        $this->dis['object'] = $object;
         $this->_setPageTitle('Reply comment #' . $item->id);
 
-        return $this->_viewAdmin('comments.edit', $dis);
+        return $this->_viewAdmin('comments.edit', $this->dis);
     }
 
     public function postReply(Request $request, Comment $object, $id)

@@ -162,15 +162,13 @@ class CouponController extends BaseAdminController
 
     public function getEdit(Request $request, Coupon $object, $id)
     {
-        $dis = [];
-
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
                 $oldObject->$key = $row;
             }
-            $dis['object'] = $oldObject;
+            $this->dis['object'] = $oldObject;
         }
 
         if (!$id == 0) {
@@ -182,12 +180,12 @@ class CouponController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
 
             $this->_setPageTitle('Edit coupon', $item->title);
         }
 
-        return $this->_viewAdmin('coupons.edit', $dis);
+        return $this->_viewAdmin('coupons.edit', $this->dis);
     }
 
     public function postEdit(Request $request, Coupon $object, $id)

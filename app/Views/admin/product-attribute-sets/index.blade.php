@@ -19,7 +19,7 @@
     <script>
         $(document).ready(function(){
             TableDatatablesAjax.init({
-                ajaxGet: '{{ asset($adminCpAccess.'/products') }}',
+                ajaxGet: '{{ asset($adminCpAccess.'/product-attribute-sets') }}',
                 src: $('#datatable_ajax'),
                 onSuccess: function(grid, response){
 
@@ -31,8 +31,8 @@
 
                 },
                 editableFields: [2, 3, 5],
-                actionPosition: 8,
-                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/products/fast-edit') }}'
+                actionPosition: 6,
+                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/product-attribute-sets/fast-edit') }}'
             });
         });
     </script>
@@ -50,11 +50,11 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-layers font-dark"></i>
-                        <span class="caption-subject font-dark sbold uppercase">All products</span>
+                        <span class="caption-subject font-dark sbold uppercase">All attribute sets</span>
                     </div>
                     <div class="actions">
                         <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/products/edit/0/'.$defaultLanguageId) }}"><i class="fa fa-plus"></i> Create</a>
+                            <a class="btn btn-transparent btn-success btn-circle btn-sm active" href="{{ asset($adminCpAccess.'/product-attribute-sets/edit/0') }}"><i class="fa fa-plus"></i> Create</a>
                         </div>
                     </div>
                 </div>
@@ -66,8 +66,6 @@
                                 <option value="">Select...</option>
                                 <option value="1">Activated</option>
                                 <option value="0">Disabled</option>
-                                <option value="set_as_popular">Set as popular</option>
-                                <option value="unset_as_popular">Unset as popular</option>
                             </select>
                             <button class="btn btn-sm green table-group-action-submit" data-toggle="confirmation">
                                 <i class="fa fa-check"></i> Submit
@@ -82,12 +80,10 @@
                                 <th width="5%">
                                     #
                                 </th>
-                                <th width="30%">Global title</th>
-                                <th width="15%">SKU</th>
+                                <th width="30%">Title</th>
+                                <th width="15%">Alias</th>
                                 <th width="5%">Status</th>
                                 <th width="5%">Order</th>
-                                <th width="5%">Popular</th>
-                                <th width="10%">Brand</th>
                                 <th width="10%">Fast edit</th>
                                 <th width="10%">Actions</th>
                             </tr>
@@ -95,10 +91,10 @@
                                 <td></td>
                                 <td></td>
                                 <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="global_title">
+                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="title">
                                 </td>
                                 <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="sku">
+                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="slug">
                                 </td>
                                 <td>
                                     <select class="form-control form-filter input-small input-sm" name="status">
@@ -107,8 +103,6 @@
                                         <option value="0">Disabled</option>
                                     </select>
                                 </td>
-                                <td></td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>

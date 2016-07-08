@@ -11,8 +11,10 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="/admin/core/third_party/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript"
+            src="/admin/core/third_party/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript"
+            src="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/config.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/adapters/jquery.js"></script>
@@ -21,27 +23,23 @@
 @section('js-init')
     <script type="text/javascript">
         $(document).ready(function () {
-            $.validator.addMethod("greaterThanFromDate", function(value, element, param) {
+            $.validator.addMethod("greaterThanFromDate", function (value, element, param) {
                 var $to = new Date(value);
                 var $from = new Date($(param).val());
                 return $to > $from;
             }, "Start day must be small than end day");
 
-            $('.js-ckeditor').ckeditor({
+            $('.js-ckeditor').ckeditor({});
 
-            });
-
-            $('body').on('change', 'input[name=sale_status]', function(event){
+            $('body').on('change', 'input[name=sale_status]', function (event) {
                 var $saleFormInput = $('input.form-date-time');
                 var $saleFormInputWrapper = $('.sale-group-from-to');
                 var $checkedValue = parseInt($('input[name=sale_status]:checked').val());
-                if($checkedValue == 0)
-                {
+                if ($checkedValue == 0) {
                     $saleFormInput.attr('disabled', '');
                     $saleFormInputWrapper.hide();
                 }
-                else
-                {
+                else {
                     $saleFormInput.removeAttr('disabled');
                     $saleFormInputWrapper.show();
                 }
@@ -154,11 +152,11 @@
                                             <a href="#tab_general" data-toggle="tab"> General </a>
                                         </li>
                                         @if($currentId != 0)
-                                        <li>
-                                            <a href="#tab_other" data-toggle="tab"> Other </a>
-                                        </li>
-                                        @endif
-                                        <!--li>
+                                            <li>
+                                                <a href="#tab_other" data-toggle="tab"> Other </a>
+                                            </li>
+                                    @endif
+                                    <!--li>
                                             <a href="#tab_reviews" data-toggle="tab"> Reviews
                                                 <span class="badge badge-success"> 3 </span>
                                             </a>
@@ -196,18 +194,33 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
+                                                        <label class="col-md-2 control-label">SKU:
+                                                            <span class="required"> * </span>
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <input required type="text" name="sku"
+                                                                   class="form-control"
+                                                                   value="{{ $object->sku or '' }}"
+                                                                   autocomplete="off">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label class="col-md-2 control-label">Friendly slug:
                                                             <span class="required"> * </span>
                                                         </label>
                                                         <div class="col-md-10">
-                                                            <input type="text" name="slug" class="form-control the-object-slug"
+                                                            <input type="text" name="slug"
+                                                                   class="form-control the-object-slug"
                                                                    value="{{ $object->slug or '' }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                     @if(isset($object) && $object->slug)
                                                         <div class="form-group">
                                                             <div class="col-md-10 col-md-push-2">
-                                                                <a target="_blank" href="{{ _getProductLink($object, $currentEditLanguage->language_code) }}" class="btn btn-default" type="button">{{ asset(_getProductLink($object, $currentEditLanguage->language_code)) }}</a>
+                                                                <a target="_blank"
+                                                                   href="{{ _getProductLink($object, $currentEditLanguage->language_code) }}"
+                                                                   class="btn btn-default"
+                                                                   type="button">{{ asset(_getProductLink($object, $currentEditLanguage->language_code)) }}</a>
                                                             </div>
                                                         </div>
                                                     @endif
@@ -224,7 +237,8 @@
                                                         <div class="col-md-10">
                                                             <input type="text" name="label"
                                                                    class="form-control js-tags-editor"
-                                                                   value="{{ $object->label or '' }}" autocomplete="off">
+                                                                   value="{{ $object->label or '' }}"
+                                                                   autocomplete="off">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -305,11 +319,14 @@
                                                         <label class="col-md-2 control-label">Out of stock:</label>
                                                         <div class="col-md-10">
                                                             <div class="md-checkbox" style="margin: 5px 0;">
-                                                                <input type="checkbox" value="1" id="is_out_of_stock" name="is_out_of_stock" {{ isset($object->is_out_of_stock) && $object->is_out_of_stock == 1 ? 'checked' : '' }} class="md-radiobtn">
+                                                                <input type="checkbox" value="1" id="is_out_of_stock"
+                                                                       name="is_out_of_stock"
+                                                                       {{ isset($object->is_out_of_stock) && $object->is_out_of_stock == 1 ? 'checked' : '' }} class="md-radiobtn">
                                                                 <label for="is_out_of_stock">
                                                                     <span></span>
                                                                     <span class="check"></span>
-                                                                    <span class="box"></span> This product is out of stock
+                                                                    <span class="box"></span> This product is out of
+                                                                    stock
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -318,14 +335,16 @@
                                                         <label class="col-md-2 control-label">Sale status:</label>
                                                         <div class="col-md-10">
                                                             <?php
-$saleStatus = 1;
-if (!isset($object) || $object->sale_status != 1) {
-    $saleStatus = 0;
-}
+                                                            $saleStatus = 1;
+                                                            if (!isset($object) || $object->sale_status != 1) {
+                                                                $saleStatus = 0;
+                                                            }
 
-?>
+                                                            ?>
                                                             <div class="md-radio" style="margin: 5px 0;">
-                                                                <input type="radio" value="0" id="always_on_sale" name="sale_status" {{ ($saleStatus != 1) ? 'checked' : '' }} class="md-radiobtn">
+                                                                <input type="radio" value="0" id="always_on_sale"
+                                                                       name="sale_status"
+                                                                       {{ ($saleStatus != 1) ? 'checked' : '' }} class="md-radiobtn">
                                                                 <label for="always_on_sale">
                                                                     <span></span>
                                                                     <span class="check"></span>
@@ -333,7 +352,9 @@ if (!isset($object) || $object->sale_status != 1) {
                                                                 </label>
                                                             </div>
                                                             <div class="md-radio">
-                                                                <input type="radio" value="1" id="sale_with_limited_time" name="sale_status" {{ ($saleStatus == 1) ? 'checked' : '' }} class="md-radiobtn">
+                                                                <input type="radio" value="1"
+                                                                       id="sale_with_limited_time" name="sale_status"
+                                                                       {{ ($saleStatus == 1) ? 'checked' : '' }} class="md-radiobtn">
                                                                 <label for="sale_with_limited_time">
                                                                     <span></span>
                                                                     <span class="check"></span>
@@ -346,12 +367,14 @@ if (!isset($object) || $object->sale_status != 1) {
                                                         <label class="col-md-2 control-label">Sale this product:</label>
                                                         <div class="col-md-10">
                                                             <div class="input-group input-daterange">
-                                                                <input type="text" class="form-control form-date-time" name="sale_from"
+                                                                <input type="text" class="form-control form-date-time"
+                                                                       name="sale_from"
                                                                        placeholder=""
                                                                        value="{{ $object->sale_from or date('Y-m-d H:i:s', time()) }}"
                                                                        data-date="{{ (isset($object->sale_from)) ? _getTimestampOrDefault($object->sale_from) : date('Y-m-d H:i:s', time()) }}">
                                                                 <span class="input-group-addon">to</span>
-                                                                <input type="text" class="form-control form-date-time" name="sale_to"
+                                                                <input type="text" class="form-control form-date-time"
+                                                                       name="sale_to"
                                                                        placeholder=""
                                                                        value="{{ $object->sale_to or date('Y-m-d H:i:s', time()) }}"
                                                                        data-date="{{ (isset($object->sale_to)) ? _getTimestampOrDefault($object->sale_to) : date('Y-m-d H:i:s', time()) }}">
@@ -376,7 +399,8 @@ if (!isset($object) || $object->sale_status != 1) {
                                                         <div class="col-md-10">
                                                             <div class="select-media-box">
                                                                 <button type="button"
-                                                                        class="btn blue show-add-media-popup">Choose image
+                                                                        class="btn blue show-add-media-popup">Choose
+                                                                    image
                                                                 </button>
                                                                 <div class="clearfix"></div>
                                                                 <a title="" class="show-add-media-popup">
@@ -403,11 +427,13 @@ if (!isset($object) || $object->sale_status != 1) {
                                         @if($currentId != 0)
                                             <div class="tab-pane" id="tab_other">
                                                 {!! $customFieldBoxes or '' !!}
-                                                <form class="update-custom-fields-form" method="POST" accept-charset="utf-8"
+                                                <form class="update-custom-fields-form" method="POST"
+                                                      accept-charset="utf-8"
                                                       action="" novalidate>
                                                     {{ csrf_field() }}
                                                     <textarea name="custom_fields" id="custom_fields_container"
-                                                              class="hidden form-control" style="display: none !important;"
+                                                              class="hidden form-control"
+                                                              style="display: none !important;"
                                                               cols="30" rows="10"></textarea>
                                                     <div class="form-group mar-bot-0">
                                                         <div class="col-md-10 col-md-push-2 text-right">

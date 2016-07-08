@@ -175,10 +175,10 @@ class CountryCityController extends BaseAdminController
             $this->_showFlashMessages();
             return redirect()->back();
         }
-        $dis['object'] = $country;
+        $this->dis['object'] = $country;
         $this->_setPageTitle('Cities', 'manage cities');
         $this->_setBodyClass($this->bodyClass . ' cities-list-page');
-        return $this->_viewAdmin('countries-cities.details', $dis);
+        return $this->_viewAdmin('countries-cities.details', $this->dis);
     }
 
     public function postDetails(Request $request, Country $object, City $objectCity, $countryId)

@@ -181,12 +181,10 @@ class UserController extends BaseAdminController
 
     public function getEdit(Request $request, User $object, $id = 0)
     {
-        $dis = [];
-
         if ($id == 0) {
             $this->_setPageTitle('Create user');
             $object->id = $id;
-            $dis['object'] = $object;
+            $this->dis['object'] = $object;
         } else {
             $item = $object->getBy([
                 'id' => $id,
@@ -201,11 +199,11 @@ class UserController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit user', $item->first_name . ' ' . $item->last_name . ' - ' . $item->email);
         }
 
-        return $this->_viewAdmin('users.edit', $dis);
+        return $this->_viewAdmin('users.edit', $this->dis);
     }
 
     public function postEdit(Request $request, User $object, $id = 0)

@@ -147,7 +147,7 @@ class CustomFieldController extends BaseAdminController
 
     public function getEdit(Request $request, FieldGroup $object, $id = 0)
     {
-        $dis = [
+        $this->dis = [
             'currentID' => $id,
         ];
 
@@ -159,15 +159,15 @@ class CustomFieldController extends BaseAdminController
                 $this->_showFlashMessages();
                 return redirect()->back();
             }
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit field group', $item->global_title);
 
-            $dis['rulesHtml'] = $this->_initRulesHtml(json_decode($item->field_rules));
+            $this->dis['rulesHtml'] = $this->_initRulesHtml(json_decode($item->field_rules));
 
             $myCustomField = new Acme\CmsCustomField();
-            $dis['sortableFieldHtml'] = $myCustomField->getFieldGroupItems($id, 0);
+            $this->dis['sortableFieldHtml'] = $myCustomField->getFieldGroupItems($id, 0);
         }
-        return $this->_viewAdmin('custom-fields.edit', $dis);
+        return $this->_viewAdmin('custom-fields.edit', $this->dis);
     }
 
     public function postEdit(Request $request, FieldGroup $object, FieldItem $objectItem, $id = 0)

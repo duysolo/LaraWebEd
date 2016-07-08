@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50625
+ Source Server Version : 50630
  Source Host           : localhost
  Source Database       : mine_laracms_no_data
 
  Target Server Type    : MySQL
- Target Server Version : 50625
+ Target Server Version : 50630
  File Encoding         : utf-8
 
- Date: 06/12/2016 08:48:58 AM
+ Date: 07/09/2016 00:45:30 AM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'y058f5sx1JyoztWMReNfEMoUz7HzizQZtRCtMG77ai5idtXE0jUejb9QRtXX', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-06-12 08:47:04', '2014-10-14 00:10:13', '2016-06-12 08:47:04');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'y058f5sx1JyoztWMReNfEMoUz7HzizQZtRCtMG77ai5idtXE0jUejb9QRtXX', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-07-08 13:35:08', '2014-10-14 00:10:13', '2016-07-08 13:35:08');
 COMMIT;
 
 -- ----------------------------
@@ -74,7 +74,14 @@ CREATE TABLE `brands` (
   `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `brands`
+-- ----------------------------
+BEGIN;
+INSERT INTO `brands` VALUES ('1', 'CRKT', '', '/uploads/brands/crkt.png', '1', '2016-07-08 11:31:36', '2016-07-08 11:31:36');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `brands_products`
@@ -102,7 +109,14 @@ CREATE TABLE `categories` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+--  Records of `categories`
+-- ----------------------------
+BEGIN;
+INSERT INTO `categories` VALUES ('1', '0', 'My Category', '', '1', '0', '0', '2016-07-07 22:20:00', '2016-07-07 22:21:52'), ('2', '0', 'Category - 1', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('3', '0', 'Category - 2', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('4', '0', 'Category - 3', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('5', '0', 'Category - 4', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('6', '0', 'Category - 5', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('7', '0', 'Category - 6', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('8', '0', 'Category - 7', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('9', '0', 'Category - 8', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('10', '0', 'Category - 9', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('11', '0', 'Category - 10', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('12', '0', 'Category - 11', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('13', '0', 'Category - 12', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('14', '0', 'Category - 13', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('15', '0', 'Category - 14', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('16', '0', 'Category - 15', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('17', '0', 'Category - 16', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('18', '0', 'Category - 17', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('19', '0', 'Category - 18', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('20', '0', 'Category - 19', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('21', '0', 'Category - 20', '', '1', '0', '0', '2016-07-07 22:36:32', '2016-07-07 22:36:32'), ('22', '0', 'Category - 1', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('23', '0', 'Category - 2', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('24', '0', 'Category - 3', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('25', '0', 'Category - 4', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('26', '0', 'Category - 5', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('27', '0', 'Category - 6', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('28', '0', 'Category - 7', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('29', '0', 'Category - 8', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('30', '0', 'Category - 9', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('31', '0', 'Category - 10', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('32', '0', 'Category - 11', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('33', '0', 'Category - 12', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('34', '0', 'Category - 13', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('35', '0', 'Category - 14', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('36', '0', 'Category - 15', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('37', '0', 'Category - 16', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('38', '0', 'Category - 17', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('39', '0', 'Category - 18', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('40', '0', 'Category - 19', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('41', '0', 'Category - 20', '', '1', '0', '0', '2016-07-07 22:44:57', '2016-07-07 22:44:57'), ('42', '0', 'Category - 1', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('43', '0', 'Category - 2', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('44', '0', 'Category - 3', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('45', '0', 'Category - 4', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('46', '0', 'Category - 5', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('47', '0', 'Category - 6', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('48', '0', 'Category - 7', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('49', '0', 'Category - 8', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('50', '0', 'Category - 9', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('51', '0', 'Category - 10', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('52', '0', 'Category - 11', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('53', '0', 'Category - 12', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('54', '0', 'Category - 13', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('55', '0', 'Category - 14', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('56', '0', 'Category - 15', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('57', '0', 'Category - 16', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('58', '0', 'Category - 17', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('59', '0', 'Category - 18', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('60', '0', 'Category - 19', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('61', '0', 'Category - 20', '', '1', '0', '0', '2016-07-07 22:45:06', '2016-07-07 22:45:06'), ('62', '0', 'Category - 1', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('63', '0', 'Category - 2', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('64', '0', 'Category - 3', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('65', '0', 'Category - 4', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('66', '0', 'Category - 5', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('67', '0', 'Category - 6', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('68', '0', 'Category - 7', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('69', '0', 'Category - 8', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('70', '0', 'Category - 9', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('71', '0', 'Category - 10', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('72', '0', 'Category - 11', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('73', '0', 'Category - 12', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('74', '0', 'Category - 13', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('75', '0', 'Category - 14', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('76', '0', 'Category - 15', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('77', '0', 'Category - 16', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('78', '0', 'Category - 17', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('79', '0', 'Category - 18', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('80', '0', 'Category - 19', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24'), ('81', '0', 'Category - 20', '', '1', '0', '0', '2016-07-07 22:45:24', '2016-07-07 22:45:24');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `categories_posts`
@@ -134,7 +148,14 @@ CREATE TABLE `category_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `category_contents`
+-- ----------------------------
+BEGIN;
+INSERT INTO `category_contents` VALUES ('1', '1', '59', 'My Category', 'my-category', '', '', '1', '', '', '0', '2016-07-07 22:20:00', '2016-07-07 22:20:00'), ('2', '1', '1', 'My category', 'my-category', '', '', '1', '', '', '1', '2016-07-07 22:21:44', '2016-07-07 22:21:52');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `category_metas`
@@ -303,13 +324,6 @@ CREATE TABLE `field_groups` (
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
---  Records of `field_groups`
--- ----------------------------
-BEGIN;
-INSERT INTO `field_groups` VALUES ('3', null, 'Homepage custom fields', '[{\"field_relation\":\"and\",\"field_options\":[{\"rel_name\":\"page_template\",\"rel_value\":\"Homepage\",\"rel_type\":\"==\"}]}]', '1', '2016-06-06 15:32:10', '2016-06-08 22:20:19'), ('4', null, 'Project custom fields', '[{\"field_relation\":\"and\",\"field_options\":[{\"rel_name\":\"post_with_related_category_id\",\"rel_value\":\"4\",\"rel_type\":\"==\"}]}]', '1', '2016-06-11 02:26:32', '2016-06-11 02:28:57');
-COMMIT;
-
--- ----------------------------
 --  Table structure for `field_items`
 -- ----------------------------
 DROP TABLE IF EXISTS `field_items`;
@@ -325,13 +339,6 @@ CREATE TABLE `field_items` (
   `options` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
-
--- ----------------------------
---  Records of `field_items`
--- ----------------------------
-BEGIN;
-INSERT INTO `field_items` VALUES ('12', '4', '0', '1', 'Name', '12_name', 'text', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}'), ('11', '3', '10', '1', 'Image', '11_image', 'image', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}'), ('10', '3', '0', '1', 'Slider', '10_slider', 'repeater', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"Add slide\"}'), ('13', '4', '0', '2', 'Location', '13_location', 'text', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}'), ('14', '4', '0', '3', 'Technology', '14_technology', 'text', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}'), ('15', '4', '0', '4', 'Time', '15_time', 'text', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}'), ('16', '4', '0', '5', 'Cost', '16_cost', 'text', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}'), ('17', '4', '0', '6', 'Project images', '17_project_images', 'repeater', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"Add image\"}'), ('18', '4', '17', '1', 'Image', '18_image', 'image', '', '{\"defaultvalue\":\"\",\"placeholdertext\":\"\",\"defaultvaluetextarea\":\"\",\"wyswygtoolbar\":\"\",\"selectchoices\":\"\",\"buttonlabel\":\"\"}');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `languages`
@@ -398,13 +405,13 @@ CREATE TABLE `menu_nodes` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=524 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=518 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 --  Records of `menu_nodes`
 -- ----------------------------
 BEGIN;
-INSERT INTO `menu_nodes` VALUES ('272', '2', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', 'start', '2015-01-09 07:34:11', '2015-01-26 15:08:30'), ('273', '2', '301', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Post Categories', '', '2015-01-09 07:34:11', '2016-01-18 03:43:37'), ('280', '2', '403', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2015-01-09 07:34:11', '2016-01-21 04:16:51'), ('283', '2', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('291', '2', '403', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2015-01-09 07:34:11', '2016-01-20 09:45:17'), ('297', '2', '403', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('300', '2', '301', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2015-03-14 16:47:08', '2016-01-18 03:43:37'), ('301', '2', '0', '0', 'custom-link', 'post', 'icon-layers', '1', 'Posts', '', '2015-03-14 16:47:08', '2015-12-22 09:48:57'), ('331', '2', '414', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('332', '2', '414', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('403', '2', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2015-09-13 01:22:25', '2016-01-20 09:45:17'), ('414', '2', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'Ecommerce', '', '2016-01-15 07:12:15', '2016-01-18 12:22:11'), ('415', '2', '438', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-01-19 06:50:46', '2016-01-24 14:05:00'), ('416', '2', '403', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-01-21 02:10:32', '2016-01-21 04:16:51'), ('437', '2', '403', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-01-24 06:24:54', '2016-01-24 06:24:54'), ('438', '2', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('439', '2', '438', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('440', '2', '414', '0', 'custom-link', 'coupons', 'fa fa-code', '2', 'Coupons', '', '2016-01-27 09:23:56', '2016-01-27 09:23:56'), ('441', '2', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '7', 'Contacts', '', '2016-01-28 10:14:54', '2016-06-03 19:36:11'), ('462', '8', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', '', '2016-05-12 00:36:16', '2016-05-12 00:36:16'), ('463', '8', '0', '0', 'custom-link', 'posts', 'icon-layers', '1', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('464', '8', '463', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('465', '8', '463', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Categories', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('466', '8', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'E-commerce', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('467', '8', '466', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('468', '8', '466', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('469', '8', '466', '0', 'custom-link', 'coupons', 'fa fa-code', '2', 'Coupons', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('470', '8', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('471', '8', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('472', '8', '471', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('473', '8', '471', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('474', '8', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('475', '8', '474', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('476', '8', '474', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('477', '8', '474', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('478', '8', '474', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('479', '8', '474', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('480', '8', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '7', 'Contacts', '', '2016-05-12 00:43:52', '2016-06-03 19:35:30'), ('501', '8', '466', '0', 'custom-link', 'brands', '', '3', 'Brands', 'icon-umbrella', '2016-05-29 01:36:47', '2016-05-29 01:36:47'), ('502', '8', '0', '0', 'custom-link', 'subscribed-emails', '', '8', 'Subscribed emails', 'icon-envelope', '2016-05-29 01:36:47', '2016-06-03 19:35:30'), ('503', '2', '414', '0', 'custom-link', 'brands', 'icon-umbrella', '3', 'Brands', '', '2016-05-29 01:38:13', '2016-05-29 01:38:34'), ('504', '2', '0', '0', 'custom-link', 'subscribed-emails', 'icon-envelope', '8', 'Subscribed emails', '', '2016-05-29 01:38:13', '2016-06-03 19:36:11'), ('509', '9', '0', '2', 'page', '', '', '0', '', '', '2016-05-31 20:24:38', '2016-06-12 08:47:35'), ('510', '10', '0', '1', 'page', '', '', '0', '', '', '2016-05-31 23:53:48', '2016-05-31 23:54:48'), ('511', '10', '0', '2', 'category', '', '', '1', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('512', '10', '0', '3', 'category', '', '', '2', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('513', '10', '0', '1', 'category', '', '', '3', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('514', '10', '0', '2', 'page', '', '', '4', 'Liên hệ', '', '2016-05-31 23:53:48', '2016-06-01 00:18:30'), ('515', '8', '0', '0', 'custom-link', 'comments', 'icon-bubbles', '6', 'Comments', '', '2016-06-03 19:35:30', '2016-06-03 19:35:30'), ('516', '2', '0', '0', 'custom-link', 'comments', 'icon-bubbles', '6', 'Comments', '', '2016-06-03 19:36:11', '2016-06-03 19:36:11');
+INSERT INTO `menu_nodes` VALUES ('272', '2', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', 'start', '2015-01-09 07:34:11', '2015-01-26 15:08:30'), ('273', '2', '301', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Post Categories', '', '2015-01-09 07:34:11', '2016-01-18 03:43:37'), ('280', '2', '403', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2015-01-09 07:34:11', '2016-01-21 04:16:51'), ('283', '2', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('291', '2', '403', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2015-01-09 07:34:11', '2016-01-20 09:45:17'), ('297', '2', '403', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2015-01-09 07:34:11', '2015-12-22 11:30:12'), ('300', '2', '301', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2015-03-14 16:47:08', '2016-01-18 03:43:37'), ('301', '2', '0', '0', 'custom-link', 'post', 'icon-layers', '1', 'Posts', '', '2015-03-14 16:47:08', '2015-12-22 09:48:57'), ('331', '2', '414', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('332', '2', '414', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2015-04-02 15:54:31', '2016-01-18 12:22:11'), ('403', '2', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2015-09-13 01:22:25', '2016-01-20 09:45:17'), ('414', '2', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'Ecommerce', '', '2016-01-15 07:12:15', '2016-01-18 12:22:11'), ('415', '2', '438', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-01-19 06:50:46', '2016-01-24 14:05:00'), ('416', '2', '403', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-01-21 02:10:32', '2016-01-21 04:16:51'), ('437', '2', '403', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-01-24 06:24:54', '2016-01-24 06:24:54'), ('438', '2', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('439', '2', '438', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-01-24 14:05:00', '2016-01-24 14:05:00'), ('440', '2', '414', '0', 'custom-link', 'coupons', 'fa fa-code', '3', 'Coupons', '', '2016-01-27 09:23:56', '2016-07-08 15:48:10'), ('441', '2', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '7', 'Contacts', '', '2016-01-28 10:14:54', '2016-06-03 19:36:11'), ('462', '8', '0', '0', 'custom-link', 'dashboard', 'fa fa-home', '0', 'Dashboard', '', '2016-05-12 00:36:16', '2016-05-12 00:36:16'), ('463', '8', '0', '0', 'custom-link', 'posts', 'icon-layers', '1', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('464', '8', '463', '0', 'custom-link', 'posts', 'icon-layers', '0', 'Posts', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('465', '8', '463', '0', 'custom-link', 'categories', 'fa fa-sitemap', '1', 'Categories', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('466', '8', '0', '0', 'custom-link', 'orders', 'fa fa-shopping-cart', '2', 'E-commerce', '', '2016-05-12 00:36:16', '2016-05-12 18:00:19'), ('467', '8', '466', '0', 'custom-link', 'products', 'fa fa-cubes', '0', 'Products', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('468', '8', '466', '0', 'custom-link', 'product-categories', 'fa fa-sitemap', '1', 'Product categories', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('469', '8', '466', '0', 'custom-link', 'coupons', 'fa fa-code', '2', 'Coupons', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('470', '8', '0', '0', 'custom-link', 'pages', 'fa fa-tasks', '3', 'Pages', '', '2016-05-12 00:38:17', '2016-05-12 18:00:19'), ('471', '8', '0', '0', 'custom-link', 'users', 'icon-users', '4', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('472', '8', '471', '0', 'custom-link', 'users', 'icon-users', '0', 'Users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('473', '8', '471', '0', 'custom-link', 'admin-users', 'icon-users', '1', 'Admin users', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('474', '8', '0', '0', 'custom-link', 'settings', 'fa fa-cogs', '5', 'Settings', '', '2016-05-12 00:40:08', '2016-05-12 18:00:19'), ('475', '8', '474', '0', 'custom-link', 'menus', 'fa fa-bars', '0', 'Menus', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('476', '8', '474', '0', 'custom-link', 'settings', 'fa fa-gear', '1', 'Options', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('477', '8', '474', '0', 'custom-link', 'custom-fields', 'fa fa-edit', '2', 'Custom fields', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('478', '8', '474', '0', 'custom-link', 'settings/languages', 'fa fa-language', '3', 'Languages', '', '2016-05-12 00:43:52', '2016-05-12 18:00:19'), ('479', '8', '474', '0', 'custom-link', 'countries-cities', 'fa fa-building', '4', 'Countries/Cities', '', '2016-05-12 00:43:52', '2016-05-12 00:43:52'), ('480', '8', '0', '0', 'custom-link', 'contacts', 'fa fa-suitcase', '7', 'Contacts', '', '2016-05-12 00:43:52', '2016-06-03 19:35:30'), ('501', '8', '466', '0', 'custom-link', 'brands', '', '3', 'Brands', 'icon-umbrella', '2016-05-29 01:36:47', '2016-05-29 01:36:47'), ('502', '8', '0', '0', 'custom-link', 'subscribed-emails', '', '8', 'Subscribed emails', 'icon-envelope', '2016-05-29 01:36:47', '2016-06-03 19:35:30'), ('503', '2', '414', '0', 'custom-link', 'brands', 'icon-umbrella', '4', 'Brands', '', '2016-05-29 01:38:13', '2016-07-08 15:48:10'), ('504', '2', '0', '0', 'custom-link', 'subscribed-emails', 'icon-envelope', '8', 'Subscribed emails', '', '2016-05-29 01:38:13', '2016-06-03 19:36:11'), ('509', '9', '0', '2', 'page', '', '', '0', '', '', '2016-05-31 20:24:38', '2016-06-12 08:47:35'), ('510', '10', '0', '1', 'page', '', '', '0', '', '', '2016-05-31 23:53:48', '2016-05-31 23:54:48'), ('511', '10', '0', '2', 'category', '', '', '1', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('512', '10', '0', '3', 'category', '', '', '2', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('513', '10', '0', '1', 'category', '', '', '3', '', '', '2016-05-31 23:53:48', '2016-05-31 23:53:48'), ('514', '10', '0', '2', 'page', '', '', '4', 'Liên hệ', '', '2016-05-31 23:53:48', '2016-06-01 00:18:30'), ('515', '8', '0', '0', 'custom-link', 'comments', 'icon-bubbles', '6', 'Comments', '', '2016-06-03 19:35:30', '2016-06-03 19:35:30'), ('516', '2', '0', '0', 'custom-link', 'comments', 'icon-bubbles', '6', 'Comments', '', '2016-06-03 19:36:11', '2016-06-03 19:36:11'), ('517', '2', '414', '0', 'custom-link', 'product-attribute-sets', 'fa fa-bars', '2', 'Attributes', '', '2016-07-08 15:48:10', '2016-07-08 15:48:10');
 COMMIT;
 
 -- ----------------------------
@@ -488,7 +495,7 @@ CREATE TABLE `page_metas` (
 --  Records of `page_metas`
 -- ----------------------------
 BEGIN;
-INSERT INTO `page_metas` VALUES ('1', '1', '4_jumbotron_text', 'LaraWebEd'), ('2', '1', '5_jumbotron_caption', 'A CMS built on Laravel'), ('4', '2', '4_jumbotron_text', 'LaraWebEd'), ('5', '2', '5_jumbotron_caption', 'Contact page template'), ('6', '3', '4_jumbotron_text', 'LaraWebEd'), ('7', '3', '5_jumbotron_caption', 'A CMS built on Laravel'), ('8', '4', '4_jumbotron_text', 'LaraWebEd'), ('9', '4', '5_jumbotron_caption', 'Contact page template'), ('12', '1', '10_slider', '[[{\"field_value\":\"\\/uploads\\/homepage\\/slider\\/slide1.jpg\",\"field_type\":\"image\",\"slug\":\"11_image\"}],[{\"field_value\":\"\\/uploads\\/homepage\\/slider\\/slide2.jpg\",\"field_type\":\"image\",\"slug\":\"11_image\"}],[{\"field_value\":\"\\/uploads\\/homepage\\/slider\\/slide3.jpg\",\"field_type\":\"image\",\"slug\":\"11_image\"}]]');
+INSERT INTO `page_metas` VALUES ('1', '1', '4_jumbotron_text', 'LaraWebEd'), ('2', '1', '5_jumbotron_caption', 'A CMS built on Laravel'), ('4', '2', '4_jumbotron_text', 'LaraWebEd'), ('5', '2', '5_jumbotron_caption', 'Contact page template'), ('6', '3', '4_jumbotron_text', 'LaraWebEd'), ('7', '3', '5_jumbotron_caption', 'A CMS built on Laravel'), ('8', '4', '4_jumbotron_text', 'LaraWebEd'), ('9', '4', '5_jumbotron_caption', 'Contact page template');
 COMMIT;
 
 -- ----------------------------
@@ -505,7 +512,7 @@ CREATE TABLE `pages` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 --  Records of `pages`
@@ -584,25 +591,24 @@ CREATE TABLE `posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
---  Table structure for `product_attribute_set_contents`
+--  Table structure for `product_attribute_sets`
 -- ----------------------------
-DROP TABLE IF EXISTS `product_attribute_set_contents`;
-CREATE TABLE `product_attribute_set_contents` (
+DROP TABLE IF EXISTS `product_attribute_sets`;
+CREATE TABLE `product_attribute_sets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `language_id` int(11) NOT NULL,
-  `title` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `product_attribute_sets_copy`
+--  Records of `product_attribute_sets`
 -- ----------------------------
-DROP TABLE IF EXISTS `product_attribute_sets_copy`;
-CREATE TABLE `product_attribute_sets_copy` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `global_title` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+BEGIN;
+INSERT INTO `product_attribute_sets` VALUES ('1', 'Colors', 'colors', '1', '0'), ('2', 'Size', 'size', '1', '0');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `product_attribute_sets_product_categories`
@@ -622,9 +628,19 @@ DROP TABLE IF EXISTS `product_attributes`;
 CREATE TABLE `product_attributes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `attribute_set_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
+  `order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `product_attributes`
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_attributes` VALUES ('1', '1', 'Black', 'black', '#000000', '0'), ('2', '1', 'White', 'white', '#ffffff', '0'), ('3', '1', 'Red', 'red', '#ff0000', '0'), ('4', '2', 'Size S', 's', 's', '0'), ('5', '2', 'Size M', 'm', 'm', '0'), ('6', '2', 'Size L', 'l', 'l', '0'), ('7', '2', 'Size XL', 'xl', 'xl', '0'), ('8', '2', 'Size XXL', 'xxl', 'xxl', '0');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `product_attributes_products`
@@ -634,6 +650,8 @@ CREATE TABLE `product_attributes_products` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `attribute_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
+  `change_price` double NOT NULL DEFAULT '0',
+  `is_percentage` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -725,7 +743,14 @@ CREATE TABLE `product_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `product_contents`
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_contents` VALUES ('1', '1', '59', '0', 'm21™ - 14SFG Special forces drop point  with veff serrations™', 'm21-14sfg-special-forces-drop-point-with-veff-serrations', '', '', '1', '/uploads/products/04_2.png', '', 'best seller,new', '0', '0', '0', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0', '2016-07-08 11:24:12', '2016-07-08 11:24:12');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `product_metas`
@@ -748,6 +773,7 @@ CREATE TABLE `products` (
   `is_popular` tinyint(1) NOT NULL DEFAULT '0',
   `brand_id` int(11) NOT NULL DEFAULT '0',
   `global_title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sku` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `page_template` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `order` int(11) NOT NULL DEFAULT '0',
@@ -755,7 +781,14 @@ CREATE TABLE `products` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+--  Records of `products`
+-- ----------------------------
+BEGIN;
+INSERT INTO `products` VALUES ('1', '0', '1', 'm21™ - 14SFG Special forces drop point  with veff serrations™', 'M2114SFG', '', '1', '0', '1', '2016-07-08 11:24:12', '2016-07-08 14:27:22');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `ratings`
@@ -789,7 +822,7 @@ CREATE TABLE `settings` (
 --  Records of `settings`
 -- ----------------------------
 BEGIN;
-INSERT INTO `settings` VALUES ('1', 'email_receives_feedback', 'duyphan.developer@gmail.com', '2015-11-24 16:31:17', '2015-11-24 16:31:20'), ('2', 'site_title', 'LaraWebEd', '2015-12-17 07:51:37', '2016-04-16 22:53:42'), ('3', 'site_logo', '', '2015-12-17 07:51:52', '2016-01-21 06:06:24'), ('4', 'site_keywords', 'LaraWebEd,Laravel CMS,Laravel 5 CMS,Saigon Software,sgsoftware.net', '2015-12-17 07:52:21', '2016-05-31 22:34:11'), ('5', 'default_language', '59', '2015-12-17 07:53:12', '2016-05-26 23:06:51'), ('6', 'google_analytics', '<script></script>', '2015-11-24 16:35:03', '2015-11-25 00:07:38'), ('7', 'construction_mode', '0', '2015-11-24 16:36:20', '2016-01-26 10:04:50'), ('8', 'site_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2016-01-21 01:40:32', '2016-01-21 01:52:35'), ('9', 'default_homepage', '1', '2016-01-21 14:11:32', '2016-01-21 14:11:34'), ('10', 'show_admin_bar', '1', '2016-01-26 10:00:54', '2016-06-11 00:10:23'), ('11', 'google_captcha_site_key', '6Lfy4hYTAAAAABIGAFmHHScJ_lUZR7UuzD7MoXDO', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('12', 'google_captcha_secret_key', '6Lfy4hYTAAAAAGTRaZggVzW_PAyVxmGguw8uSWyH', '2016-01-30 22:21:48', '2016-01-30 22:21:48'), ('13', 'dashboard_language', '1', '2016-05-14 18:53:01', '2016-05-14 18:53:01'), ('14', 'hot_line', '098.4848.519 - 0915.42.82.02', '2016-05-26 23:42:33', '2016-05-26 23:42:45'), ('15', 'facebook', 'https://www.facebook.com/duyphan.developer', '2016-05-28 23:12:24', '2016-05-28 23:12:24'), ('16', 'twitter', 'https://www.facebook.com/duyphan.developer', '2016-05-28 23:12:24', '2016-06-11 04:56:16'), ('17', 'youtube', 'https://www.youtube.com/channel/UC5XqPLFs_eeBu6LU4LZLY6w', '2016-05-28 23:12:24', '2016-05-31 22:28:43'), ('20', 'github', 'https://github.com/duyphan2502', '2016-05-31 22:25:07', '2016-05-31 22:25:07'), ('18', 'instagram', '', '2016-05-28 23:12:24', '2016-06-11 04:58:32'), ('19', 'pinterest', '', '2016-05-28 23:12:24', '2016-06-11 04:58:32'), ('21', 'email', 'duyphan.developer@gmail.com', '2016-06-11 04:55:49', '2016-06-11 04:55:49'), ('22', 'google-plus', 'https://www.facebook.com/duyphan.developer', '2016-06-11 04:57:52', '2016-06-11 04:57:52');
+INSERT INTO `settings` VALUES ('1', 'email_receives_feedback', 'duyphan.developer@gmail.com', '2015-11-24 16:31:17', '2015-11-24 16:31:20'), ('2', 'site_title', 'LaraWebEd', '2015-12-17 07:51:37', '2016-04-16 22:53:42'), ('3', 'site_logo', '', '2015-12-17 07:51:52', '2016-01-21 06:06:24'), ('4', 'site_keywords', 'LaraWebEd,Laravel CMS,Laravel 5 CMS,Saigon Software,sgsoftware.net', '2015-12-17 07:52:21', '2016-05-31 22:34:11'), ('5', 'default_language', '59', '2015-12-17 07:53:12', '2016-05-26 23:06:51'), ('6', 'google_analytics', '<script></script>', '2015-11-24 16:35:03', '2015-11-25 00:07:38'), ('7', 'construction_mode', '0', '2015-11-24 16:36:20', '2016-01-26 10:04:50'), ('8', 'site_description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2016-01-21 01:40:32', '2016-01-21 01:52:35'), ('9', 'default_homepage', '1', '2016-01-21 14:11:32', '2016-01-21 14:11:34'), ('10', 'show_admin_bar', '1', '2016-01-26 10:00:54', '2016-06-11 00:10:23'), ('13', 'dashboard_language', '1', '2016-05-14 18:53:01', '2016-05-14 18:53:01'), ('14', 'hot_line', '098.4848.519 - 0915.42.82.02', '2016-05-26 23:42:33', '2016-05-26 23:42:45'), ('15', 'facebook', 'https://www.facebook.com/duyphan.developer', '2016-05-28 23:12:24', '2016-05-28 23:12:24'), ('16', 'twitter', 'https://www.facebook.com/duyphan.developer', '2016-05-28 23:12:24', '2016-06-11 04:56:16'), ('17', 'youtube', 'https://www.youtube.com/channel/UC5XqPLFs_eeBu6LU4LZLY6w', '2016-05-28 23:12:24', '2016-05-31 22:28:43'), ('20', 'github', 'https://github.com/duyphan2502', '2016-05-31 22:25:07', '2016-05-31 22:25:07'), ('18', 'instagram', '', '2016-05-28 23:12:24', '2016-06-11 04:58:32'), ('19', 'pinterest', '', '2016-05-28 23:12:24', '2016-06-11 04:58:32'), ('21', 'email', 'duyphan.developer@gmail.com', '2016-06-11 04:55:49', '2016-06-11 04:55:49'), ('22', 'google-plus', 'https://www.facebook.com/duyphan.developer', '2016-06-11 04:57:52', '2016-06-11 04:57:52');
 COMMIT;
 
 -- ----------------------------

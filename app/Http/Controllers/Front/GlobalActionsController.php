@@ -14,7 +14,7 @@ class GlobalActionsController extends BaseFrontController
     public function postContactUs(Request $request, Models\Contact $object)
     {
         $googleCaptchaResponse = $request->get('g-recaptcha-response', null);
-        if (!$this->_validateGoogleCaptcha($googleCaptchaResponse)) {
+        if (!_validateGoogleCaptcha($googleCaptchaResponse)) {
             return $this->_responseAutoDetect($request, trans('captcha.error'), true, 500, 'error', true);
         }
 

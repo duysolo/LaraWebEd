@@ -49,6 +49,9 @@ $router->group(['middleware' => ['web']], function ($router) {
         /*Product categories*/
         $router->controller('product-categories', 'ProductCategoryController');
 
+        /*Product attribute sets*/
+        $router->controller('product-attribute-sets', 'ProductAttributeSetController');
+
         /*Coupons*/
         $router->controller('coupons', 'CouponController');
 

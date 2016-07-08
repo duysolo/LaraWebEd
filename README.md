@@ -81,6 +81,10 @@ On this projects, I use the latest Laravel version (currently 5.2). Please go to
 
 > MAIL_ENCRYPTION=ssl
 
+> RECAPTCHA_SITE_KEY=6Lfy4hYTAAAAABIGAFmHHScJ_lUZR7UuzD7MoXDO
+
+> RECAPTCHA_SECRET_KEY=6Lfy4hYTAAAAAGTRaZggVzW_PAyVxmGguw8uSWyH
+
 ####Note
 - This site can only be run at domain name, not folder link.
 - On your localhost, setting virtual host. Something like 
@@ -93,26 +97,14 @@ is ok. Cannot use as
 
 Follow these steps to see how to config virtual host: [Virtual host](./documentation/VirtualHost.md)
 
-> For the best, you should set your domain in local as sub-domain of **mydev.local**,
-> because you dont need to change the secret key and site key for GoogleCaptcha in settings.
-
-
 Well done! Now, you can login to the dashboard by access to [your_domain_site/admincp](your_domain_site/admincp)
 > Username: **webmaster**
 
 > Password: **PassCuaDev@2015**
 
-
-### Demo site
-Checkout branch **demo-blog** for a demo blog site.
-But the version of LaraWebEd of this branch is too old. You can just see how to build a site with LaraWebEd with this branch.
-
 Enjoy!
 
-#####Please star for me to make me happy and continue to develop this cms <3. I always try my best!
-
-####About the future
-I'm creating a ecommerce site with this cms. I will release that site for all of you when done.
+#####Star for me if this cms helps you a lot!
 
 ###Table of contents
 

@@ -146,8 +146,6 @@ class BrandController extends BaseAdminController
 
     public function getEdit(Request $request, Brand $object, $id = 0)
     {
-        $dis = [];
-
         if ($id == 0) {
             $this->_setPageTitle('Create brand');
             $oldInputs = old();
@@ -157,10 +155,10 @@ class BrandController extends BaseAdminController
                     $oldObject->$key = $row;
                 }
                 $oldObject->id = $id;
-                $dis['object'] = $oldObject;
+                $this->dis['object'] = $oldObject;
             } else {
                 $object->id = $id;
-                $dis['object'] = $object;
+                $this->dis['object'] = $object;
             }
         } else {
             $item = $object->getBy([
@@ -175,11 +173,11 @@ class BrandController extends BaseAdminController
                 return redirect()->back();
             }
 
-            $dis['object'] = $item;
+            $this->dis['object'] = $item;
             $this->_setPageTitle('Edit brand', $item->name);
         }
 
-        return $this->_viewAdmin('brands.edit', $dis);
+        return $this->_viewAdmin('brands.edit', $this->dis);
     }
 
     public function postEdit(Request $request, Brand $object, $id = 0)
