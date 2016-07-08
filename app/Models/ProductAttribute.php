@@ -44,4 +44,38 @@ class ProductAttribute extends AbstractModel
     {
         return $this->belongsToMany('App\Models\Product', 'product_attributes_products', 'attribute_id', 'product_id');
     }
+
+    public function deleteItem($id)
+    {
+        $result = [
+            'error' => true,
+            'response_code' => 500,
+            'message' => 'Some error occurred!',
+        ];
+        $object = static::find($id);
+
+        if (!$object) {
+            $result['message'] = 'The attribute you have tried to edit not found';
+            return $result;
+        }
+
+        $resultDeleteProductAttributeProduct = true;
+
+        \DB::beginTransaction();
+
+        $resultDeleteProductAttributeProduct = $object->product()->sync([]);
+        $result = $object->delete();
+
+        if($result && $resultDeleteProductAttributeProduct) {
+            \DB::commit();
+            return [
+                'error' => false,
+                'response_code' => 200,
+                'message' => 'Delete attribute completed',
+            ];
+        } else {
+            \DB::rollBack();
+        }
+        return $result;
+    }
 }

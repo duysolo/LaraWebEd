@@ -162,6 +162,12 @@ class ProductAttributeSetController extends BaseAdminController
         return response()->json($result, $result['response_code']);
     }
 
+    public function deleteDelete(Request $request, ProductAttributeSet $object, $id)
+    {
+        $result = $object->deleteItem($id);
+        return response()->json($result, $result['response_code']);
+    }
+
     public function getEdit(Request $request, ProductAttributeSet $object, ProductAttribute $objectAttribute, $id)
     {
         $oldInputs = old();
@@ -371,6 +377,12 @@ class ProductAttributeSetController extends BaseAdminController
 
         $result = $object->fastEdit($data, false, true);
 
+        return response()->json($result, $result['response_code']);
+    }
+
+    public function deleteDeleteAttribute(Request $request, ProductAttribute $object, $id)
+    {
+        $result = $object->deleteItem($id);
         return response()->json($result, $result['response_code']);
     }
 

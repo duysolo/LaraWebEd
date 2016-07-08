@@ -57,6 +57,11 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         return $this->belongsToMany('App\Models\ProductCategory', 'product_categories_products', 'product_id', 'category_id');
     }
 
+    public function productAttribute()
+    {
+        return $this->belongsToMany('App\Models\ProductAttribute', 'product_attributes_products', 'product_id', 'attribute_id');
+    }
+
     public function brand()
     {
         return $this->belongsTo('App\Models\Brand', 'brand_id');
