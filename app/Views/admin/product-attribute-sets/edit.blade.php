@@ -20,21 +20,21 @@
         $(document).ready(function () {
             @if(isset($object->id) && $object->id)
                 TableDatatablesAjax.init({
-                    ajaxGet: '{{ asset($adminCpAccess.'/product-attribute-sets/details/'.$object->id) }}',
-                    src: $('#datatable_ajax'),
-                    onSuccess: function (grid, response) {
+                ajaxGet: '{{ asset($adminCpAccess.'/product-attribute-sets/details/'.$object->id) }}',
+                src: $('#datatable_ajax'),
+                onSuccess: function (grid, response) {
 
-                    },
-                    onError: function (grid) {
+                },
+                onError: function (grid) {
 
-                    },
-                    onDataLoad: function (grid) {
+                },
+                onDataLoad: function (grid) {
 
-                    },
-                    editableFields: [2, 3, 4, 5],
-                    actionPosition: 6,
-                    ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/product-attribute-sets/fast-edit-attribute/'.$object->id) }}'
-                });
+                },
+                editableFields: [1, 2, 3, 4],
+                actionPosition: 5,
+                ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/product-attribute-sets/fast-edit-attribute/'.$object->id) }}'
+            });
             @endif
 
             Utility.convertTitleToSlug('.the-object-title', '.the-object-slug');
@@ -90,8 +90,8 @@
                 </div>
                 <div class="portlet-body clearfix">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <form class="js-validate-form" method="POST" accept-charset="utf-8" action="" novalidate>
+                        <form class="js-validate-form" method="POST" accept-charset="utf-8" action="" novalidate>
+                            <div class="col-md-6">
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label><b>Title <span class="text-danger">(*)</span></b></label>
@@ -119,8 +119,21 @@
                                         <i class="fa fa-check"></i> Save
                                     </button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="col-md-6">
+                                @if(isset($categoriesHtml) && trim($categoriesHtml) != '')
+                                    <div class="form-group">
+                                        <label><b>Visible on these product categories:</b></label>
+                                        <div class="form-control height-auto">
+                                            <div class="scroller" style="max-height: 300px;" data-always-visible="1"
+                                                 data-rail-visible1="1">
+                                                {!! $categoriesHtml or '' !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -128,84 +141,83 @@
             <!-- Begin: life time stats -->
             @if(isset($object->id) && $object->id)
                 <div class="portlet light portlet-fit portlet-datatable bordered">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-layers font-dark"></i>
-                        <span class="caption-subject font-dark sbold uppercase">Related attributes</span>
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-layers font-dark"></i>
+                            <span class="caption-subject font-dark sbold uppercase">Related attributes</span>
+                        </div>
+                        <div class="actions">
+                            <div class="btn-group btn-group-devided">
+                                <a class="btn btn-transparent btn-success btn-circle btn-sm active btn-create"
+                                   href="{{ asset($adminCpAccess.'/product-attribute-sets/edit-attribute/'.$object->id.'/0') }}">
+                                    <i class="fa fa-plus"></i> Create
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="actions">
-                        <div class="btn-group btn-group-devided">
-                            <a class="btn btn-transparent btn-success btn-circle btn-sm active btn-create"
-                               href="{{ asset($adminCpAccess.'/product-attribute-sets/edit-attribute/'.$object->id.'/0') }}">
-                                <i class="fa fa-plus"></i> Create
-                            </a>
+                    <div class="portlet-body">
+                        <div class="table-container">
+                            <div class="table-actions-wrapper">
+                                <span></span>
+                                <select class="table-group-action-input form-control input-inline input-small input-sm">
+                                    <option value="">Select...</option>
+                                    <option value="1">Activated</option>
+                                    <option value="0">Disabled</option>
+                                </select>
+                                <button class="btn btn-sm green table-group-action-submit" data-toggle="confirmation">
+                                    <i class="fa fa-check"></i> Submit
+                                </button>
+                            </div>
+                            <table class="table table-striped table-bordered table-hover table-checkable vertical-middle"
+                                   id="datatable_ajax">
+                                <thead>
+                                <tr role="row" class="heading">
+                                    <th width="1%">
+                                        <input type="checkbox" class="group-checkable">
+                                    </th>
+                                    <th width="15%">Name</th>
+                                    <th width="15%">Slug</th>
+                                    <th width="15%">Value</th>
+                                    <th width="5%">Order</th>
+                                    <th width="10%">Fast edit</th>
+                                    <th width="10%">Actions</th>
+                                </tr>
+                                <tr role="row" class="filter">
+                                    <td></td>
+                                    <td>
+                                        <input placeholder="Search..." type="text"
+                                               class="form-control form-filter input-sm"
+                                               name="name">
+                                    </td>
+                                    <td>
+                                        <input placeholder="Search..." type="text"
+                                               class="form-control form-filter input-sm"
+                                               name="slug">
+                                    </td>
+                                    <td>
+                                        <input placeholder="Search..." type="text"
+                                               class="form-control form-filter input-sm"
+                                               name="value">
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success filter-submit margin-bottom">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-warning filter-cancel">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="portlet-body">
-                    <div class="table-container">
-                        <div class="table-actions-wrapper">
-                            <span></span>
-                            <select class="table-group-action-input form-control input-inline input-small input-sm">
-                                <option value="">Select...</option>
-                                <option value="1">Activated</option>
-                                <option value="0">Disabled</option>
-                            </select>
-                            <button class="btn btn-sm green table-group-action-submit" data-toggle="confirmation">
-                                <i class="fa fa-check"></i> Submit
-                            </button>
-                        </div>
-                        <table class="table table-striped table-bordered table-hover table-checkable vertical-middle"
-                               id="datatable_ajax">
-                            <thead>
-                            <tr role="row" class="heading">
-                                <th width="1%">
-                                    <input type="checkbox" class="group-checkable">
-                                </th>
-                                <th width="5%">
-                                    #
-                                </th>
-                                <th width="15%">Name</th>
-                                <th width="15%">Slug</th>
-                                <th width="15%">Value</th>
-                                <th width="5%">Order</th>
-                                <th width="10%">Fast edit</th>
-                                <th width="10%">Actions</th>
-                            </tr>
-                            <tr role="row" class="filter">
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm"
-                                           name="name">
-                                </td>
-                                <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm"
-                                           name="slug">
-                                </td>
-                                <td>
-                                    <input placeholder="Search..." type="text" class="form-control form-filter input-sm"
-                                           name="value">
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <button class="btn btn-sm btn-success filter-submit margin-bottom">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-warning filter-cancel">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            @endif
-            <!-- End: life time stats -->
+        @endif
+        <!-- End: life time stats -->
         </div>
     </div>
 @endsection

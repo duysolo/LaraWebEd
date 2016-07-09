@@ -11,7 +11,7 @@
  Target Server Version : 50630
  File Encoding         : utf-8
 
- Date: 07/09/2016 00:45:30 AM
+ Date: 07/09/2016 17:40:20 PM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ CREATE TABLE `admin_users` (
 --  Records of `admin_users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'y058f5sx1JyoztWMReNfEMoUz7HzizQZtRCtMG77ai5idtXE0jUejb9QRtXX', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-07-08 13:35:08', '2014-10-14 00:10:13', '2016-07-08 13:35:08');
+INSERT INTO `admin_users` VALUES ('1', '1', 'webmaster', '$2y$10$HZpZYik9nYGc8kBtKnICjujtBFIXd42ITgZTA.Ss2OvJg4k9g3PfG', '1', 'y058f5sx1JyoztWMReNfEMoUz7HzizQZtRCtMG77ai5idtXE0jUejb9QRtXX', '749f258446f1d3bc08c9b669b3bb1a0f', '2015-12-22 01:33:21', '2016-07-09 17:01:29', '2014-10-14 00:10:13', '2016-07-09 17:01:29');
 COMMIT;
 
 -- ----------------------------
@@ -512,7 +512,7 @@ CREATE TABLE `pages` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 --  Records of `pages`
@@ -619,7 +619,14 @@ CREATE TABLE `product_attribute_sets_product_categories` (
   `attribute_set_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `product_attribute_sets_product_categories`
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_attribute_sets_product_categories` VALUES ('1', '1', '6'), ('2', '1', '5'), ('3', '1', '1'), ('5', '1', '2'), ('6', '1', '4'), ('7', '1', '7'), ('8', '2', '5'), ('9', '2', '1'), ('10', '2', '3'), ('11', '2', '2'), ('12', '2', '4');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `product_attributes`
@@ -670,7 +677,14 @@ CREATE TABLE `product_categories` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+--  Records of `product_categories`
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_categories` VALUES ('1', '6', 'Jackets', '', '1', '0', '0', '2016-07-09 17:24:16', '2016-07-09 17:27:24'), ('2', '6', 'Shirts', '', '1', '0', '0', '2016-07-09 17:24:32', '2016-07-09 17:27:18'), ('3', '6', 'Pants', '', '1', '0', '0', '2016-07-09 17:24:46', '2016-07-09 17:27:29'), ('4', '6', 'Shorts', '', '1', '0', '0', '2016-07-09 17:24:55', '2016-07-09 17:27:35'), ('5', '6', 'Baselayers & Underwear', '', '1', '0', '0', '2016-07-09 17:25:28', '2016-07-09 17:27:43'), ('6', '0', 'Mens', '', '1', '0', '0', '2016-07-09 17:27:00', '2016-07-09 17:27:00'), ('7', '0', 'Womens', '', '1', '0', '0', '2016-07-09 17:30:20', '2016-07-09 17:30:20');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `product_categories_products`
@@ -703,7 +717,14 @@ CREATE TABLE `product_category_contents` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+--  Records of `product_category_contents`
+-- ----------------------------
+BEGIN;
+INSERT INTO `product_category_contents` VALUES ('1', '1', '59', 'Jackets', 'jackets', '', '', '1', '', '', '', '0', '2016-07-09 17:24:16', '2016-07-09 17:24:16'), ('2', '2', '59', 'Shirts', 'shirts', '', '', '1', '', '', '', '0', '2016-07-09 17:24:32', '2016-07-09 17:24:32'), ('3', '3', '59', 'Pants', 'pants', '', '', '1', '', '', '', '0', '2016-07-09 17:24:46', '2016-07-09 17:24:46'), ('4', '4', '59', 'Shorts', 'shorts', '', '', '1', '', '', '', '0', '2016-07-09 17:24:55', '2016-07-09 17:24:55'), ('5', '5', '59', 'Baselayers & Underwear', 'baselayers-underwear', '', '', '1', '', '', '', '0', '2016-07-09 17:25:28', '2016-07-09 17:25:28'), ('6', '6', '59', 'Mens', 'mens', '', '', '1', '', '', '', '0', '2016-07-09 17:27:00', '2016-07-09 17:27:00'), ('7', '7', '59', 'Womens', 'womens', '', '', '1', '', '', '', '0', '2016-07-09 17:30:20', '2016-07-09 17:30:20');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `product_category_metas`

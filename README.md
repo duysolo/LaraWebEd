@@ -10,6 +10,8 @@ If you need more support, please feel free to contact me via:
 - Skype: tedozi.manson
 - Email: duyphan.developer@gmail.com
 
+###LaraWebEd is always free.
+
 ###Some features of this CMS:
 - Manage page, post, product, category, product category.
 - Manage file by el-finder.
@@ -21,6 +23,7 @@ If you need more support, please feel free to contact me via:
 - Options.
 - Multi language.
 - Manage user feedbacks.
+- Manage product attributes.
 
 ----------
 

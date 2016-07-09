@@ -30,8 +30,8 @@
                 onDataLoad: function(grid){
 
                 },
-                editableFields: [2, 3, 5],
-                actionPosition: 6,
+                editableFields: [1, 2, 4],
+                actionPosition: 5,
                 ajaxUrlSaveRow: '{{ asset($adminCpAccess.'/product-attribute-sets/fast-edit') }}'
             });
         });
@@ -77,9 +77,6 @@
                                 <th width="1%">
                                     <input type="checkbox" class="group-checkable">
                                 </th>
-                                <th width="5%">
-                                    #
-                                </th>
                                 <th width="30%">Title</th>
                                 <th width="15%">Alias</th>
                                 <th width="5%">Status</th>
@@ -88,7 +85,6 @@
                                 <th width="10%">Actions</th>
                             </tr>
                             <tr role="row" class="filter">
-                                <td></td>
                                 <td></td>
                                 <td>
                                     <input placeholder="Search..." type="text" class="form-control form-filter input-sm" name="title">

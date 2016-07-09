@@ -73,22 +73,18 @@ class ProductAttributeSetController extends BaseAdminController
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
             case 1:{
-                $orderBy = 'id';
-            }
-                break;
-            case 2:{
                 $orderBy = 'title';
             }
                 break;
-            case 3:{
+            case 2:{
                 $orderBy = 'slug';
             }
                 break;
-            case 4:{
+            case 3:{
                 $orderBy = 'status';
             }
                 break;
-            case 5:{
+            case 4:{
                 $orderBy = 'order';
             }
                 break;
@@ -131,7 +127,6 @@ class ProductAttributeSetController extends BaseAdminController
 
             $records["data"][] = array(
                 '<input type="checkbox" name="id[]" value="' . $row->id . '">',
-                $row->id,
                 $row->title,
                 $row->slug,
                 $status,
@@ -171,6 +166,8 @@ class ProductAttributeSetController extends BaseAdminController
     public function getEdit(Request $request, ProductAttributeSet $object, ProductAttribute $objectAttribute, $id)
     {
         $oldInputs = old();
+        $checkedNodes = [];
+
         if ($oldInputs) {
             $oldObject = new \stdClass();
             foreach ($oldInputs as $key => $row) {
@@ -187,10 +184,12 @@ class ProductAttributeSetController extends BaseAdminController
                     $this->_showFlashMessages();
                     return redirect()->back();
                 }
-
                 $this->dis['object'] = $attributeSet;
+                $checkedNodes = $attributeSet->productCategory()->getRelatedIds()->toArray();
             }
         }
+
+        $this->dis['categoriesHtml'] = $this->_getCategories(0, $checkedNodes);
 
         return $this->_viewAdmin('product-attribute-sets.edit', $this->dis);
     }
@@ -204,6 +203,8 @@ class ProductAttributeSetController extends BaseAdminController
 
         $id = (int)$id;
 
+        $data['id'] = $id;
+
         \DB::beginTransaction();
 
         if(!$id) {
@@ -216,6 +217,23 @@ class ProductAttributeSetController extends BaseAdminController
             \DB::rollBack();
 
             $this->_setFlashMessage($result['message'], 'error');
+            $this->_showFlashMessages();
+
+            if ($id == 0) {
+                return redirect()->back()->withInput();
+            }
+
+            return redirect()->back();
+        }
+
+        $resultSyncCategory = true;
+        if (isset($data['category_ids'])) {
+            $resultSyncCategory = $result['object']->productCategory()->sync($data['category_ids']);
+        }
+        if(!$resultSyncCategory) {
+            \DB::rollBack();
+
+            $this->_setFlashMessage('Error when sync related categories', 'error');
             $this->_showFlashMessages();
 
             if ($id == 0) {
@@ -283,22 +301,18 @@ class ProductAttributeSetController extends BaseAdminController
         $orderBy = $request->get('order')[0]['column'];
         switch ($orderBy) {
             case 1:{
-                $orderBy = 'id';
-            }
-                break;
-            case 2:{
                 $orderBy = 'name';
             }
                 break;
-            case 3:{
+            case 2:{
                 $orderBy = 'slug';
             }
                 break;
-            case 4:{
+            case 3:{
                 $orderBy = 'value';
             }
                 break;
-            case 5:{
+            case 4:{
                 $orderBy = 'order';
             }
                 break;
@@ -337,7 +351,6 @@ class ProductAttributeSetController extends BaseAdminController
 
             $records["data"][] = array(
                 '<input type="checkbox" name="id[]" value="' . $row->id . '">',
-                $row->id,
                 $row->name,
                 $row->slug,
                 $row->value,
@@ -480,5 +493,27 @@ class ProductAttributeSetController extends BaseAdminController
         }
 
         return redirect()->back();
+    }
+
+    private function _getCategories($parent = 0, $checkedNodes = [])
+    {
+        $result = '';
+        $nodes = Models\ProductCategory::getBy([
+            'parent_id' => $parent,
+        ], [
+            'global_title' => 'ASC',
+        ], true);
+        if ($nodes->count() > 0) {
+            $result .= '<ul class="list-unstyled">';
+            foreach ($nodes as $key => $row) {
+                $categoryTitle = $row->global_title;
+                $result .= '<li>';
+                $result .= '<label><input type="checkbox" ' . ((in_array($row->id, $checkedNodes)) ? 'checked="checked"' : '') . ' name="category_ids[]" value="' . $row->id . '">' . $categoryTitle . '</label>';
+                $result .= $this->_getCategories($row->id, $checkedNodes);
+                $result .= '</li>';
+            }
+            $result .= '</ul>';
+        }
+        return $result;
     }
 }
