@@ -292,53 +292,6 @@ class CustomFieldController extends BaseAdminController
         return view('admin._partials.custom-fields._rules', ['options' => $options, 'rules' => $rules, 'categories' => $categories, 'productCategories' => $productCategories]);
     }
 
-    private function recursiveGetCategoriesSelectSrc($categoryId, $orderBy = 'id', $orderType = 'asc', $childText = 0, $selectedNode = 0, $exceptIds = [])
-    {
-        $updateTo = '';
-        $child = '';
-        for ($i = 0; $i < $childText; $i++) {
-            $child .= '——';
-        }
-
-        $categories = Category::where('parent_id', '=', $categoryId);
-        if (sizeof($exceptIds) > 0) {
-
-            $categories = $categories->whereNotIn('id', $exceptIds);
-        }
-        $categories = $categories->orderBy($orderBy, $orderType)->get();
-
-        foreach ($categories as $key => $row) {
-            //$updateTo .= '<option value="' . $row->id . '"' . (($row->id == (int) $selectedNode) ? ' selected="selected"' : '') . '>' . $child . ' ' . $row->global_title . '</option>';
-            $updateTo .= '<option value="' . $row->id . '"' . (($row->id == (int) $selectedNode) ? ' selected="selected"' : '') . '>' . $child . ' ' . $row->global_title . '</option>';
-            $updateTo .= $this->recursiveGetCategoriesSelectSrc($row->id, $orderBy, $orderType, $childText + 1, $selectedNode, $exceptIds);
-
-        }
-        return $updateTo;
-    }
-
-    private function recursiveGetProductCategoriesSelectSrc($categoryId, $orderBy = 'id', $orderType = 'asc', $childText = 0, $selectedNode = 0, $exceptIds = [], $rel_name = '')
-    {
-        $updateTo = '';
-        $child = '';
-        for ($i = 0; $i < $childText; $i++) {
-            $child .= '——';
-        }
-
-        $categories = ProductCategory::where('parent_id', '=', $categoryId);
-        if (sizeof($exceptIds) > 0) {
-
-            $categories = $categories->whereNotIn('id', $exceptIds);
-        }
-        $categories = $categories->orderBy($orderBy, $orderType)->get();
-
-        foreach ($categories as $key => $row) {
-            $updateTo .= '<option value="' . $row->id . '"' . (($row->id == (int) $selectedNode && $rel_name == 'category_id') ? ' selected="selected"' : '') . '>' . $child . ' ' . $row->global_title . '</option>';
-            $updateTo .= $this->recursiveGetProductCategoriesSelectSrc($row->id, $orderBy, $orderType, $childText + 1, $selectedNode, $exceptIds, $rel_name);
-
-        }
-        return $updateTo;
-    }
-
     private function _getAllUserRoles()
     {
         $result = [];
