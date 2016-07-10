@@ -504,15 +504,11 @@ class ProductAttributeSetController extends BaseAdminController
             'global_title' => 'ASC',
         ], true);
         if ($nodes->count() > 0) {
-            $result .= '<ul class="list-unstyled">';
-            foreach ($nodes as $key => $row) {
-                $categoryTitle = $row->global_title;
-                $result .= '<li>';
-                $result .= '<label><input type="checkbox" ' . ((in_array($row->id, $checkedNodes)) ? 'checked="checked"' : '') . ' name="category_ids[]" value="' . $row->id . '">' . $categoryTitle . '</label>';
-                $result .= $this->_getCategories($row->id, $checkedNodes);
-                $result .= '</li>';
-            }
-            $result .= '</ul>';
+            $dis = [
+                'nodes' => $nodes,
+                'checkedNodes' => $checkedNodes
+            ];
+            $result = view('admin._partials._categories', $dis)->render();
         }
         return $result;
     }
