@@ -259,7 +259,7 @@ class MenuController extends BaseAdminController
         }
 
         $menu_nodes = $this->_getMenuNodes($menu->id, $parent_id);
-        $html_src = $html_src = view('admin._partials.menu._nestable-menu-src', [
+        $html_src = view('admin._partials.menu._nestable-menu-src', [
             'menuNodes' => $menu_nodes,
         ])->render();
         return $html_src;
