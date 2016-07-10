@@ -54,6 +54,11 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
         return $this->belongsToMany('App\Models\Product', 'product_categories_products', 'category_id', 'product_id');
     }
 
+    public function productAttributeSet()
+    {
+        return $this->belongsToMany('App\Models\ProductAttributeSet', 'product_attribute_sets_product_categories', 'category_id', 'attribute_set_id');
+    }
+
     public function updateItem($id, $data, $justUpdateSomeFields = false)
     {
         $data['id'] = $id;

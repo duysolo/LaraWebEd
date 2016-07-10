@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="/admin/core/third_party/bootstrap-tagsinput/bootstrap-tagsinput.css">
     <link rel="stylesheet" href="/admin/core/third_party/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="/admin/core/third_party/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <style>
+        #tab_attributes .col-md-6 {
+            float : left;
+        }
+
+        #tab_attributes .col-md-6:nth-child(2n+2) {
+            float : right;
+        }
+    </style>
 @endsection
 
 @section('js')
@@ -18,6 +27,8 @@
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/config.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/adapters/jquery.js"></script>
+
+    <script type="text/javascript" src="/admin/dist/pages/product-attributes.js"></script>
 @endsection
 
 @section('js-init')
@@ -120,6 +131,13 @@
 
             /*Handle custom fields*/
             Utility.handleCustomFields();
+
+            @if(isset($object->id) && $object->id)
+                $('body').on('click', '.tab-change-url a[data-toggle=tab]', function (event) {
+                var currentLink = '{{ '/'.$adminCpAccess.'/products/edit/'.$object->id.'/'.$currentEditLanguage->id }}';
+                window.history.pushState('', '', currentLink + $(this).attr('href'));
+            });
+            @endif
         });
     </script>
 @endsection
@@ -147,23 +165,32 @@
                             </div>
                             <div class="portlet-body">
                                 <div class="tabbable-bordered">
-                                    <ul class="nav nav-tabs">
-                                        <li class="active">
-                                            <a href="#tab_general" data-toggle="tab"> General </a>
+                                    <?php
+                                    $currentTab = Request::get('tab', 'tab_general');
+                                    ?>
+                                    <ul class="nav nav-tabs tab-change-url">
+                                        <li class="{{ $currentTab == 'tab_general' ? 'active' : '' }}">
+                                            <a href="?tab=tab_general" data-target="#tab_general" data-toggle="tab">General</a>
                                         </li>
                                         @if($currentId != 0)
-                                            <li>
-                                                <a href="#tab_other" data-toggle="tab"> Other </a>
+                                            @if(isset($attributeSet) && $attributeSet->count())
+                                                <li class="{{ $currentTab == 'tab_attributes' ? 'active' : '' }}">
+                                                    <a href="?tab=tab_attributes" data-target="#tab_attributes"
+                                                       data-toggle="tab">Attributes</a>
+                                                </li>
+                                            @endif
+                                            <li class="{{ $currentTab == 'tab_reviews' ? 'active' : '' }}">
+                                                <a href="?tab=tab_reviews" data-target="#tab_reviews" data-toggle="tab">Reviews</a>
                                             </li>
-                                    @endif
-                                    <!--li>
-                                            <a href="#tab_reviews" data-toggle="tab"> Reviews
-                                                <span class="badge badge-success"> 3 </span>
-                                            </a>
-                                        </li-->
+                                            <li class="{{ $currentTab == 'tab_customfields' ? 'active' : '' }}">
+                                                <a href="?tab=tab_customfields" data-target="#tab_customfields"
+                                                   data-toggle="tab">Custom fields</a>
+                                            </li>
+                                        @endif
                                     </ul>
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="tab_general">
+                                        <div class="tab-pane {{ $currentTab == 'tab_general' ? 'active' : '' }}"
+                                             id="tab_general">
                                             <form class="js-validate-form" method="POST" accept-charset="utf-8"
                                                   action="" novalidate>
                                                 {{ csrf_field() }}
@@ -275,8 +302,7 @@
                                                             <label class="col-md-2 control-label">Categories:</label>
                                                             <div class="col-md-10">
                                                                 <div class="form-control height-auto">
-                                                                    <div class="scroller" style="max-height: 300px;"
-                                                                         data-always-visible="1" data-rail-visible1="1">
+                                                                    <div style="max-height: 300px; overflow: auto;">
                                                                         {!! $categoriesHtml !!}
                                                                     </div>
                                                                 </div>
@@ -425,24 +451,128 @@
                                             </form>
                                         </div>
                                         @if($currentId != 0)
-                                            <div class="tab-pane" id="tab_other">
-                                                {!! $customFieldBoxes or '' !!}
-                                                <form class="update-custom-fields-form" method="POST"
-                                                      accept-charset="utf-8"
-                                                      action="" novalidate>
-                                                    {{ csrf_field() }}
-                                                    <textarea name="custom_fields" id="custom_fields_container"
-                                                              class="hidden form-control"
-                                                              style="display: none !important;"
-                                                              cols="30" rows="10"></textarea>
-                                                    <div class="form-group mar-bot-0">
-                                                        <div class="col-md-10 col-md-push-2 text-right">
+                                            @if(isset($attributeSet) && $attributeSet->count())
+                                                <div class="tab-pane {{ $currentTab == 'tab_attributes' ? 'active' : '' }}"
+                                                     id="tab_attributes">
+                                                    <form class="js-validate-form update-attributes-form clearfix"
+                                                          method="POST" accept-charset="utf-8"
+                                                          action="" novalidate>
+                                                        {!! csrf_field() !!}
+                                                        <textarea name="product_attributes" id="product_attributes"
+                                                                  class="hidden" style="display: none;"></textarea>
+                                                        <div class="mar-bot-15 text-right">
                                                             <button class="btn btn-success btn-circle" type="submit">
                                                                 <i class="fa fa-check"></i> Save
                                                             </button>
                                                         </div>
-                                                    </div>
-                                                </form>
+                                                        <div class="row">
+                                                            @if(isset($attributeSet) && $attributeSet)
+                                                                @foreach($attributeSet as $key => $row)
+                                                                    <div class="col-md-6 attribute-set-group">
+                                                                        <div class="portlet light bordered">
+                                                                            <div class="portlet-title">
+                                                                                <div class="caption">
+                                                                                    <i class="icon-note font-dark"></i>
+                                                                                    <span class="caption-subject font-dark sbold uppercase">{{ $row->title or '' }}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="portlet-body clearfix">
+                                                                                <?php
+                                                                                $attributes = $row->productAttribute()->get();
+                                                                                ?>
+                                                                                <div class="table-responsive">
+                                                                                    <table class="table v-middle">
+                                                                                        <colgroup>
+                                                                                            <col width="50px">
+                                                                                            <col width="150px">
+                                                                                            <col width="150px">
+                                                                                            <col width="50px">
+                                                                                        </colgroup>
+                                                                                        <thead>
+                                                                                        <tr>
+                                                                                            <th>Activated</th>
+                                                                                            <th>Name</th>
+                                                                                            <th>Change price</th>
+                                                                                            <th>Is percentage</th>
+                                                                                        </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                        @if($attributes) @foreach($attributes as $keyAttribute => $rowAttribute)
+                                                                                            <?php
+                                                                                            $currentAttr = null;
+                                                                                            foreach ($activatedAttributes as $keyActivated => $rowActivated) {
+                                                                                                if ($rowActivated->attribute_id == $rowAttribute->id) {
+                                                                                                    $currentAttr = $rowActivated;
+                                                                                                    $activatedAttributes->forget($keyActivated);
+                                                                                                    break;
+                                                                                                }
+                                                                                            }
+                                                                                            ?>
+                                                                                            <tr data-attribute-id="{{ $rowAttribute->id or '' }}">
+                                                                                                <td>
+                                                                                                    <label class="mt-checkbox mt-checkbox-outline mar-bot-0">
+                                                                                                        <input type="checkbox"
+                                                                                                               class="active-checkbox" {{ ($currentAttr) ? 'checked' : '' }}>
+                                                                                                        <span></span>
+                                                                                                    </label>
+                                                                                                </td>
+                                                                                                <td>{{ $rowAttribute->name or '' }}</td>
+                                                                                                <td>
+                                                                                                    <input type="text"
+                                                                                                           class="form-control input-sm change-price"
+                                                                                                           value="{{ ($currentAttr) ? $currentAttr->change_price : 0 }}"
+                                                                                                           style="width: 150px;">
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <label class="mt-checkbox mt-checkbox-outline mar-bot-0">
+                                                                                                        <input type="checkbox"
+                                                                                                               class="is-percentage" {{ ($currentAttr && (int)$currentAttr->is_percentage) ? 'checked' : '' }}>
+                                                                                                        <span></span>
+                                                                                                    </label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        @endforeach @endif
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            @endif
+                                                        </div>
+                                                        <div class="mar-bot-0 text-right">
+                                                            <button class="btn btn-success btn-circle" type="submit">
+                                                                <i class="fa fa-check"></i> Save
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            @endif
+                                            <div class="tab-pane {{ $currentTab == 'tab_reviews' ? 'active' : '' }}"
+                                                 id="tab_reviews"></div>
+                                            <div class="tab-pane {{ $currentTab == 'tab_customfields' ? 'active' : '' }}"
+                                                 id="tab_customfields">
+                                                {!! $customFieldBoxes or '' !!}
+                                                @if(isset($customFieldBoxes) && $customFieldBoxes)
+                                                    <form class="update-custom-fields-form" method="POST"
+                                                          accept-charset="utf-8"
+                                                          action="" novalidate>
+                                                        {{ csrf_field() }}
+                                                        <textarea name="custom_fields" id="custom_fields_container"
+                                                                  class="hidden form-control"
+                                                                  style="display: none !important;"
+                                                                  cols="30" rows="10"></textarea>
+                                                        <div class="form-group mar-bot-0">
+                                                            <div class="col-md-10 col-md-push-2 text-right">
+                                                                <button class="btn btn-success btn-circle"
+                                                                        type="submit">
+                                                                    <i class="fa fa-check"></i> Save
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                @endif
                                             </div>
                                         @endif
                                     </div>

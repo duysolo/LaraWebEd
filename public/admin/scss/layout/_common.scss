@@ -1,3 +1,9 @@
 body, h1, h2, h3, h4, h5, h6, * {
     font-family: "Open Sans", "Segoe UI", Arial, sans-serif;
 }
+.v-middle {
+    vertical-align: middle;
+    tr, td {
+        vertical-align: middle !important;
+    }
+}

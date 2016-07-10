@@ -197,7 +197,7 @@ class ProductController extends BaseAdminController
         return response()->json($result, $result['response_code']);
     }
 
-    public function getEdit(Request $request, Product $object, $id, $language)
+    public function getEdit(Request $request, Product $object, Models\ProductAttributeSet $objectSet, $id, $language)
     {
         $oldInputs = old();
         if ($oldInputs && $id == 0) {
@@ -266,6 +266,15 @@ class ProductController extends BaseAdminController
             $customFieldBoxes = new Acme\CmsCustomField();
             $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'product');
             $this->dis['customFieldBoxes'] = $customFieldBoxes;
+
+            $this->dis['attributeSet'] = $objectSet->join('product_attribute_sets_product_categories', 'product_attribute_sets.id', '=', 'product_attribute_sets_product_categories.attribute_set_id')
+                ->whereIn('product_attribute_sets_product_categories.category_id', $checkedNodes)
+                ->where('product_attribute_sets.status', '=', 1)
+                ->select('product_attribute_sets.*')
+                ->distinct()
+                ->get();
+
+            $this->dis['activatedAttributes'] = $item->productAttributeProduct()->get();
         }
 
         $this->dis['currentId'] = $id;
@@ -283,15 +292,18 @@ class ProductController extends BaseAdminController
 
     public function postEdit(Request $request, Product $object, ProductMeta $objectMeta, $id, $language)
     {
-        $data = $request->all();
-        if ($request->has('is_out_of_stock')) {
-            $data['is_out_of_stock'] = 1;
-        } else {
-            $data['is_out_of_stock'] = 0;
-        }
-        if (isset($data['slug'])) {
-            if (!$data['slug']) {
-                $data['slug'] = str_slug($data['title']);
+        $data = $request->except(['tab', '_token']);
+        //Update product attributes
+        if(!$request->has('product_attributes')) {
+            if ($request->has('is_out_of_stock')) {
+                $data['is_out_of_stock'] = 1;
+            } else {
+                $data['is_out_of_stock'] = 0;
+            }
+            if (isset($data['slug'])) {
+                if (!$data['slug']) {
+                    $data['slug'] = str_slug($data['title']);
+                }
             }
         }
 
@@ -359,5 +371,10 @@ class ProductController extends BaseAdminController
             $result .= '</ul>';
         }
         return $result;
+    }
+
+    private function _updateProductAttributes()
+    {
+
     }
 }

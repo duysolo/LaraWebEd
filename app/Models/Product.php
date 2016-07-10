@@ -62,6 +62,11 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         return $this->belongsToMany('App\Models\ProductAttribute', 'product_attributes_products', 'product_id', 'attribute_id');
     }
 
+    public function productAttributeProduct()
+    {
+        return $this->hasMany('App\Models\ProductAttributeProduct', 'product_id');
+    }
+
     public function brand()
     {
         return $this->belongsTo('App\Models\Brand', 'brand_id');
@@ -76,6 +81,10 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
             /*Save categories*/
             if (isset($data['category_ids'])) {
                 $result['object']->category()->sync($data['category_ids']);
+            }
+
+            if (isset($data['product_attributes'])) {
+                dd($data['product_attributes']);
             }
         }
         return $result;
@@ -103,6 +112,29 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         /*Save categories*/
         if (isset($data['category_ids'])) {
             $post->category()->sync($data['category_ids']);
+        }
+        if (isset($data['product_attributes'])) {
+            $productAttributes = json_decode($data['product_attributes']);
+            $productAttributeIds = [];
+            foreach ($productAttributes as $row) {
+                if(isset($row->id)) {
+                    $productAttributeIds[] = $row->id;
+                }
+            }
+            $post->productAttribute()->sync($productAttributeIds);
+            foreach ($productAttributes as $row) {
+                $attributeId = $row->id;
+                $productId = $post->id;
+                $changePrice = $row->change_price;
+                $isPercentage = (int)$row->is_percentage;
+                $productAttributeProduct = ProductAttributeProduct::where([
+                    'attribute_id' => $attributeId,
+                    'product_id' => $productId
+                ])->first();
+                $productAttributeProduct->change_price = $changePrice;
+                $productAttributeProduct->is_percentage = $isPercentage;
+                $productAttributeProduct->save();
+            }
         }
 
         /*Save to global*/
@@ -169,6 +201,8 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
 
         $object->category()->sync([]);
 
+        $object->productAttribute()->sync([]);
+
         if ($object->delete()) {
             $result['error'] = false;
             $result['response_code'] = 200;
@@ -199,6 +233,10 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
 
         if (isset($data['category_ids'])) {
             $dataPost['category_ids'] = $data['category_ids'];
+        }
+
+        if (isset($data['product_attributes'])) {
+            $dataPost['product_attributes'] = $data['product_attributes'];
         }
 
         if (!isset($data['status'])) {
