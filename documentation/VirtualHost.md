@@ -27,6 +27,19 @@ Add domain in your hosts file
 </VirtualHost>
 ````
 
+- Example:
+````code
+#tedozicms.mydev.local
+<VirtualHost *:80>
+  ServerName tedozicms.mydev.local
+  DocumentRoot "D:\Projects\repos\mine\tedozi-cms"
+  <Directory "D:\Projects\repos\mine\tedozi-cms">
+    AllowOverride All
+    Require all granted
+  </Directory>
+</VirtualHost>
+````
+
 - After that, restart apache.
 
 Well done! Now, you can access the project by go to **http://your-domain.mydev.local**

@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                @include('admin._partials.menu._nestable-menu-src', ['menuNodes' => $row->child()->get()])
+                @include('admin._partials.menu._nestable-menu-src', ['menuNodes' => $row->child()->orderBy('position', 'ASC')->get()])
             </li>
         @endforeach
     </ol>
