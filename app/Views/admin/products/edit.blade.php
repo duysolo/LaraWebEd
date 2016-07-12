@@ -29,6 +29,9 @@
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/adapters/jquery.js"></script>
 
     <script type="text/javascript" src="/admin/dist/pages/product-attributes.js"></script>
+
+    {{--Custom field templates--}}
+    @include('admin._shared._custom-field-templates')
 @endsection
 
 @section('js-init')
@@ -150,7 +153,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="form-horizontal form-row-seperated">
+                    <div class="clearfix">
                         <div class="portlet">
                             <div class="portlet-title">
                                 <div class="caption">
@@ -191,7 +194,7 @@
                                     <div class="tab-content">
                                         <div class="tab-pane {{ $currentTab == 'tab_general' ? 'active' : '' }}"
                                              id="tab_general">
-                                            <form class="js-validate-form" method="POST" accept-charset="utf-8"
+                                            <form class="js-validate-form form-horizontal form-row-seperated" method="POST" accept-charset="utf-8"
                                                   action="" novalidate>
                                                 {{ csrf_field() }}
                                                 <div class="form-body">
@@ -553,18 +556,27 @@
                                                  id="tab_reviews"></div>
                                             <div class="tab-pane {{ $currentTab == 'tab_customfields' ? 'active' : '' }}"
                                                  id="tab_customfields">
-                                                {!! $customFieldBoxes or '' !!}
                                                 @if(isset($customFieldBoxes) && $customFieldBoxes)
                                                     <form class="update-custom-fields-form" method="POST"
                                                           accept-charset="utf-8"
                                                           action="" novalidate>
                                                         {{ csrf_field() }}
-                                                        <textarea name="custom_fields" id="custom_fields_container"
-                                                                  class="hidden form-control"
-                                                                  style="display: none !important;"
-                                                                  cols="30" rows="10"></textarea>
+                                                        <div class="form-group mar-bot-20">
+                                                            <div class="text-right">
+                                                                <button class="btn btn-success btn-circle"
+                                                                        type="submit">
+                                                                    <i class="fa fa-check"></i> Save
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                         <textarea name="custom_fields" id="custom_fields_container"
+                                                                   class="hidden form-control"
+                                                                   style="display: none !important;"
+                                                                   cols="30" rows="10"></textarea>
+                                                        {!! $customFieldBoxes or '' !!}
                                                         <div class="form-group mar-bot-0">
-                                                            <div class="col-md-10 col-md-push-2 text-right">
+                                                            <div class="text-right">
                                                                 <button class="btn btn-success btn-circle"
                                                                         type="submit">
                                                                     <i class="fa fa-check"></i> Save
@@ -573,6 +585,7 @@
                                                         </div>
                                                     </form>
                                                 @endif
+                                                <div class="clearfix"></div>
                                             </div>
                                         @endif
                                     </div>

@@ -39,3 +39,21 @@ if (! function_exists('_getSubField')) {
         return '';
     }
 }
+
+if (! function_exists('_getChoices')) {
+    function _getChoices($choicesString)
+    {
+        $result = [];
+        $choices = preg_split('/\r\n|[\r\n]/', $choicesString);
+
+        foreach ($choices as $key => $row) {
+            $currentArr = explode(':', $row);
+            if(isset($currentArr[0]) && isset($currentArr[1])) {
+                $currentArr[0] = trim($currentArr[0]);
+                $currentArr[1] = trim($currentArr[1]);
+                $result[] = $currentArr;
+            }
+        }
+        return $result;
+    }
+}

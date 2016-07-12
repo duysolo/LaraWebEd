@@ -39,7 +39,8 @@ var Utility = function () {
         $window.trigger('scroll');
     };
 
-    var stringToSlug = function (text) {
+    var stringToSlug = function (text, separator) {
+        separator = separator || '-';
         return text.toString().toLowerCase()
             .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
             .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e')
@@ -48,9 +49,9 @@ var Utility = function () {
             .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u')
             .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y')
             .replace(/đ/gi, 'd')
-            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/\s+/g, separator)           // Replace spaces with -
             .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+            .replace(/\-\-+/g, separator)         // Replace multiple - with single -
             .replace(/^-+/, '')             // Trim - from start of text
             .replace(/-+$/, '');            // Trim - from end of text
     };
@@ -200,30 +201,57 @@ var Utility = function () {
             });
         },
         handleCustomFields: function () {
-            var added_nodes = 0;
-            /*Custom fields - 20150228 - Duy Phan*/
+            var addedNodes = 0;
+
+            var customFieldTemplates = {
+                repeater: $('#_repeater_template').html(),
+                repeaterFieldLine: $('#_repeater-field-line_template').html(),
+                repeaterTextArea: $('#_repeater-textarea_template').html(),
+                repeaterText: $('#_repeater-text_template').html(),
+                repeaterNumber: $('#_repeater-number_template').html(),
+                repeaterEmail: $('#_repeater-email_template').html(),
+                repeaterPassword: $('#_repeater-password_template').html(),
+                repeaterImage: $('#_repeater-image_template').html(),
+                repeaterFile: $('#_repeater-file_template').html(),
+                repeaterSelect: $('#_repeater-select_template').html(),
+                repeaterSelectChoices: $('#_repeater-select-choices_template').html(),
+                repeaterCheckbox: $('#_repeater-checkbox_template').html(),
+                repeaterCheckboxChoices: $('#_repeater-checkbox-choices_template').html(),
+                repeaterRadio: $('#_repeater-radio_template').html(),
+                repeaterRadioChoices: $('#_repeater-radio-choices_template').html(),
+                repeaterWyswyg: $('#_repeater-wyswyg_template').html()
+            };
+
             // Add new field in repeater
             $('body').on('click', '.repeater-add-new-field', function (event) {
                 event.preventDefault();
-                added_nodes++;
+                addedNodes++;
                 var parent = $(this).closest('.meta-box').find('> .scf-repeater-wrap');
-                var field_nodes = parent.find('> .scf-repeater-items').val();
-                field_nodes = $.parseJSON(field_nodes);
-                var add_to = parent.find('> .sortable-wrapper');
-                var current_index = add_to.find('> li').length + 1;
-                var html_src = '<li data-position="' + current_index + '"><a href="#" class="remove-field-line"><i class="fa fa-minus"></i></a><div class="col-xs-12"><ul class="sortable-wrapper disable-sortable">';
-                $.each(field_nodes, function (index, val) {
-                    var index_css = index + 1;
+                var fieldNodes = $.parseJSON(parent.find('> .scf-repeater-items').val());
+
+                var addTo = parent.find('> .sortable-wrapper');
+                var currentIndex = addTo.find('> li').length + 1;
+                var htmlSrc = customFieldTemplates.repeater.replace(/___keyIndex___/gi, currentIndex || 0);
+                var childHtml = '';
+
+                $.each(fieldNodes, function (index, val) {
+                    var indexCSS = index + 1;
                     var current = this;
-                    var field_type = current.field_type;
+                    var fieldType = current.field_type;
                     var slug = current.slug;
                     var title = current.title;
-                    html_src += '<li data-position="' + index_css + '"><div class="col-xs-3"><span class="field-label">' + title + '</span><br><span class="field-instructions">' + current.instructions + '</span></div><div class="col-xs-9">';
-                    html_src += get_repeater_line(slug, field_type, title, current.instructions, current.options);
-                    html_src += '</div><div class="clearfix"></div></li>';
+                    var instructions = current.instructions;
+                    var options = current.options;
+
+                    childHtml += customFieldTemplates.repeaterFieldLine
+                        .replace(/___key___/gi, indexCSS || 0)
+                        .replace(/___title___/gi, title || '')
+                        .replace(/___instructions___/gi, instructions || '')
+                        .replace(/___repeaterInputItem___/gi, _getRepeaterFieldLine(slug, fieldType, title, instructions, options));
                 });
-                html_src += '</ul></div><div class="clearfix"></div></li>';
-                add_to.append(html_src);
+                htmlSrc = htmlSrc.replace(/___repeaterFieldLine___/gi, childHtml);
+
+                addTo.append(htmlSrc);
                 App.initUniform();
                 $('input[type="radio"][checked]').trigger('click');
             });
@@ -231,7 +259,7 @@ var Utility = function () {
             // Submit
             $('body').on('click', '.page-content-wrapper .page-content form [type="submit"]', function (event) {
                 //event.preventDefault();
-                create_json_scf();
+                initializeJsonCustomFields();
             });
 
             // Remove field line
@@ -239,120 +267,112 @@ var Utility = function () {
                 event.preventDefault();
                 var current = $(this);
                 current.parent().animate({
-                        opacity: 0.1,
+                        opacity: 0.1
                     },
                     300, function () {
                         current.parent().remove();
                     });
             });
 
-            /*Re-init CKeditor when start/stop sort*/
-            $('body').on('sortstart', '.sortable-wrapper', function (event, ui) {
-                ui.item.find('.scf-wyswyg-wrap > textarea').each(function (index, el) {
-                    var current_2 = $(this);
-                    var the_id = current_2.attr('id');
-                    if (the_id != '') {
-                        eval('CKEDITOR.instances.' + current_2.attr('id') + '.destroy();');
-                    }
-                });
+            //Collapse line
+            $('body').on('click', '.collapse-field-line', function (event) {
+                event.preventDefault();
+                var current = $(this);
+                current.toggleClass('collapsed-line');
             });
-            $('body').on('sortstop', '.sortable-wrapper', function (event, ui) {
-                ui.item.find('.scf-wyswyg-wrap > textarea').each(function (index, el) {
-                    var current_2 = $(this);
-                    var the_id = current_2.attr('id');
-                    if (the_id != '') {
-                        var html_src = '';
-                        html_src += 'CKEDITOR.replace( "' + the_id + '", {';
-                        html_src += 'toolbar: [[\'mode\', \'Source\', \'Image\', \'TextColor\', \'BGColor\', \'Styles\', \'Format\', \'Font\', \'FontSize\', \'CreateDiv\', \'PageBreak\', \'Bold\', \'Italic\', \'Underline\', \'Strike\', \'Subscript\', \'Superscript\', \'RemoveFormat\']], filebrowserBrowseUrl : "' + baseUrl + '/resources/assets/global/plugins/ckeditor/plugins/pdw_file_browser/?editor=ckeditor"';
-                        html_src += '});';
-                        eval(html_src);
-                    }
-                });
-            });
+
             /*Custom fields - 20150228 - Duy Phan*/
-            function get_repeater_line(slug, field_type, title, instructions, options) {
-                html_src = '';
-                switch (field_type) {
+            function _getRepeaterFieldLine(slug, fieldType, title, instructions, options) {
+                var htmlSrc = '';
+                switch (fieldType) {
                     case 'text':
                     {
-                        html_src += '<div class="scf-text-wrap"><input type="text" class="form-control" data-fieldtype="' + field_type + '" data-slug="' + slug + '" placeholder="' + options.placeholdertext + '" value=""></div>';
+                        htmlSrc += customFieldTemplates.repeaterText
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug)
+                            .replace(/___value___/gi, options.defaultvalue)
+                            .replace(/___placeholder___/gi, options.placeholdertext);
                     }
                         break;
                     case 'textarea':
                     {
-                        html_src += '<div class="scf-textarea-wrap"><textarea rows="3" value="" data-fieldtype="' + field_type + '" data-slug="' + slug + '" placeholder="' + options.placeholdertext + '" class="form-control wyswyg-editor"></textarea></div>';
+                        htmlSrc += customFieldTemplates.repeaterTextArea
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug)
+                            .replace(/___value___/gi, options.defaultvalue)
+                            .replace(/___placeholder___/gi, options.placeholdertext);
                     }
                         break;
                     case 'number':
                     {
-                        html_src += '<div class="scf-text-wrap"><input type="number" class="form-control" data-fieldtype="' + field_type + '" data-slug="' + slug + '" placeholder="' + options.placeholdertext + '" value=""></div>';
+                        htmlSrc += customFieldTemplates.repeaterNumber
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug)
+                            .replace(/___value___/gi, options.defaultvalue)
+                            .replace(/___placeholder___/gi, options.placeholdertext);
                     }
                         break;
                     case 'email':
                     {
-                        html_src += '<div class="scf-text-wrap"><input type="email" class="form-control" data-fieldtype="' + field_type + '" data-slug="' + slug + '" placeholder="' + options.placeholdertext + '" value=""></div>';
+                        htmlSrc += customFieldTemplates.repeaterEmail
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug)
+                            .replace(/___value___/gi, options.defaultvalue)
+                            .replace(/___placeholder___/gi, options.placeholdertext);
                     }
                         break;
                     case 'password':
                     {
-                        html_src += '<div class="scf-text-wrap"><input type="password" class="form-control" data-fieldtype="' + field_type + '" data-slug="' + slug + '" placeholder="' + options.placeholdertext + '" value=""></div>';
-                    }
-                        break;
-                    case 'wyswyg':
-                    {
-                        if (options.wyswygtoolbar == 'basic') {
-                            html_src += '<div class="scf-wyswyg-wrap scf-textarea-wrap"><script>$(document).ready(function() {CKEDITOR.replace( "wyswyg_editor_slug' + slug + '_' + added_nodes + '", {toolbar: [[\'mode\', \'Source\', \'Image\', \'TextColor\', \'BGColor\', \'Styles\', \'Format\', \'Font\', \'FontSize\', \'CreateDiv\', \'PageBreak\', \'Bold\', \'Italic\', \'Underline\', \'Strike\', \'Subscript\', \'Superscript\', \'RemoveFormat\']]});});</script><textarea rows="3" value="" id="wyswyg_editor_slug' + slug + '_' + added_nodes + '" data-fieldtype="' + field_type + '" data-slug="' + slug + '" placeholder="' + options.placeholdertext + '" class="form-control wyswyg-editor"></textarea></div>';
-                        }
-                        else {
-                            html_src += '<div class="scf-wyswyg-wrap scf-textarea-wrap"><script>$(document).ready(function() {CKEDITOR.replace( "wyswyg_editor_slug' + slug + '_' + added_nodes + '", {});});</script><textarea rows="3" value="" id="wyswyg_editor_slug' + slug + '_' + added_nodes + '" data-fieldtype="' + field_type + '" data-slug="' + slug + '" placeholder="' + options.placeholdertext + '" class="form-control wyswyg-editor"></textarea></div>';
-                        }
+                        htmlSrc += customFieldTemplates.repeaterPassword
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug)
+                            .replace(/___value___/gi, options.defaultvalue)
+                            .replace(/___placeholder___/gi, options.placeholdertext);
                     }
                         break;
                     case 'image':
                     {
-                        html_src += '<div class="scf-image-wrap">';
-                        html_src += '<div class="select-media-box">';
-                        html_src += '<a title="" class="btn blue show-add-media-popup">Choose image</a>';
-                        html_src += '<div class="clearfix"></div>';
-                        html_src += '<a title="" class="show-add-media-popup"><img src="/admin/images/no-image.png" alt="" class="img-responsive"></a>';
-                        html_src += '<input type="hidden" data-fieldtype="' + field_type + '" data-slug="' + slug + '" value="" class="input-file">';
-                        html_src += '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
-                        html_src += '</div></div>';
+                        htmlSrc += customFieldTemplates.repeaterImage
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug);
                     }
                         break;
                     case 'file':
                     {
-                        html_src += '<div class="scf-file-wrap">';
-                        html_src += '<div class="select-media-box select-file-box">';
-                        html_src += '<a title="" class="btn blue show-add-media-popup select-file-box">Choose file</a>';
-                        html_src += '<div class="clearfix"></div>';
-                        html_src += '<a title="" class="show-add-media-popup select-file-box"><img src="/admin/images/no-image.png" alt="" class="img-responsive"><span class="title">File name</span></a>';
-                        html_src += '<input type="hidden" data-fieldtype="' + field_type + '" data-slug="' + slug + '" value="" class="input-file">';
-                        html_src += '<a href="#" title="" class="remove-image"><span>&nbsp;</span></a>';
-                        html_src += '</div></div>';
+                        htmlSrc += customFieldTemplates.repeaterFile
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug);
                     }
                         break;
                     case 'select':
                     {
-                        html_src += '<div class="scf-select-wrap">';
-                        html_src += '<select class="form-control" data-fieldtype="' + field_type + '" data-slug="' + slug + '">';
-                        html_src += getChoicesOfSelect(options.selectchoices, options.defaultvalue);
-                        html_src += '</select>';
-                        html_src += '</div>';
+                        htmlSrc += customFieldTemplates.repeaterSelect
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug)
+                            .replace(/___choices___/gi, getChoicesOfSelect(options.selectchoices, options.defaultvalue));
                     }
                         break;
                     case 'checkbox':
                     {
-                        html_src += '<div class="scf-checkbox-wrap">';
-                        html_src += getChoicesOfCheckbox(options.selectchoices, options.defaultvalue, [field_type, slug]);
-                        html_src += '</div>';
+                        htmlSrc += customFieldTemplates.repeaterCheckbox
+                            .replace(/___choices___/gi, getChoicesOfCheckbox(options.selectchoices, options.defaultvalue, [fieldType, slug]));
                     }
                         break;
                     case 'radio':
                     {
-                        html_src += '<div class="scf-radio-wrap">';
-                        html_src += getChoicesOfRadio(options.selectchoices, options.defaultvalue, [field_type, slug]);
-                        html_src += '</div>';
+                        htmlSrc += customFieldTemplates.repeaterRadio
+                            .replace(/___choices___/gi, getChoicesOfRadio(options.selectchoices, options.defaultvalue, [fieldType, slug]));
+                    }
+                        break;
+                    case 'wyswyg':
+                    {
+                        htmlSrc += customFieldTemplates.repeaterWyswyg
+                            .replace(/___name___/gi, stringToSlug(slug + addedNodes, '_'))
+                            .replace(/___fieldType___/gi, fieldType)
+                            .replace(/___slug___/gi, slug)
+                            .replace(/___toolbarType___/gi, options.wyswygtoolbar)
+                            .replace(/___script___/gi, 'script')
+                            .replace(/___scriptEnd___/gi, 'script');
                     }
                         break;
                     case 'repeater':
@@ -366,17 +386,22 @@ var Utility = function () {
                     }
                         break;
                 }
-                ;
-                return html_src;
+                return htmlSrc;
             }
 
             function getChoicesOfSelect($choicesString, $selectedChoice) {
                 $result = '<option value=""></option>';
                 $choices = $choicesString.split('\n');
-
                 $.each($choices, function ($key, $row) {
-                    $currentArr = $row.split(': ');
-                    $result += '<option ' + (($currentArr[0] == $selectedChoice) ? 'selected="selected"' : '') + ' value="' + $currentArr[0] + '">' + $currentArr[1] + '</option>';
+                    $currentArr = $row.split(':');
+                    if($currentArr[0] && $currentArr[1]) {
+                        $currentArr[0] = $currentArr[0].trim();
+                        $currentArr[1] = $currentArr[1].trim();
+                    }
+                    $result += customFieldTemplates.repeaterSelectChoices
+                        .replace(/___value___/gi, $currentArr[0] || '')
+                        .replace(/___selected___/gi, (($currentArr[0] == $selectedChoice) ? 'selected="selected"' : ''))
+                        .replace(/___title___/gi, $currentArr[1] || 'null');
                 });
                 return $result;
             }
@@ -388,8 +413,17 @@ var Utility = function () {
                 $choices = $choicesString.split('\n');
 
                 $.each($choices, function ($key, $row) {
-                    $currentArr = $row.split(': ');
-                    $result += '<span class="dis-block"><label><input type="checkbox" data-fieldtype="' + $other[0] + '" data-slug="' + $other[1] + '" value="' + $currentArr[0] + '" name="custom-fields-' + $other[1] + '-' + added_nodes + '"> ' + $currentArr[1] + '</label></span>';
+                    $currentArr = $row.split(':');
+                    if($currentArr[0] && $currentArr[1]) {
+                        $currentArr[0] = $currentArr[0].trim();
+                        $currentArr[1] = $currentArr[1].trim();
+                    }
+                    $result += customFieldTemplates.repeaterCheckboxChoices
+                        .replace(/___fieldType___/gi, $other[0] || '')
+                        .replace(/___slug___/gi, $other[1] || '')
+                        .replace(/___value___/gi, $currentArr[0] || '')
+                        .replace(/___selected___/gi, (($currentArr[0] == $selectedChoice) ? 'checked="checked"' : ''))
+                        .replace(/___title___/gi, $currentArr[1] || 'null');
                 });
                 return $result;
             }
@@ -399,152 +433,157 @@ var Utility = function () {
                 $choices = $choicesString.split('\n');
 
                 $.each($choices, function ($key, $row) {
-                    $currentArr = $row.split(': ');
-                    $result += '<span class="dis-block"><label><input type="radio" data-fieldtype="' + $other[0] + '" data-slug="' + $other[1] + '" ' + (($currentArr[0] == $selectedChoice) ? 'checked="checked"' : '') + ' value="' + $currentArr[0] + '" name="custom-fields-' + $other[1] + '"> ' + $currentArr[1] + '</label></span>';
+                    $currentArr = $row.split(':');
+                    if($currentArr[0] && $currentArr[1]) {
+                        $currentArr[0] = $currentArr[0].trim();
+                        $currentArr[1] = $currentArr[1].trim();
+                    }
+                    $result += customFieldTemplates.repeaterRadioChoices
+                        .replace(/___fieldType___/gi, $other[0] || '')
+                        .replace(/___slug___/gi, $other[1] || '')
+                        .replace(/___value___/gi, $currentArr[0] || '')
+                        .replace(/___name___/gi, stringToSlug($other[1] + addedNodes, '_'))
+                        .replace(/___selected___/gi, (($currentArr[0] == $selectedChoice) ? 'checked="checked"' : ''))
+                        .replace(/___title___/gi, $currentArr[1] || 'null');
                 });
                 return $result;
             }
 
             /*Create custom fields - json*/
-            function create_json_scf() {
-                var data_return = [];
+            function initializeJsonCustomFields() {
+                var dataReturn = [];
                 // Get data from input field (type equal to text, email, password, phone)
                 $('.meta-box.normal-box').each(function (index, el) {
                     var current = $(this);
-                    var each_scf = {};
-                    each_scf.field_items = [];
-                    each_scf.field_slug = current.attr('data-slug');
-                    each_scf.field_value = current.find('input:first').val();
-                    data_return.push(each_scf);
+                    var eachScf = {};
+                    eachScf.field_items = [];
+                    eachScf.field_slug = current.attr('data-slug');
+                    eachScf.field_value = current.find('input:first').val();
+                    dataReturn.push(eachScf);
                 });
                 // Get data from textarea field
                 $('.meta-box.textarea-box').each(function (index, el) {
                     var current = $(this);
-                    var each_scf = {};
-                    var textarea_target = current.find('> .scf-textarea-wrap > textarea');
+                    var eachScf = {};
+                    var textareaTarget = current.find('> .scf-textarea-wrap > textarea');
                     var editorText = '';
-                    if (textarea_target.attr('id') != '' && textarea_target.attr('id') != null) {
-                        editorText = eval('CKEDITOR.instances.' + textarea_target.attr('id') + '.getData()');
+                    if (textareaTarget.attr('id') != '' && textareaTarget.attr('id') != null) {
+                        editorText = CKEDITOR.instances[textareaTarget.attr('id')].getData();
                     }
                     else {
-                        editorText = textarea_target.val();
+                        editorText = textareaTarget.val();
                     }
-                    each_scf.field_items = [];
-                    each_scf.field_slug = current.attr('data-slug');
-                    each_scf.field_value = editorText;
-                    data_return.push(each_scf);
+                    eachScf.field_items = [];
+                    eachScf.field_slug = current.attr('data-slug');
+                    eachScf.field_value = editorText;
+                    dataReturn.push(eachScf);
                 });
                 // Get data from select box
                 $('.meta-box.select-box').each(function (index, el) {
                     var current = $(this);
-                    var each_scf = {};
-                    each_scf.field_items = [];
-                    each_scf.field_slug = current.attr('data-slug');
-                    each_scf.field_value = current.find('select').val();
-                    data_return.push(each_scf);
+                    var eachScf = {};
+                    eachScf.field_items = [];
+                    eachScf.field_slug = current.attr('data-slug');
+                    eachScf.field_value = current.find('select').val();
+                    dataReturn.push(eachScf);
                 });
                 // Get data from check box
                 $('.meta-box.check-box').each(function (index, el) {
                     var current = $(this);
-                    var each_scf = {};
-                    each_scf.field_items = [];
-                    each_scf.field_slug = current.attr('data-slug');
+                    var eachScf = {};
+                    eachScf.field_items = [];
+                    eachScf.field_slug = current.attr('data-slug');
                     // Get multi data
                     var checkbox_field = [];
                     current.find('input[type="checkbox"]:checked').each(function (index, el) {
                         checkbox_field.push($(this).val());
                     });
-                    each_scf.field_value = JSON.stringify(checkbox_field);
-                    data_return.push(each_scf);
+                    eachScf.field_value = JSON.stringify(checkbox_field);
+                    dataReturn.push(eachScf);
                 });
                 // Get data from select box
                 $('.meta-box.radio-box').each(function (index, el) {
                     var current = $(this);
-                    var each_scf = {};
-                    each_scf.field_items = [];
-                    each_scf.field_slug = current.attr('data-slug');
-                    each_scf.field_value = current.find('input[type="radio"]:checked').val();
-                    data_return.push(each_scf);
+                    var eachScf = {};
+                    eachScf.field_items = [];
+                    eachScf.field_slug = current.attr('data-slug');
+                    eachScf.field_value = current.find('input[type="radio"]:checked').val();
+                    dataReturn.push(eachScf);
                 });
-                create_json_repeater($('.repeater-box > .scf-repeater-wrap > .sortable-wrapper'), data_return);
-                // console.log(data_return);
+                create_json_repeater($('.repeater-box > .scf-repeater-wrap > .sortable-wrapper'), dataReturn);
             }
 
             /*Add repeater*/
             function create_json_repeater(find_from, update_to) {
                 find_from.each(function (index, el) {
                     var current = $(this);
-                    var each_repeater = {};
-                    each_repeater.field_slug = current.attr('data-slug');
-                    each_repeater.field_items = [];
+                    var eachRepeater = {};
+                    eachRepeater.field_slug = current.attr('data-slug');
+                    eachRepeater.field_items = [];
                     current.find('> li').each(function (index, el) {
                         var current_2 = $(this);
-                        var item_arr = [];
+                        var itemArr = [];
                         current_2.find(' > .col-xs-12 > .sortable-wrapper.disable-sortable > li').each(function (index, el) {
                             // var val_str = 'item_obj.' + $(this).find('input:first').attr('data-slug') + ' = "' + $(this).find('input:first').val() + '";';
                             // eval(val_str);
-                            var child_obj = {};
+                            var childObject = {};
                             var current_3 = $(this);
-                            var the_input = current_3.find('input:not([type="checkbox"], [type="radio"])');
+                            var theInput = current_3.find('input:not([type="checkbox"], [type="radio"])');
 
-                            child_obj.field_value = the_input.val();
+                            childObject.field_value = theInput.val();
 
-                            if (the_input.length < 1) {
+                            if (theInput.length < 1) {
                                 // No input found, find textarea instead
-                                the_input = current_3.find('.scf-textarea-wrap > textarea');
+                                theInput = current_3.find('.scf-textarea-wrap > textarea');
 
-                                if (the_input.length < 1) {
+                                if (theInput.length < 1) {
                                     // No input found, find select instead
-                                    the_input = current_3.find('.scf-select-wrap > select');
+                                    theInput = current_3.find('.scf-select-wrap > select');
 
-                                    if (the_input.length < 1) {
+                                    if (theInput.length < 1) {
                                         // No select found, find radio instead
-                                        the_input = current_3.find('.scf-radio-wrap input[type="radio"]:checked');
+                                        theInput = current_3.find('.scf-radio-wrap input[type="radio"]:checked');
 
                                         // No radio found, find checkbox instead
-                                        if (the_input.length < 1) {
-                                            the_input = current_3.find('.scf-checkbox-wrap input[type="checkbox"]:checked');
+                                        if (theInput.length < 1) {
+                                            theInput = current_3.find('.scf-checkbox-wrap input[type="checkbox"]:checked');
                                         }
                                     }
 
-                                    if (the_input.length > 1) {
+                                    if (theInput.length > 1) {
                                         var $arr = [];
-                                        the_input.each(function (index, el) {
+                                        theInput.each(function (index, el) {
                                             $arr.push($(this).val());
                                         });
-                                        child_obj.field_value = JSON.stringify($arr);
+                                        childObject.field_value = JSON.stringify($arr);
                                     }
-                                    else if (the_input.length > 0) {
-                                        child_obj.field_value = the_input.val();
+                                    else if (theInput.length > 0) {
+                                        childObject.field_value = theInput.val();
                                     }
                                     else {
-                                        child_obj.field_value = '';
+                                        childObject.field_value = '';
                                     }
 
                                 }
                                 else {
                                     var editorText = '';
-                                    if (the_input.attr('id') != '' && the_input.attr('id') != null) {
-                                        editorText = eval('CKEDITOR.instances.' + the_input.attr('id') + '.getData()');
+                                    if (theInput.attr('id') != '' && theInput.attr('id') != null) {
+                                        editorText = CKEDITOR.instances[theInput.attr('id')].getData();
                                     }
                                     else {
-                                        editorText = the_input.val();
+                                        editorText = theInput.val();
                                     }
-                                    child_obj.field_value = editorText;
+                                    childObject.field_value = editorText;
                                 }
                             }
 
-                            if (the_input.length > 1) {
-                                console.log(the_input);
-                            }
-
-                            child_obj.field_type = the_input.attr('data-fieldtype');
-                            child_obj.slug = the_input.attr('data-slug');
-                            item_arr.push(child_obj);
+                            childObject.field_type = theInput.attr('data-fieldtype');
+                            childObject.slug = theInput.attr('data-slug');
+                            itemArr.push(childObject);
                         });
-                        each_repeater.field_items.push(item_arr);
+                        eachRepeater.field_items.push(itemArr);
                     });
-                    update_to.push(each_repeater);
+                    update_to.push(eachRepeater);
                 });
                 $('#custom_fields_container').val('').html('');
                 $('#custom_fields_container').val(JSON.stringify(update_to));

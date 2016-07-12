@@ -15,6 +15,9 @@
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/adapters/jquery.js"></script>
     <script type="text/javascript" src="/admin/core/third_party/ckeditor/config.js"></script>
 
+    {{--Custom field templates--}}
+    @include('admin._shared._custom-field-templates')
+
 @endsection
 
 @section('js-init')

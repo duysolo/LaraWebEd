@@ -336,6 +336,7 @@ class ProductController extends BaseAdminController
 
         /*Save completed*/
         $customFields = json_decode($request->get('custom_fields', '[]'));
+
         $this->_saveContentMeta($result['object']->id, $customFields, $objectMeta);
 
         if ($id == 0) {
