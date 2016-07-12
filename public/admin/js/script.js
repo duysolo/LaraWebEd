@@ -15,7 +15,7 @@ $(document).ready(function(){
 
     /*Sortable content*/
     $(".sortable-wrapper").sortable();
-    $('.disable-sortable').sortable('destroy');
+    //$('.disable-sortable').sortable('destroy');
 
     /*Change content language*/
     Utility.changeContentLanguage();

@@ -38,4 +38,14 @@ class FieldItem extends AbstractModel
     {
         return $this->belongsTo('App\Models\FieldGroup', 'field_group_id');
     }
+
+    public function parent()
+    {
+        return $this->belongsTo('App\Models\FieldItem', 'parent_id');
+    }
+
+    public function child()
+    {
+        return $this->hasMany('App\Models\FieldItem', 'parent_id');
+    }
 }

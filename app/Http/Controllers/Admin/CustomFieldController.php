@@ -165,7 +165,7 @@ class CustomFieldController extends BaseAdminController
             $this->dis['rulesHtml'] = $this->_initRulesHtml(json_decode($item->field_rules));
 
             $myCustomField = new Acme\CmsCustomField();
-            $this->dis['sortableFieldHtml'] = $myCustomField->getFieldGroupItems($id, 0);
+            $this->dis['sortableFieldHtml'] = $myCustomField->getFieldGroupItems($id);
         }
         return $this->_viewAdmin('custom-fields.edit', $this->dis);
     }

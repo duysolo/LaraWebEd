@@ -85,27 +85,27 @@
                         </select>
                         <select name="" class="form-control rule-b hidden" id="" data-rel="page_template">
                             @if(isset($options['page_templates'])) @foreach($options['page_templates'] as $option)
-                                <option value="{{ $option->id or '' }}" {{ (($rowOptions->rel_name == 'page_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
+                                <option value="{{ $option or '' }}" {{ (($rowOptions->rel_name == 'page_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
                             @endforeach @endif
                         </select>
                         <select name="" class="form-control rule-b hidden" id="" data-rel="post_template">
                             @if(isset($options['post_templates'])) @foreach($options['post_templates'] as $option)
-                                <option value="{{ $option->id or '' }}" {{ (($rowOptions->rel_name == 'post_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
+                                <option value="{{ $option or '' }}" {{ (($rowOptions->rel_name == 'post_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
                             @endforeach @endif
                         </select>
                         <select name="" class="form-control rule-b hidden" id="" data-rel="product_template">
                             @if(isset($options['product_templates'])) @foreach($options['product_templates'] as $option)
-                                <option value="{{ $option->id or '' }}" {{ (($rowOptions->rel_name == 'product_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
+                                <option value="{{ $option or '' }}" {{ (($rowOptions->rel_name == 'product_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
                             @endforeach @endif
                         </select>
                         <select name="" class="form-control rule-b hidden" id="" data-rel="category_template">
                             @if(isset($options['category_templates'])) @foreach($options['category_templates'] as $option)
-                                <option value="{{ $option->id or '' }}" {{ (($rowOptions->rel_name == 'category_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
+                                <option value="{{ $option or '' }}" {{ (($rowOptions->rel_name == 'category_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
                             @endforeach @endif
                         </select>
                         <select name="" class="form-control rule-b hidden" id="" data-rel="product_category_template">
                             @if(isset($options['product_category_templates'])) @foreach($options['product_category_templates'] as $option)
-                                <option value="{{ $option->id or '' }}" {{ (($rowOptions->rel_name == 'product_category_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
+                                <option value="{{ $option or '' }}" {{ (($rowOptions->rel_name == 'product_category_template' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
                             @endforeach @endif
                         </select>
                         <select name="" class="form-control rule-b hidden" id="" data-rel="scf_user">
@@ -115,7 +115,7 @@
                         </select>
                         <select name="" class="form-control rule-b" id="" data-rel="model_name">
                             @if(isset($options['models'])) @foreach($options['models'] as $option)
-                                <option value="{{ $option->id or '' }}" {{ (($rowOptions->rel_name == 'model_name' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
+                                <option value="{{ $option or '' }}" {{ (($rowOptions->rel_name == 'model_name' && $rowOptions->rel_value == $option) ? 'selected="selected"' : '') }}>{{ $option or '' }}</option>
                             @endforeach @endif
                         </select>
                     </div>
