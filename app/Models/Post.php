@@ -134,16 +134,12 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
 
         /*Remove all related content*/
         if ($related != null) {
-            $customFields = PostMeta::join('post_contents', 'post_contents.id', '=', 'post_metas.content_id')
+            PostMeta::join('post_contents', 'post_contents.id', '=', 'post_metas.content_id')
                 ->join('posts', 'posts.id', '=', 'post_contents.post_id')
                 ->where('posts.id', '=', $id)
                 ->delete();
 
-            if ($temp->delete()) {
-                $result['error'] = false;
-                $result['response_code'] = 200;
-                $result['message'] = ['Delete related content completed!'];
-            }
+            $temp->delete();
         }
 
         $object->category()->sync([]);

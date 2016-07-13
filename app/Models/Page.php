@@ -106,21 +106,17 @@ class Page extends AbstractModel
 
         /*Remove all related content*/
         if ($related != null) {
-            $customFields = PageMeta::join('page_contents', 'page_contents.id', '=', 'page_metas.content_id')
+            PageMeta::join('page_contents', 'page_contents.id', '=', 'page_metas.content_id')
                 ->join('pages', 'pages.id', '=', 'page_contents.page_id')
                 ->where('pages.id', '=', $id)
                 ->delete();
 
-            if ($temp->delete()) {
-                $result['error'] = false;
-                $result['response_code'] = 200;
-                $result['message'] = ['Delete related content completed!'];
-            }
+            $temp->delete();
         }
         if ($object->delete()) {
             $result['error'] = false;
             $result['response_code'] = 200;
-            $result['message'] = ['Delete page completed!'];
+            $result['message'] = 'Delete page completed!';
         }
 
         return $result;

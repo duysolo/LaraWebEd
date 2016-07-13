@@ -187,16 +187,12 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
 
         /*Remove all related content*/
         if ($related != null) {
-            $customFields = ProductMeta::join('product_contents', 'product_contents.id', '=', 'product_metas.content_id')
+            ProductMeta::join('product_contents', 'product_contents.id', '=', 'product_metas.content_id')
                 ->join('products', 'products.id', '=', 'product_contents.product_id')
                 ->where('products.id', '=', $id)
                 ->delete();
 
-            if ($temp->delete()) {
-                $result['error'] = false;
-                $result['response_code'] = 200;
-                $result['message'] = ['Delete related content completed!'];
-            }
+            $temp->delete();
         }
 
         $object->category()->sync([]);
