@@ -270,7 +270,7 @@ class ProductCategoryController extends BaseAdminController
 
             /*Edit link*/
             $link = asset($this->adminCpAccess . '/' . $this->routeEditPostLink . '/edit/' . $row->id . '/' . $this->defaultLanguageId);
-            $removeLink = asset($this->adminCpAccess . '/' . $this->routeLink . '/delete/' . $row->id);
+            $removeLink = asset($this->adminCpAccess . '/' . $this->routeEditPostLink . '/delete/' . $row->id);
 
             $records["data"][] = array(
                 '<input type="checkbox" name="id[]" value="' . $row->id . '">',
