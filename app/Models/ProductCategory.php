@@ -130,23 +130,19 @@ class ProductCategory extends AbstractModel implements Contracts\MultiLanguageIn
             $related = null;
         }
 
-        $deleteRelated = true;
-        $deleteCustomFields = true;
         $deleteCategory = true;
 
         /*Remove all related content*/
         if ($related != null) {
-            $deleteCustomFields = ProductCategoryMeta::join('product_category_contents', 'product_category_contents.id', '=', 'product_category_metas.content_id')
+            ProductCategoryMeta::join('product_category_contents', 'product_category_contents.id', '=', 'product_category_metas.content_id')
                 ->join('product_categories', 'product_categories.id', '=', 'product_category_contents.category_id')
                 ->where('product_categories.id', '=', $id)
                 ->delete();
-            $deleteRelated = $temp->delete();
+            $temp->delete();
         }
         $category->product()->sync([]);
 
-        $deleteCategory = $category->delete();
-
-        if($deleteCustomFields && $deleteRelated && $deleteCategory) {
+        if($category->delete()) {
             /*Change all child item of this category to parent*/
             $relatedCategory = new static;
             $relatedCategory->updateMultipleGetByFields([

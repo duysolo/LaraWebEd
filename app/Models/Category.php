@@ -120,8 +120,6 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
         \DB::beginTransaction();
 
-        $deleteRelated = true;
-        $deleteCustomFields = true;
         $deleteCategory = true;
 
         $temp = CategoryContent::where('category_id', '=', $id);
@@ -132,18 +130,18 @@ class Category extends AbstractModel implements Contracts\MultiLanguageInterface
 
         /*Remove all related content*/
         if ($related != null) {
-            $deleteCustomFields = CategoryMeta::join('category_contents', 'category_contents.id', '=', 'category_metas.content_id')
+            CategoryMeta::join('category_contents', 'category_contents.id', '=', 'category_metas.content_id')
                 ->join('categories', 'categories.id', '=', 'category_contents.category_id')
                 ->where('categories.id', '=', $id)
                 ->delete();
 
-            $deleteRelated = $temp->delete();
+            $temp->delete();
         }
         $category->post()->sync([]);
 
         $deleteCategory = $category->delete();
 
-        if($deleteCustomFields && $deleteRelated && $deleteCategory) {
+        if($deleteCategory) {
             /*Change all child item of this category to parent*/
             $relatedCategory = new static;
             $relatedCategory->updateMultipleGetByFields([
