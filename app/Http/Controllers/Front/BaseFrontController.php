@@ -86,7 +86,7 @@ abstract class BaseFrontController extends BaseController
         if ($description) {
             $data['description'] = $description;
         } else {
-            $data['description'] = $this->_getSetting('site_keywords');
+            $data['description'] = $this->_getSetting('site_description');
         }
         if ($image) {
             $data['image'] = asset($image);
