@@ -405,7 +405,7 @@ class Product extends AbstractModel implements Contracts\MultiLanguageInterface
         return $items->get();
     }
 
-    public static function getNoContentByCategory($id, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getNoContentByCategory($id, $otherFields = [], $order = null, $select = null, $perPage = 0)
     {
         $items = Product::join('product_categories_products', 'product_categories_products.product_id', '=', 'products.id')
             ->join('product_categories', 'product_categories.id', '=', 'product_categories_products.category_id')

@@ -253,7 +253,7 @@ class ProductCategoryController extends BaseAdminController
             $getByFields['status'] = ['compare' => '=', 'value' => $request->get('status')];
         }
 
-        $items = $productObject->getNoContentByCategory($id, $getByFields, [$orderBy => $orderType], $limit, ['products.*']);
+        $items = $productObject->getNoContentByCategory($id, $getByFields, [$orderBy => $orderType], ['products.*'], $limit);
 
         $iTotalRecords = $items->total();
         $sEcho = intval($request->get('sEcho'));

@@ -390,6 +390,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         if ($select && sizeof($select) > 0) {
             $items = $items->select($select);
         }
+
         if ($perPage > 0) {
             return $items->paginate($perPage);
         }
@@ -397,7 +398,7 @@ class Post extends AbstractModel implements Contracts\MultiLanguageInterface
         return $items->get();
     }
 
-    public static function getNoContentByCategory($id, $otherFields = [], $order = null, $perPage = 0, $select = null)
+    public static function getNoContentByCategory($id, $otherFields = [], $order = null, $select = null, $perPage = 0)
     {
         $items = Post::join('categories_posts', 'categories_posts.post_id', '=', 'posts.id')
             ->join('categories', 'categories.id', '=', 'categories_posts.category_id')
