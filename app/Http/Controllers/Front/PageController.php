@@ -32,7 +32,7 @@ class PageController extends BaseFrontController
 
         $this->_setCurrentEditLink('Edit this page', 'pages/edit/' . $item->id . '/' . $this->currentLanguageId);
 
-        $this->_loadFrontMenu($item->page_id, 'page');
+        $this->_loadFrontMenu($item->id, 'page');
         $this->_setPageTitle($item->title);
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 

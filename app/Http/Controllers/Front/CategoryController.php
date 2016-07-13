@@ -26,7 +26,7 @@ class CategoryController extends BaseFrontController
 
         $this->_setCurrentEditLink('Edit this category', 'categories/edit/' . $item->id . '/' . $this->currentLanguageId);
 
-        $this->_loadFrontMenu($item->category_id, 'category');
+        $this->_loadFrontMenu($item->id, 'category');
         $this->_setPageTitle($item->title);
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 

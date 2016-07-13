@@ -26,7 +26,7 @@ class ProductCategoryController extends BaseFrontController
 
         $this->_setCurrentEditLink('Edit this product category', 'product-categories/edit/' . $item->id . '/' . $this->currentLanguageId);
 
-        $this->_loadFrontMenu($item->category_id, 'product-category');
+        $this->_loadFrontMenu($item->id, 'product-category');
         $this->_setPageTitle($item->title);
         $this->_setMetaSEO($item->tags, $item->description, $item->thumbnail);
 

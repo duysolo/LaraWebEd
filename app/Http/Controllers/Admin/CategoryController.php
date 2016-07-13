@@ -353,7 +353,7 @@ class CategoryController extends BaseAdminController
                 'model_name' => 'Category',
             );
             $customFieldBoxes = new Acme\CmsCustomField();
-            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'category');
+            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->content_id, $args, 'category');
             $this->dis['customFieldBoxes'] = $customFieldBoxes;
 
             $categories = $this->_recursiveGetCategoriesSelectSrc($object, 0, 'global_title', 'asc', 0, $item->parent_id, [$id]);

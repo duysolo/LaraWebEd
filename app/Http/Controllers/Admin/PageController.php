@@ -224,7 +224,7 @@ class PageController extends BaseAdminController
                 'model_name' => 'Page',
             );
             $customFieldBoxes = new Acme\CmsCustomField();
-            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'page');
+            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->content_id, $args, 'page');
             $this->dis['customFieldBoxes'] = $customFieldBoxes;
         }
 

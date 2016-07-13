@@ -264,7 +264,7 @@ class ProductController extends BaseAdminController
                 'product_with_related_product_category_id' => $checkedNodes,
             );
             $customFieldBoxes = new Acme\CmsCustomField();
-            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'product');
+            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->content_id, $args, 'product');
             $this->dis['customFieldBoxes'] = $customFieldBoxes;
 
             $this->dis['attributeSet'] = $objectSet->join('product_attribute_sets_product_categories', 'product_attribute_sets.id', '=', 'product_attribute_sets_product_categories.attribute_set_id')

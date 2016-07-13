@@ -241,7 +241,7 @@ class PostController extends BaseAdminController
                 'post_with_related_category_id' => $checkedNodes,
             );
             $customFieldBoxes = new Acme\CmsCustomField();
-            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->id, $args, 'post');
+            $customFieldBoxes = $customFieldBoxes->getCustomFieldsBoxes($item->content_id, $args, 'post');
             $this->dis['customFieldBoxes'] = $customFieldBoxes;
         }
 

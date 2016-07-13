@@ -147,9 +147,7 @@ class CustomFieldController extends BaseAdminController
 
     public function getEdit(Request $request, FieldGroup $object, $id = 0)
     {
-        $this->dis = [
-            'currentID' => $id,
-        ];
+        $this->dis['currentID'] = $id;
 
         if (!$id == 0 && !$id < 1) {
             $item = $object->find($id);
