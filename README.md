@@ -1,6 +1,9 @@
 Welcome to LaraWebEd! - A CMS build on Laravel
 ===================
 
+#Try WebEd CMS version 3 at:
+[https://github.com/sgsoft-studio/webed](https://github.com/sgsoft-studio/webed)
+
 ###A starter CMS for Laravel
 I have write a CMS for this framework, Support multi language.
 I'm writing some other feature: ecommerce, manage orders, checkout...
