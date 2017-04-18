@@ -5,29 +5,29 @@ This guide show you how to create custom fields (for page, post, product, catego
 
 ----------
 
-####Register custom fields:
+#### Register custom fields:
 --------
 [How to create custom fields in LaraWebEd](https://www.youtube.com/watch?v=8ku2yaByYMI)
 
-####Access custom fields:
+#### Access custom fields:
 --------
 
 You can access the custom fields from both controllers and views via:
 
-#####Front controllers:
+##### Front controllers:
 In the front controller of Page, Post, Category, Product, Product Category, you have the method **_defaultItem()** and **other page template methods**. You can access all the custom fields of these items by:
 
 ````code
 $this->dis['currentObjectCustomFields']
 ````
 
-#####Front views:
+##### Front views:
 
 ````code
 $currentObjectCustomFields
 ````
 
-####The helpers for custom fields
+#### The helpers for custom fields
 
 - Get field: get a field value by field name: **_getField**
 
