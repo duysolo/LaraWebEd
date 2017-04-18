@@ -1,10 +1,10 @@
 Welcome to LaraWebEd! - A CMS build on Laravel
 ===================
 
-#Try WebEd CMS version 3 at:
+# Try WebEd CMS version 3 at:
 [https://github.com/sgsoft-studio/webed](https://github.com/sgsoft-studio/webed)
 
-###A starter CMS for Laravel
+### A starter CMS for Laravel
 I have write a CMS for this framework, Support multi language.
 I'm writing some other feature: ecommerce, manage orders, checkout...
 I hope it can helps you more for start a new project.
@@ -13,9 +13,9 @@ If you need more support, please feel free to contact me via:
 - Skype: tedozi.manson
 - Email: duyphan.developer@gmail.com
 
-###LaraWebEd is always free.
+### LaraWebEd is always free.
 
-###Some features of this CMS:
+### Some features of this CMS:
 - Manage page, post, product, category, product category.
 - Manage file by el-finder.
 - Manage page template.
@@ -91,7 +91,7 @@ On this projects, I use the latest Laravel version (currently 5.2). Please go to
 
 > RECAPTCHA_SECRET_KEY=6Lfy4hYTAAAAAGTRaZggVzW_PAyVxmGguw8uSWyH
 
-####Note
+#### Note
 - This site can only be run at domain name, not folder link.
 - On your localhost, setting virtual host. Something like 
 
@@ -110,9 +110,9 @@ Well done! Now, you can login to the dashboard by access to [your_domain_site/ad
 
 Enjoy!
 
-#####Star for me if this cms helps you a lot!
+##### Star for me if this cms helps you a lot!
 
-###Table of contents
+### Table of contents
 
 - [Custom fields](./documentation/CustomFields.md)
 - [Page template](./documentation/PageTemplate.md)
